@@ -31,6 +31,8 @@ except ImportError, ex:
     utils.enhance_import_error(ex, 'argparse', 'python-argparse', 'http://code.google.com/p/argparse/')
     raise
 
+logger = None
+
 infinity = 1.0e9999
 
 class ArgumentParser(argparse.ArgumentParser):
@@ -175,9 +177,18 @@ def scan(options):
         start += len(pages) * increment
 
 def setup_logging():
-    ipc_logger = logging.getLogger('scanhelper.ipc')
+    # Main logger:
+    global logger
+    logger = logging.getLogger('scanhelper.main')
+    formatter = logging.Formatter('%(message)s')
     handler = logging.StreamHandler()
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+    logger.setLevel(logging.INFO)
+    # IPC logger:
+    ipc_logger = logging.getLogger('scanhelper.ipc')
     formatter = logging.Formatter('+ %(message)s')
+    handler = logging.StreamHandler()
     handler.setFormatter(formatter)
     ipc_logger.addHandler(handler)
     ipc_logger.setLevel(logging.DEBUG)
