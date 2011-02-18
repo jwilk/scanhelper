@@ -61,7 +61,7 @@ del get_signal_names
 # Subprocess
 # ==========
 
-def shell_escape(s, safe=re.compile('^[a-zA-Z0-9_+/=.,:-]+$').match):
+def shell_escape(s, safe=re.compile('^[a-zA-Z0-9_+/=.,:%-]+$').match):
     if safe(s):
         return s
     return "'%s'" % s.replace("'", r"'\''")
