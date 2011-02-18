@@ -155,7 +155,7 @@ def scan_single_batch(options, device, start=0, count=infinity, increment=1):
         if ex.returncode == scanner.STATUS_NO_DOCS:
             pass
         else:
-            raise StopIteration
+            raise
     return result
 
 def scan(options):
@@ -166,9 +166,8 @@ def scan(options):
     increment = options.batch_increment
     while count > 0:
         wait_for_button(device, options.batch_button)
-        try:
-            pages = scan_single_batch(options, device, start, count, increment)
-        except StopIteration:
+        pages = scan_single_batch(options, device, start, count, increment)
+        if len(pages) == 0:
             break
         filenames = [gnu.sprintf(options.filename_template, n) for n in pages]
         map(os.stat, filenames)
