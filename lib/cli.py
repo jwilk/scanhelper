@@ -46,7 +46,7 @@ class ArgumentParser(argparse.ArgumentParser):
         self.add_argument('-L', '--list-devices', action='store_const', const='list_devices', dest='action', help='show available scanner devices')
         self.add_argument('--list-buttons', action='store_const', const='list_buttons', dest='action', help='show available buttons')
         self.add_argument('-b', '--batch-mode', metavar='TEMPLATE', dest='filename_template', help='output filename template')
-        self.add_argument('--batch-start', metavar='#', default=0, type=int, help='page number to start naming files with')
+        self.add_argument('--batch-start', metavar='#', default=1, type=int, help='page number to start naming files with')
         self.add_argument('--batch-count', metavar='#', default=infinity, type=int, help='how many pages to scan in batch mode')
         self.add_argument('--batch-increment', metavar='#', default=1, type=int, help='increase page number in filename by #')
         self.add_argument('--batch-double', action='store_const', dest='batch_increment', const=2, help='same as --batch-increment=2')
@@ -103,7 +103,7 @@ def get_scanimage_commandline(options, device, start=0, count=infinity, incremen
     if options.icc_profile is not None:
         result +=['--icc-profile', options.icc_profile]
     result += ['--batch=%s' % options.filename_template]
-    if start > 0:
+    if start >= 0:
         result += ['--batch-start={0}'.format(start)]
     if count < infinity:
         result += ['--batch-count={0}'.format(count)]
