@@ -21,8 +21,8 @@ import sys
 import time
 
 from . import ipc
-from . import utils
 from . import scanner
+from . import utils
 
 try:
     import argparse
