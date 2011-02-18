@@ -20,6 +20,7 @@ import re
 import sys
 import time
 
+from . import gnu
 from . import ipc
 from . import scanner
 from . import utils
@@ -169,6 +170,8 @@ def scan(options):
             pages = scan_single_batch(options, device, start, count, increment)
         except StopIteration:
             break
+        filenames = [gnu.sprintf(options.filename_template, n) for n in pages]
+        map(os.stat, filenames)
         count -= len(pages)
         start += len(pages) * increment
 
