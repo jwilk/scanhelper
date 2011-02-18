@@ -13,6 +13,8 @@
 
 __version__ = '0.0'
 
+import datetime
+import itertools
 import logging
 import os
 import pty
@@ -160,9 +162,28 @@ def scan_single_batch(options, device, start=0, count=infinity, increment=1):
             raise
     return result
 
+def create_temporary_directory():
+    alphabet = [chr(c) for c in xrange(ord('a'), ord('z') + 1)]
+    prefix = str(datetime.datetime.now()).replace(' ', 'T')[:19]
+    for i in 0, 1, 2, 3:
+        for suffix in itertools.product(*[alphabet] * i):
+            path = prefix + ''.join(suffix)
+            try:
+                logger.debug('Trying to create target directory: %r', path)
+                os.mkdir(path)
+            except (OSError, IOError):
+                continue
+            return path
+    raise
+
 def scan(options):
     device = get_device(options)
     assert isinstance(device, scanner.Device)
+    target_directory = options.target_directory
+    if target_directory is None:
+        target_directory = create_temporary_directory()
+        logger.info('Target directory: %s', target_directory)
+    os.chdir(target_directory)
     start = options.batch_start
     count = options.batch_count
     increment = options.batch_increment
