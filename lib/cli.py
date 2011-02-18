@@ -134,7 +134,7 @@ def scan_single_batch(options, device, start=0, count=infinity, increment=1):
     commandline = get_scanimage_commandline(options, device, start, count, increment)
     master, slave = pty.openpty()
     master = os.fdopen(master, 'r', 1)
-    subprocess = ipc.Subprocess(commandline, stderr=slave)
+    subprocess = ipc.Subprocess(commandline, stdout=slave, stderr=slave)
     os.close(slave)
     while 1:
         try:
