@@ -61,6 +61,9 @@ class ArgumentParser(argparse.ArgumentParser):
 
     def parse_args(self, args=None, namespace=None):
         result, extra_args = self.parse_known_args()
+        for opt in 'batch-prompt', 'dont-scan', 'test':
+            if getattr(result, opt.replace('-', '_')):
+                raise NotImplementedError('The --{0} option is not yet supported'.format(opt))
         result.extra_args = extra_args
         if result.filename_template is None:
             if result.format == 'pnm':
