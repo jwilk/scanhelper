@@ -40,6 +40,15 @@ except ImportError, ex:
     utils.enhance_import_error(ex, 'PyXDG', 'python-xdg', 'http://www.freedesktop.org/wiki/Software/pyxdg')
     raise
 
+try:
+    import ExactImage as exactimage
+except ImportError, ex:
+    utils.enhance_import_error(ex, 'ExactImage', 'python-exactimage', 'http://www.exactcode.de/site/open_source/exactimage/')
+    raise
+
+scanimage_file_formats = ('pnm', 'tiff')
+file_formats = scanimage_file_formats + ('png',)
+
 logger = None
 
 infinity = 1.0e9999
@@ -51,7 +60,7 @@ class ArgumentParser(argparse.ArgumentParser):
         argparse.ArgumentParser.__init__(self)
         self.set_defaults(action='scan')
         self.add_argument('-d', '--device-name', metavar='DEVICE', dest='device', help='use a given scanner device')
-        self.add_argument('--format', choices=('pnm','tiff'), default='pnm', help='file format of output file')
+        self.add_argument('--format', choices=file_formats, dest='output_format', default='png', help='file format of output file')
         self.add_argument('-t', '--target-directory', metavar='DIRECTORY', help='output directory')
         self.add_argument('-i', '--icc-profile', metavar='PROFILE', help='include this ICC profile into TIFF file')
         self.add_argument('-L', '--list-devices', action='store_const', const='list_devices', dest='action', help='show available scanner devices')
@@ -83,10 +92,9 @@ class ArgumentParser(argparse.ArgumentParser):
                 raise NotImplementedError('The --{0} option is not yet supported'.format(opt))
         result.extra_args = extra_args
         if result.filename_template is None:
-            if result.format == 'pnm':
+            if result.output_format == 'pnm':
                 result.filename_template = 'p%04d.pnm'
             else:
-                assert result.format == 'tiff'
                 result.filename_template = 'p%04d.tif'
         if result.device is None:
             result.device = os.getenv('SANE_DEFAULT_DEVICE') or None
@@ -117,7 +125,7 @@ def get_scanimage_commandline(options, device, start=0, count=infinity, incremen
     assert isinstance(device, scanner.Device)
     result = ['scanimage']
     result += ['--device-name', device.name]
-    result += ['--format', options.format]
+    result += ['--format={0}'.format('pnm' if options.output_format == 'pnm' else 'tiff')]
     if options.icc_profile is not None:
         result +=['--icc-profile', options.icc_profile]
     result += ['--batch=%s' % options.filename_template]
@@ -190,6 +198,17 @@ def create_temporary_directory():
             return path
     raise
 
+def convert(filename, output_format):
+    basename, _ = os.path.splitext(filename)
+    target_filename = '{0}.{1}'.format(basename, output_format)
+    image = exactimage.newImage()
+    exactimage.decodeImageFile(image, filename)
+    exactimage.encodeImageFile(image, target_filename)
+    logger.debug('Converting %s to %s', filename, target_filename)
+    if target_filename != filename:
+        logger.debug('Removing %s', filename)
+        os.unlink(filename)
+
 def scan(options):
     device = get_device(options)
     assert isinstance(device, scanner.Device)
@@ -207,7 +226,9 @@ def scan(options):
         if len(pages) == 0:
             break
         filenames = [gnu.sprintf(options.filename_template, n) for n in pages]
-        map(os.stat, filenames)
+        if options.output_format not in scanimage_file_formats:
+            for filename in filenames:
+                convert(filename, options.output_format)
         count -= len(pages)
         start += len(pages) * increment
 
