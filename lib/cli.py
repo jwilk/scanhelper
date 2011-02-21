@@ -128,7 +128,7 @@ def get_scanimage_commandline(options, device, start=0, count=infinity, incremen
     result += ['--format={0}'.format('pnm' if options.output_format == 'pnm' else 'tiff')]
     if options.icc_profile is not None:
         result +=['--icc-profile', options.icc_profile]
-    result += ['--batch=%s' % options.filename_template]
+    result += ['--batch={0}'.format(options.filename_template)]
     if start >= 0:
         result += ['--batch-start={0}'.format(start)]
     if count < infinity:
