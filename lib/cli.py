@@ -76,6 +76,8 @@ class ArgumentParser(argparse.ArgumentParser):
             else:
                 assert result.format == 'tiff'
                 result.filename_template = 'p%04d.tif'
+        if result.device is None:
+            result.device = os.getenv('SANE_DEFAULT_DEVICE') or None
         return result
 
 def list_devices(options):
