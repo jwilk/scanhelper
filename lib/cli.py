@@ -72,7 +72,7 @@ class ArgumentParser(argparse.ArgumentParser):
         self.add_argument('-V', '--version', action='version', version=version, help='show version information and exit')
 
     def parse_args(self, args, namespace=None):
-        for config in reversed(xdg.load_config_paths('scanhelper')):
+        for config in reversed(list(xdg.load_config_paths('scanhelper'))):
             with open(config, 'r') as config:
                 extra_args = config.read()
             extra_args = shlex.split(extra_args)
