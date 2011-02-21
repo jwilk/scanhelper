@@ -92,10 +92,7 @@ class ArgumentParser(argparse.ArgumentParser):
                 raise NotImplementedError('The --{0} option is not yet supported'.format(opt))
         result.extra_args = extra_args
         if result.filename_template is None:
-            if result.output_format == 'pnm':
-                result.filename_template = 'p%04d.pnm'
-            else:
-                result.filename_template = 'p%04d.tif'
+            result.filename_template = 'p%04d.{0}'.format(result.output_format[:3])
         if result.device is None:
             result.device = os.getenv('SANE_DEFAULT_DEVICE') or None
         return result
@@ -198,16 +195,11 @@ def create_temporary_directory():
             return path
     raise
 
-def convert(filename, output_format):
-    basename, _ = os.path.splitext(filename)
-    target_filename = '{0}.{1}'.format(basename, output_format)
+def convert(filename):
     image = exactimage.newImage()
+    logger.debug('Converting %s', filename)
     exactimage.decodeImageFile(image, filename)
-    exactimage.encodeImageFile(image, target_filename)
-    logger.debug('Converting %s to %s', filename, target_filename)
-    if target_filename != filename:
-        logger.debug('Removing %s', filename)
-        os.unlink(filename)
+    exactimage.encodeImageFile(image, filename)
 
 def scan(options):
     device = get_device(options)
@@ -228,7 +220,7 @@ def scan(options):
         filenames = [gnu.sprintf(options.filename_template, n) for n in pages]
         if options.output_format not in scanimage_file_formats:
             for filename in filenames:
-                convert(filename, options.output_format)
+                convert(filename)
         count -= len(pages)
         start += len(pages) * increment
 
