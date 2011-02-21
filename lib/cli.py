@@ -57,18 +57,17 @@ class ArgumentParser(argparse.ArgumentParser):
 
     def __init__(self):
         version = '%(prog)s ' + __version__
-        argparse.ArgumentParser.__init__(self)
         self.set_defaults(action='scan')
         self.add_argument('-d', '--device-name', metavar='DEVICE', dest='device', help='use a given scanner device')
-        self.add_argument('--format', choices=file_formats, dest='output_format', default='png', help='file format of output file')
-        self.add_argument('-t', '--target-directory', metavar='DIRECTORY', help='output directory')
+        self.add_argument('--format', choices=file_formats, dest='output_format', default='png', help='file format of output file (default: PNG)')
+        self.add_argument('-t', '--target-directory', metavar='DIRECTORY', help='output directory (default: an unique, time-based directory is created)')
         self.add_argument('-i', '--icc-profile', metavar='PROFILE', help='include this ICC profile into TIFF file')
         self.add_argument('-L', '--list-devices', action='store_const', const='list_devices', dest='action', help='show available scanner devices')
         self.add_argument('--list-buttons', action='store_const', const='list_buttons', dest='action', help='show available buttons')
-        self.add_argument('-b', '--batch-mode', metavar='TEMPLATE', dest='filename_template', help='output filename template')
-        self.add_argument('--batch-start', metavar='#', default=1, type=int, help='page number to start naming files with')
-        self.add_argument('--batch-count', metavar='#', default=infinity, type=int, help='how many pages to scan in batch mode')
-        self.add_argument('--batch-increment', metavar='#', default=1, type=int, help='increase page number in filename by #')
+        self.add_argument('-b', '--batch-mode', metavar='TEMPLATE', dest='filename_template', help='output filename template (default: p%%04.<ext>)')
+        self.add_argument('--batch-start', metavar='#', default=1, type=int, help='page number to start naming files with (default: 1)')
+        self.add_argument('--batch-count', metavar='#', default=infinity, type=int, help='how many pages to scan in batch mode (default: no limit)')
+        self.add_argument('--batch-increment', metavar='#', default=1, type=int, help='increase page number in filename by # (default: 1)')
         self.add_argument('--batch-double', action='store_const', dest='batch_increment', const=2, help='same as --batch-increment=2')
         self.add_argument('--batch-prompt', action='store_true', help='(not supported)')
         self.add_argument('--batch-button', metavar='BUTTON', help='button triggering next batch')
@@ -77,7 +76,7 @@ class ArgumentParser(argparse.ArgumentParser):
         self.add_argument('-n', '--dont-scan', action='store_true', help='(not supported)')
         self.add_argument('-T', '--test', action='store_true', help='(not supported)')
         self.add_argument('-v', '--verbose', action='store_true', help='more informational messages')
-        self.add_argument('-B', '--buffer-size', metavar='#', type=int, default=None, help='input buffer size (in kB, default 32)')
+        self.add_argument('-B', '--buffer-size', metavar='#', type=int, default=None, help='input buffer size (in kB; default: 32)')
         self.add_argument('-V', '--version', action='version', version=version, help='show version information and exit')
 
     def parse_args(self, args, namespace=None):
