@@ -19,6 +19,7 @@ import logging
 import os
 import pty
 import re
+import shlex
 import sys
 import time
 
@@ -31,6 +32,12 @@ try:
     import argparse
 except ImportError, ex:
     utils.enhance_import_error(ex, 'argparse', 'python-argparse', 'http://code.google.com/p/argparse/')
+    raise
+
+try:
+    import xdg.BaseDirectory as xdg
+except ImportError, ex:
+    utils.enhance_import_error(ex, 'PyXDG', 'python-xdg', 'http://www.freedesktop.org/wiki/Software/pyxdg')
     raise
 
 logger = None
@@ -64,7 +71,12 @@ class ArgumentParser(argparse.ArgumentParser):
         self.add_argument('-B', '--buffer-size', metavar='#', type=int, default=None, help='input buffer size (in kB, default 32)')
         self.add_argument('-V', '--version', action='version', version=version, help='show version information and exit')
 
-    def parse_args(self, args=None, namespace=None):
+    def parse_args(self, args, namespace=None):
+        for config in reversed(xdg.load_config_paths('scanhelper')):
+            with open(config, 'r') as config:
+                extra_args = config.read()
+            extra_args = shlex.split(extra_args)
+            args[1:1] = extra_args
         result, extra_args = self.parse_known_args()
         for opt in 'batch-prompt', 'dont-scan', 'test':
             if getattr(result, opt.replace('-', '_')):
