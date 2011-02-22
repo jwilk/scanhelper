@@ -57,6 +57,7 @@ class ArgumentParser(argparse.ArgumentParser):
 
     def __init__(self):
         version = '%(prog)s ' + __version__
+        argparse.ArgumentParser.__init__(self)
         self.set_defaults(action='scan')
         self.add_argument('-d', '--device-name', metavar='DEVICE', dest='device', help='use a given scanner device')
         self.add_argument('--format', choices=file_formats, dest='output_format', default='png', help='file format of output file (default: PNG)')
