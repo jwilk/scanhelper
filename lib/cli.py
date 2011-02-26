@@ -246,6 +246,8 @@ def main(args):
     parser = ArgumentParser()
     options = parser.parse_args(args)
     action = globals()[options.action]
+    if options.verbose:
+        logger.setLevel(logging.DEBUG)
     return action(options)
 
 # vim:ts=4 sw=4 et
