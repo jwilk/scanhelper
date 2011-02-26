@@ -181,7 +181,7 @@ def scan_single_batch(options, device, start=0, count=infinity, increment=1):
         else:
             raise
 
-def create_temporary_directory(prefix=''):
+def create_unique_directory(prefix=''):
     alphabet = [chr(c) for c in xrange(ord('a'), ord('z') + 1)]
     prefix += str(datetime.datetime.now()).replace(' ', 'T')[:19]
     for i in 0, 1, 2, 3:
@@ -209,7 +209,7 @@ def scan(options):
         prefix = options.target_directory_prefix or ''
         if len(prefix) > 0 and prefix[-1].isalnum():
             prefix += '-'
-        target_directory = create_temporary_directory(prefix)
+        target_directory = create_unique_directory(prefix)
         logger.info('Target directory: %s', target_directory)
     os.chdir(target_directory)
     start = options.batch_start
