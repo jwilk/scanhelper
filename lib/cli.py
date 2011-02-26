@@ -168,10 +168,10 @@ def scan_single_batch(options, device, start=0, count=infinity, increment=1):
             break
         sys.stdout.flush()
         match = re.match('Scanned page ([0-9]+)', line)
-        if match:
-            result += [int(match.group(1), 10)]
         sys.stdout.write('| ' + line)
         sys.stdout.flush()
+        if match:
+            yield int(match.group(1), 10)
     try:
         subprocess.wait()
     except ipc.CalledProcessError, ex:
@@ -179,7 +179,6 @@ def scan_single_batch(options, device, start=0, count=infinity, increment=1):
             pass
         else:
             raise
-    return result
 
 def create_temporary_directory():
     alphabet = [chr(c) for c in xrange(ord('a'), ord('z') + 1)]
@@ -214,15 +213,16 @@ def scan(options):
     increment = options.batch_increment
     while count > 0:
         wait_for_button(device, options.batch_button)
-        pages = scan_single_batch(options, device, start, count, increment)
-        if len(pages) == 0:
-            break
-        filenames = [gnu.sprintf(options.filename_template, n) for n in pages]
-        if options.output_format not in scanimage_file_formats:
-            for filename in filenames:
+        n = 0
+        for page in scan_single_batch(options, device, start, count, increment):
+            n += 1
+            filename= gnu.sprintf(options.filename_template, n)
+            if options.output_format not in scanimage_file_formats:
                 convert(filename)
-        count -= len(pages)
-        start += len(pages) * increment
+        if n == 0:
+            break
+        count -= n
+        start += n * increment
 
 def setup_logging():
     # Main logger:
