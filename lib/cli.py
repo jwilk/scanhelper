@@ -62,6 +62,7 @@ class ArgumentParser(argparse.ArgumentParser):
         self.add_argument('-d', '--device-name', metavar='DEVICE', dest='device', help='use a given scanner device')
         self.add_argument('--format', choices=file_formats, dest='output_format', default='png', help='file format of output file (default: PNG)')
         self.add_argument('-t', '--target-directory', metavar='DIRECTORY', help='output directory (default: an unique, time-based directory is created)')
+        self.add_argument('--target-directory-prefix', metavar='PREFIX', help='prefix for directory name if --target-directory is not used')
         self.add_argument('-i', '--icc-profile', metavar='PROFILE', help='include this ICC profile into TIFF file')
         self.add_argument('-L', '--list-devices', action='store_const', const='list_devices', dest='action', help='show available scanner devices')
         self.add_argument('--list-buttons', action='store_const', const='list_buttons', dest='action', help='show available buttons')
@@ -180,9 +181,9 @@ def scan_single_batch(options, device, start=0, count=infinity, increment=1):
         else:
             raise
 
-def create_temporary_directory():
+def create_temporary_directory(prefix=''):
     alphabet = [chr(c) for c in xrange(ord('a'), ord('z') + 1)]
-    prefix = str(datetime.datetime.now()).replace(' ', 'T')[:19]
+    prefix += str(datetime.datetime.now()).replace(' ', 'T')[:19]
     for i in 0, 1, 2, 3:
         for suffix in itertools.product(*[alphabet] * i):
             path = prefix + ''.join(suffix)
@@ -205,7 +206,10 @@ def scan(options):
     assert isinstance(device, scanner.Device)
     target_directory = options.target_directory
     if target_directory is None:
-        target_directory = create_temporary_directory()
+        prefix = options.target_directory_prefix or ''
+        if len(prefix) > 0 and prefix[-1].isalnum():
+            prefix += '-'
+        target_directory = create_temporary_directory(prefix)
         logger.info('Target directory: %s', target_directory)
     os.chdir(target_directory)
     start = options.batch_start
