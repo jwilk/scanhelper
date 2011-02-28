@@ -53,13 +53,38 @@ logger = None
 
 infinity = 1.0e9999
 
+class HelpAction(argparse.Action):
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        parser.epilog = 'device-specific options:\n'
+        if namespace.device is None:
+            parser.epilog += '''  use 'scanhelper -d DEVICE --help' to get list of all optons for DEVICE'''
+        else:
+            commandline = ['scanimage', '-d', namespace.device, '--help']
+            subprocess = ipc.Subprocess(commandline, stdout=ipc.PIPE)
+            for line in subprocess.stdout:
+                if not line.startswith('Options specific to device'):
+                    continue
+                else:
+                    break
+            for line in subprocess.stdout:
+                if line.strip():
+                    parser.epilog += line
+                else:
+                    break
+            subprocess.stdout.close()
+            subprocess.wait()
+        parser.print_help()
+        parser.exit()
+
 class ArgumentParser(argparse.ArgumentParser):
 
     def __init__(self):
         version = '%(prog)s ' + __version__
-        argparse.ArgumentParser.__init__(self)
+        argparse.ArgumentParser.__init__(self, add_help=False, formatter_class=argparse.RawDescriptionHelpFormatter)
+        self.register('action', 'help', HelpAction)
         self.set_defaults(action='scan')
-        self.add_argument('-d', '--device-name', metavar='DEVICE', dest='device', help='use a given scanner device')
+        self.add_argument('-d', '--device-name', metavar='DEVICE', dest='device', default=os.getenv('SANE_DEFAULT_DEVICE') or None, help='use a given scanner device')
         self.add_argument('--format', choices=file_formats, dest='output_format', default='png', help='file format of output file (default: PNG)')
         self.add_argument('-t', '--target-directory', metavar='DIRECTORY', help='output directory (default: an unique, time-based directory is created)')
         self.add_argument('--target-directory-prefix', metavar='PREFIX', help='prefix for directory name if --target-directory is not used')
@@ -79,6 +104,7 @@ class ArgumentParser(argparse.ArgumentParser):
         self.add_argument('-T', '--test', action='store_true', help='(not supported)')
         self.add_argument('-v', '--verbose', action='store_true', help='more informational messages')
         self.add_argument('-B', '--buffer-size', metavar='#', type=int, default=None, help='input buffer size (in kB; default: 32)')
+        self.add_argument('-h', '--help', action=HelpAction, nargs=0, help='show this help message and exit')
         self.add_argument('-V', '--version', action='version', version=version, help='show version information and exit')
 
     def parse_args(self, args, namespace=None):
@@ -94,8 +120,6 @@ class ArgumentParser(argparse.ArgumentParser):
         result.extra_args = extra_args
         if result.filename_template is None:
             result.filename_template = 'p%04d.{0}'.format(result.output_format[:3])
-        if result.device is None:
-            result.device = os.getenv('SANE_DEFAULT_DEVICE') or None
         return result
 
 def list_devices(options):
