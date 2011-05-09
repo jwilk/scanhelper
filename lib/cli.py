@@ -200,7 +200,7 @@ def scan_single_batch(options, device, start=0, count=infinity, increment=1):
     try:
         subprocess.wait()
     except ipc.CalledProcessError, ex:
-        if ex.returncode == scanner.STATUS_NO_DOCS:
+        if ex.returncode in (scanner.STATUS_NO_DOCS, scanner.STATUS_JAMMED):
             pass
         else:
             raise
