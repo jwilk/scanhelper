@@ -247,8 +247,6 @@ def scan(options):
             filename= gnu.sprintf(options.filename_template, n)
             if options.output_format not in scanimage_file_formats:
                 convert(filename)
-        if n == 0:
-            break
         count -= n
         start += n * increment
 
