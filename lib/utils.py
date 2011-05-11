@@ -12,6 +12,7 @@
 # General Public License for more details.
 
 import os
+import re
 
 debian = os.path.isdir('/var/lib/dpkg/info/')
 
@@ -23,5 +24,13 @@ def enhance_import_error(exception, package, debian_package, homepage):
     else:
         format += ' <%(homepage)s>'
     exception.args = [format % locals()]
+
+def shell_escape(s, safe=re.compile('^[a-zA-Z0-9_+/=.,:%-]+$').match):
+    if safe(s):
+        return s
+    return "'%s'" % s.replace("'", r"'\''")
+
+def shell_escape_list(lst):
+    return ' '.join(map(shell_escape, lst))
 
 # vim:ts=4 sw=4 et

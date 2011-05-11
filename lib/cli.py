@@ -13,6 +13,7 @@
 
 __version__ = '0.0'
 
+import collections
 import datetime
 import itertools
 import logging
@@ -78,6 +79,44 @@ class HelpAction(argparse.Action):
         parser.print_help()
         parser.exit()
 
+class Config(object):
+
+    @classmethod
+    def get_paths(cls, writable=True):
+        xdg.save_config_path('scanhelper')
+        for x in xdg.load_config_paths('scanhelper'):
+            yield os.path.join(x, 'config')
+
+    def __init__(self):
+        self._data = data = collections.defaultdict(list)
+        data[None] = []
+        for config in self.get_paths():
+            if not os.path.exists(config):
+                continue
+            with open(config, 'r') as config:
+                for line in config:
+                    if not line:
+                        continue
+                    if line[0] == '-' or line[0].isspace() or ':' not in line:
+                        profile = None
+                    else:
+                        profile, _, line = line.partition(':')
+                        profile = profile.strip()
+                    self._data[profile] += shlex.split(line)
+
+    def get_profiles(self):
+        result = set(self._data.keys())
+        result.remove(None)
+        return result
+
+    def get(self, profile=None):
+        if profile is None:
+            return self._data[None]
+        else:
+            if profile not in self._data:
+                raise KeyError(profile)
+            return self._data[profile]
+
 class ArgumentParser(argparse.ArgumentParser):
 
     def __init__(self):
@@ -105,18 +144,24 @@ class ArgumentParser(argparse.ArgumentParser):
         self.add_argument('-T', '--test', action='store_true', help='(not supported)')
         self.add_argument('-v', '--verbose', action='store_true', help='more informational messages')
         self.add_argument('-B', '--buffer-size', metavar='#', type=int, default=None, help='input buffer size (in kB; default: 32)')
+        self.add_argument('--profile')
         group = self.add_argument_group('auxiliary actions')
         group.add_argument('-h', '--help', action=HelpAction, nargs=0, help='show this help message and exit')
         group.add_argument('-V', '--version', action='version', version=version, help='show version information and exit')
         group.add_argument('--clean-temporary-files', action='store_const', const='clean_temporary_files', dest='action', help='clean temporary files that might have been left by aborted runs of scanhelper')
+        group.add_argument('--show-config', action='store_const', const='show_config', dest='action', help='show status of configuration files')
 
     def parse_args(self, args, namespace=None):
-        for config in reversed(list(xdg.load_config_paths('scanhelper'))):
-            with open(config, 'r') as config:
-                extra_args = config.read()
-            extra_args = shlex.split(extra_args)
-            args[1:1] = extra_args
-        result, extra_args = self.parse_known_args()
+        config = Config()
+        my_args = args[1:]
+        my_args[:0] = config.get()
+        result, extra_args = self.parse_known_args(my_args)
+        if result.profile is not None:
+            my_args = args[1:]
+            my_args[:0] = config.get(result.profile)
+            my_args[:0] = config.get()
+            result, extra_args = self.parse_known_args(my_args)
+        result.config = config
         for opt in 'batch-prompt', 'dont-scan', 'test':
             if getattr(result, opt.replace('-', '_')):
                 raise NotImplementedError('The --{0} option is not yet supported'.format(opt))
@@ -272,6 +317,32 @@ def clean_temporary_files(options):
         else '1 file has been convert' if i == 1
         else '{0} files have been converted'.format(i)
     )
+
+def show_config(options):
+    tilde = os.path.expanduser('~')
+    print 'Configuration files:'
+    for filename in options.config.get_paths(writable=True):
+        if filename.startswith(tilde):
+            filename = '~' + filename[len(tilde):]
+        print '    {0}'.format(filename)
+    extra_options = options.config.get(None)
+    print
+    if extra_options:
+        print 'Default options:'
+        print '    {0}'.format(utils.shell_escape_list(extra_options))
+    else:
+        print 'No default options'
+    i = 0
+    for profile in options.config.get_profiles():
+        print
+        print 'Options for profile {0!r}:'.format(profile)
+        extra_options = options.config.get(profile)
+        print '    {0}'.format(utils.shell_escape_list(extra_options))
+        i += 1
+    if i == 0:
+        print
+        print 'No profiles'
+    print
 
 def setup_logging():
     # Main logger:
