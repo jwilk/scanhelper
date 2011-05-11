@@ -105,8 +105,10 @@ class ArgumentParser(argparse.ArgumentParser):
         self.add_argument('-T', '--test', action='store_true', help='(not supported)')
         self.add_argument('-v', '--verbose', action='store_true', help='more informational messages')
         self.add_argument('-B', '--buffer-size', metavar='#', type=int, default=None, help='input buffer size (in kB; default: 32)')
-        self.add_argument('-h', '--help', action=HelpAction, nargs=0, help='show this help message and exit')
-        self.add_argument('-V', '--version', action='version', version=version, help='show version information and exit')
+        group = self.add_argument_group('auxiliary actions')
+        group.add_argument('-h', '--help', action=HelpAction, nargs=0, help='show this help message and exit')
+        group.add_argument('-V', '--version', action='version', version=version, help='show version information and exit')
+        group.add_argument('--clean-temporary-files', action='store_const', const='clean_temporary_files', dest='action', help='clean temporary files that might have been left by aborted runs of scanhelper')
 
     def parse_args(self, args, namespace=None):
         for config in reversed(list(xdg.load_config_paths('scanhelper'))):
@@ -254,6 +256,15 @@ def scan(options):
                 convert(filename)
         count -= n
         start += n * increment
+
+def clean_temporary_files(options):
+    if options.target_directory is None:
+        ArgumentParser().error('--target-directory is obligatory with --clean-temporary-files')
+    for root, dirs, files in os.walk(options.target_directory):
+        for filename in files:
+            filename = os.path.join(root, filename)
+            if filename.endswith(temporary_suffix):
+                convert(filename[:-len(temporary_suffix)])
 
 def setup_logging():
     # Main logger:
