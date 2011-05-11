@@ -46,6 +46,7 @@ except ImportError, ex:
     utils.enhance_import_error(ex, 'ExactImage', 'python-exactimage', 'http://www.exactcode.de/site/open_source/exactimage/')
     raise
 
+temporary_suffix = '.tmp.scanhelper~'
 scanimage_file_formats = ('pnm', 'tiff')
 file_formats = scanimage_file_formats + ('png',)
 
@@ -150,7 +151,10 @@ def get_scanimage_commandline(options, device, start=0, count=infinity, incremen
     result += ['--format={0}'.format('pnm' if options.output_format == 'pnm' else 'tiff')]
     if options.icc_profile is not None:
         result +=['--icc-profile', options.icc_profile]
-    result += ['--batch={0}'.format(options.filename_template)]
+    result += ['--batch={template}{suffix}'.format(
+        template=options.filename_template,
+        suffix=('' if options.output_format in scanimage_file_formats else temporary_suffix)
+    )]
     if start >= 0:
         result += ['--batch-start={0}'.format(start)]
     if count < infinity:
@@ -222,8 +226,9 @@ def create_unique_directory(prefix=''):
 def convert(filename):
     image = exactimage.newImage()
     logger.debug('Converting %s', filename)
-    exactimage.decodeImageFile(image, filename)
+    exactimage.decodeImageFile(image, filename + temporary_suffix)
     exactimage.encodeImageFile(image, filename)
+    os.remove(filename + temporary_suffix)
 
 def scan(options):
     device = get_device(options)
