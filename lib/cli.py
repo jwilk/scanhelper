@@ -92,7 +92,7 @@ class ArgumentParser(argparse.ArgumentParser):
         self.add_argument('-i', '--icc-profile', metavar='PROFILE', help='include this ICC profile into TIFF file')
         self.add_argument('-L', '--list-devices', action='store_const', const='list_devices', dest='action', help='show available scanner devices')
         self.add_argument('--list-buttons', action='store_const', const='list_buttons', dest='action', help='show available buttons')
-        self.add_argument('-b', '--batch-mode', metavar='TEMPLATE', dest='filename_template', help='output filename template (default: p%%04.<ext>)')
+        self.add_argument('-b', '--batch-mode', metavar='TEMPLATE', dest='filename_template', help='output filename template (default: p%%04d.<ext>)')
         self.add_argument('--batch-start', metavar='#', default=1, type=int, help='page number to start naming files with (default: 1)')
         self.add_argument('--batch-count', metavar='#', default=infinity, type=int, help='how many pages to scan in batch mode (default: no limit)')
         self.add_argument('--batch-increment', metavar='#', default=1, type=int, help='increase page number in filename by # (default: 1)')
