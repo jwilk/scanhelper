@@ -295,14 +295,12 @@ def scan(options):
     increment = options.batch_increment
     while count > 0:
         wait_for_button(device, options.batch_button)
-        n = 0
         for page in scan_single_batch(options, device, start, count, increment):
-            n += 1
-            filename= gnu.sprintf(options.filename_template, n)
+            filename= gnu.sprintf(options.filename_template, start)
             if options.output_format not in scanimage_file_formats:
                 convert(filename)
-        count -= n
-        start += n * increment
+            start += increment
+            count -= 1
 
 def clean_temporary_files(options):
     if options.target_directory is None:
