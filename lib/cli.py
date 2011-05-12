@@ -277,6 +277,7 @@ def convert(filename):
     exactimage.encodeImageFile(image, filename)
     os.stat(filename)
     os.remove(filename + temporary_suffix)
+    exactimage.deleteImage(image)
 
 def scan(options):
     device = get_device(options)
