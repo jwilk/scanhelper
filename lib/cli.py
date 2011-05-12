@@ -275,6 +275,7 @@ def convert(filename):
     logger.debug('Converting %s', filename)
     exactimage.decodeImageFile(image, filename + temporary_suffix)
     exactimage.encodeImageFile(image, filename)
+    os.stat(filename)
     os.remove(filename + temporary_suffix)
 
 def scan(options):
