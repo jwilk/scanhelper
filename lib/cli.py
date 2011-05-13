@@ -13,15 +13,18 @@
 
 __version__ = '0.0'
 
+import Queue as queue
 import collections
 import datetime
 import itertools
 import logging
+import multiprocessing
 import os
 import pty
 import re
 import shlex
 import sys
+import threading
 import time
 
 from . import gnu
@@ -270,14 +273,48 @@ def create_unique_directory(prefix=''):
             return path
     raise
 
-def convert(filename):
-    image = exactimage.newImage()
-    logger.debug('Converting %s', filename)
-    exactimage.decodeImageFile(image, filename + temporary_suffix)
-    exactimage.encodeImageFile(image, filename)
-    os.stat(filename)
-    os.remove(filename + temporary_suffix)
-    exactimage.deleteImage(image)
+class ConvertManager(object):
+
+    def __init__(self, nthreads=None):
+        if nthreads == None:
+            nthreads = utils.get_cpu_count()
+        if nthreads < 1:
+            nthreads = 1
+        self.queue = queue.Queue(0)
+        self.threads = [threading.Thread(target=self._work) for x in xrange(nthreads)]
+        for thread in self.threads:
+            thread.start()
+
+    def add(self, filename):
+        self.queue.put(filename)
+
+    def close(self):
+        for thread in self.threads:
+            self.queue.put(None)
+        qsize = self.queue.qsize()
+        if qsize > 0:
+            logger.info('Waiting for converter threads to finish ({0})...'.format(
+                '{0} files left'.format(qsize) if qsize > 0
+                else '1 file left'
+            ))
+        for thread in self.threads:
+            thread.join()
+
+    def _convert(self, filename):
+        image = exactimage.newImage()
+        logger.debug('Converting %s', filename)
+        exactimage.decodeImageFile(image, filename + temporary_suffix)
+        exactimage.encodeImageFile(image, filename)
+        os.stat(filename)
+        os.remove(filename + temporary_suffix)
+        exactimage.deleteImage(image)
+
+    def _work(self):
+        while True:
+            filename = self.queue.get()
+            if filename is None:
+                return
+            self._convert(filename)
 
 def scan(options):
     device = get_device(options)
@@ -293,14 +330,21 @@ def scan(options):
     start = options.batch_start
     count = options.batch_count
     increment = options.batch_increment
-    while count > 0:
-        wait_for_button(device, options.batch_button)
-        for page in scan_single_batch(options, device, start, count, increment):
-            filename= gnu.sprintf(options.filename_template, start)
-            if options.output_format not in scanimage_file_formats:
-                convert(filename)
-            start += increment
-            count -= 1
+    convert_manager = ConvertManager()
+    try:
+        try:
+            while count > 0:
+                wait_for_button(device, options.batch_button)
+                for page in scan_single_batch(options, device, start, count, increment):
+                    filename= gnu.sprintf(options.filename_template, start)
+                    if options.output_format not in scanimage_file_formats:
+                        convert_manager.add(filename)
+                    start += increment
+                    count -= 1
+        except KeyboardInterrupt:
+            logger.info('Interrupted by user')
+    finally:
+        convert_manager.close()
 
 def clean_temporary_files(options):
     if options.target_directory is None:
