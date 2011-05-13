@@ -33,4 +33,15 @@ def shell_escape(s, safe=re.compile('^[a-zA-Z0-9_+/=.,:%-]+$').match):
 def shell_escape_list(lst):
     return ' '.join(map(shell_escape, lst))
 
+def get_cpu_count():
+    try:
+        import multiprocessing
+        return multiprocessing.cpu_count()
+    except (ImportError, NotImplementedError):
+        pass
+    try:
+        return os.sysconf('SC_NPROCESSORS_ONLN')
+    except (ValueError, OSError, AttributeError):
+        return 1
+
 # vim:ts=4 sw=4 et
