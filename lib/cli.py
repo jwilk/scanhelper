@@ -303,7 +303,7 @@ class ConvertManager(object):
     def _convert(self, filename):
         image = exactimage.newImage()
         logger.debug('Converting %s', filename)
-        exactimage.decodeImageFile(image, filename + temporary_suffix)
+        exactimage.decodeImageFile(image, 'TIFF:{0}{1}'.format(filename, temporary_suffix))
         exactimage.encodeImageFile(image, filename)
         os.stat(filename)
         os.remove(filename + temporary_suffix)
