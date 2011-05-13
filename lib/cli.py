@@ -294,7 +294,7 @@ class ConvertManager(object):
         qsize = self.queue.qsize()
         if qsize > 0:
             logger.info('Waiting for converter threads to finish ({0})...'.format(
-                '{0} files left'.format(qsize) if qsize > 0
+                '~{0} files left'.format(qsize) if qsize > 0
                 else '1 file left'
             ))
         for thread in self.threads:
