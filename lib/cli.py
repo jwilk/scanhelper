@@ -348,12 +348,14 @@ def clean_temporary_files(options):
     if options.target_directory is None:
         ArgumentParser().error('--target-directory is obligatory with --clean-temporary-files')
     i = 0
+    convert_manager = ConvertManager()
     for root, dirs, files in os.walk(options.target_directory):
         for filename in files:
             filename = os.path.join(root, filename)
             if filename.endswith(temporary_suffix):
-                convert(filename[:-len(temporary_suffix)])
+                convert_manager.add(filename[:-len(temporary_suffix)])
                 i += 1
+    convert_manager.close()
     logger.info(
         'No files have been converted' if i == 0
         else '1 file has been convert' if i == 1
