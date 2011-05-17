@@ -45,9 +45,9 @@ except ImportError, ex:
     raise
 
 try:
-    import ExactImage as exactimage
+    import Image as pil
 except ImportError, ex:
-    utils.enhance_import_error(ex, 'ExactImage', 'python-exactimage', 'http://www.exactcode.de/site/open_source/exactimage/')
+    utils.enhance_import_error(ex, 'Python Imaging Library', 'python-imaging', 'http://www.pythonware.com/products/pil/')
     raise
 
 temporary_suffix = '.tmp.scanhelper~'
@@ -301,13 +301,11 @@ class ConvertManager(object):
             thread.join()
 
     def _convert(self, filename):
-        image = exactimage.newImage()
         logger.debug('Converting %s', filename)
-        exactimage.decodeImageFile(image, 'TIFF:{0}{1}'.format(filename, temporary_suffix))
-        exactimage.encodeImageFile(image, filename)
+        image = pil.open(filename + temporary_suffix)
+        image.save(filename)
         os.stat(filename)
         os.remove(filename + temporary_suffix)
-        exactimage.deleteImage(image)
 
     def _work(self):
         while True:
