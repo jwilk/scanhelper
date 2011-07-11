@@ -18,7 +18,6 @@ import collections
 import datetime
 import itertools
 import logging
-import multiprocessing
 import os
 import pty
 import re
