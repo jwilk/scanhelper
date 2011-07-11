@@ -1,0 +1,28 @@
+Dependencies
+============
+
+* Python_ ≥ 2.6
+
+* argparse_ —
+  Python command line parser
+
+* PyXDG_ —
+  Python library to access freedesktop.org standards
+
+* Python Imaging Library (PIL_)
+
+* Scanner Access Made Easy (SANE_) —
+  API and tools to access to scanner hardware
+
+.. _Python:
+   http://python.org/
+.. _argparse:
+   http://code.google.com/p/argparse/
+.. _pyxdg:
+   http://www.freedesktop.org/wiki/Software/pyxdg
+.. _PIL:
+   http://www.pythonware.com/products/pil/
+.. _SANE:
+   http://www.sane-project.org/
+
+.. vim:ft=rst ts=3 sw=3 et tw=72
