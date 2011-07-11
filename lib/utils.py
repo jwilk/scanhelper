@@ -14,7 +14,7 @@
 import os
 import re
 
-debian = os.path.isdir('/var/lib/dpkg/info/')
+debian = os.path.exists('/etc/debian_version')
 
 def enhance_import_error(exception, package, debian_package, homepage):
     message = str(exception)
