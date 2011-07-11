@@ -17,6 +17,7 @@ try:
     import _sane as sane
 except ImportError, ex:
     utils.enhance_import_error(ex, 'Python Imaging Library', 'python-imaging-sane', 'http://www.pythonware.com/products/pil/')
+    raise
 
 _initalized = False
 
