@@ -302,7 +302,12 @@ class ConvertManager(object):
     def _convert(self, filename):
         logger.debug('Converting %s', filename)
         image = pil.open(filename + temporary_suffix)
-        image.save(filename)
+        options = {}
+        try:
+            options['dpi'] = image.info['dpi']
+        except LookupError:
+            pass
+        image.save(filename, **options)
         os.stat(filename)
         os.remove(filename + temporary_suffix)
 
