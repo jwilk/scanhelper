@@ -177,16 +177,20 @@ def list_devices(options):
         print '%-24s %r' % (d[0], d[1:])
 
 def get_device(options):
+    scanners = scanner.get_devices()
+    if len(scanners) == 0:
+        raise IndexError('No scanner devices')
     if options.device is None:
-        info = scanner.get_devices()
-        if len(info) == 0:
-            raise IndexError('No scanner devices')
-        elif len(info) > 1:
+        if len(scanners) > 1:
             raise IndexError('Please select a scanner device')
-        name = info[0][0]
+        name, vendor, model, type_ = scanners[0]
     else:
-        name = options.device
-    return scanner.Device(name)
+        for name, vendor, model, type_ in scanners:
+            if name == options.device:
+                break
+        else:
+            raise IndexError('No such device: {0}'.format(options.device))
+    return scanner.Device(name, vendor, model, type_)
 
 def list_buttons(options):
     device = get_device(options)

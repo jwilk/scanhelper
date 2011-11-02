@@ -44,8 +44,11 @@ class OptionDescriptor(object):
 
 class Device(object):
 
-    def __init__(self, name):
+    def __init__(self, name, vendor, model, type_):
         self.name = name
+        self.vendor = vendor
+        self.model = model
+        self.type_ = type_
         self._device = None
         self.open()
         assert self._device is not None
