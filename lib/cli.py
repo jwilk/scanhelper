@@ -342,7 +342,7 @@ def scan(options):
             while count > 0:
                 wait_for_button(device, options.batch_button)
                 for page in scan_single_batch(options, device, start, count, increment):
-                    filename= gnu.sprintf(options.filename_template, start)
+                    filename = gnu.sprintf(options.filename_template, start)
                     if options.output_format not in scanimage_file_formats:
                         convert_manager.add(filename)
                     start += increment
