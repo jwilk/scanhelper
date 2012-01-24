@@ -11,8 +11,6 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 # General Public License for more details.
 
-__version__ = '0.2'
-
 import Queue as queue
 import collections
 import datetime
@@ -26,6 +24,7 @@ import sys
 import threading
 import time
 
+from . import __version__
 from . import gnu
 from . import ipc
 from . import scanner
