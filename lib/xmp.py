@@ -30,7 +30,6 @@ from . import __version__
 
 template = jinja2.Template('''\
 <?xml version="1.0"?>
-<x:xmpmeta xmlns:x="adobe:ns:meta/">
 <rdf:RDF
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:xmp="http://ns.adobe.com/xap/1.0/"
@@ -53,7 +52,6 @@ template = jinja2.Template('''\
 {% endif %}\
     </rdf:Description>
 </rdf:RDF>
-</x:xmpmeta>
 ''')
 
 def rfc3339(timestamp):
