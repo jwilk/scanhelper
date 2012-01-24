@@ -14,6 +14,9 @@ Dependencies
 * Scanner Access Made Easy (SANE_) —
   API and tools to access to scanner hardware
 
+* Jinja2_ -
+  Python templating library 
+
 .. _Python:
    http://python.org/
 .. _argparse:
@@ -24,5 +27,7 @@ Dependencies
    http://www.pythonware.com/products/pil/
 .. _SANE:
    http://www.sane-project.org/
+.. _Jinja2:
+    http://jinja.pocoo.org/docs/
 
 .. vim:ft=rst ts=3 sw=3 et tw=72

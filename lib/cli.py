@@ -29,6 +29,7 @@ from . import gnu
 from . import ipc
 from . import scanner
 from . import utils
+from . import xmp
 
 try:
     import argparse
@@ -51,6 +52,11 @@ except ImportError, ex:
 temporary_suffix = '.tmp.scanhelper~'
 scanimage_file_formats = ('pnm', 'tiff')
 file_formats = scanimage_file_formats + ('png',)
+media_types = dict(
+    pnm='image/x-portable-anymap',
+    tiff='image/tiff',
+    png='image/png',
+)
 
 logger = None
 
@@ -146,6 +152,8 @@ class ArgumentParser(argparse.ArgumentParser):
         self.add_argument('-v', '--verbose', action='store_true', help='more informational messages')
         self.add_argument('-B', '--buffer-size', metavar='#', type=int, default=None, help='input buffer size (in kB; default: 32)')
         self.add_argument('--profile')
+        group = self.add_argument_group('XMP support')
+        group.add_argument('--xmp', action='store_true', help='create sidecar XMP metdata')
         group = self.add_argument_group('auxiliary actions')
         group.add_argument('-h', '--help', action=HelpAction, nargs=0, help='show this help message and exit')
         group.add_argument('-V', '--version', action='version', version=version, help='show version information and exit')
@@ -341,9 +349,21 @@ def scan(options):
             while count > 0:
                 wait_for_button(device, options.batch_button)
                 for page in scan_single_batch(options, device, start, count, increment):
-                    filename = gnu.sprintf(options.filename_template, start)
+                    image_filename = gnu.sprintf(options.filename_template, start)
+                    if options.xmp:
+                        real_image_filename = image_filename
+                        if options.output_format not in scanimage_file_formats:
+                            real_image_filename += temporary_suffix
+                        xmp_filename = image_filename + '.xmp'
+                        with open(xmp_filename, 'w') as xmp_file:
+                            xmp.write(
+                                xmp_file=xmp_file,
+                                image_filename=real_image_filename,
+                                device=device,
+                                mediatype=media_types[options.output_format],
+                            )
                     if options.output_format not in scanimage_file_formats:
-                        convert_manager.add(filename)
+                        convert_manager.add(image_filename)
                     start += increment
                     count -= 1
         except KeyboardInterrupt:
