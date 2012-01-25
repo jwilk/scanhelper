@@ -155,6 +155,7 @@ class ArgumentParser(argparse.ArgumentParser):
         group = self.add_argument_group('XMP support')
         group.add_argument('--xmp', action='store_true', help='create sidecar XMP metadata')
         group.add_argument('--reconstruct-xmp', nargs='+', metavar='IMAGE', help='reconstruct sidecar XMP metadata from existing files (only for advanced users)')
+        group.add_argument('--override-xmp', nargs='+', action='append', default=[], metavar='KEY=VALUE', help='override an XMP metadata item (only for advanced users)')
         group = self.add_argument_group('auxiliary actions')
         group.add_argument('-h', '--help', action=HelpAction, nargs=0, help='show this help message and exit')
         group.add_argument('-V', '--version', action='version', version=version, help='show version information and exit')
@@ -180,6 +181,11 @@ class ArgumentParser(argparse.ArgumentParser):
         result.extra_args = extra_args
         if result.filename_template is None:
             result.filename_template = 'p%04d.{0}'.format(result.output_format[:3])
+        result.override_xmp = dict(
+            item.split('=', 1)
+            for items in result.override_xmp
+            for item in items
+        )
         return result
 
 def list_devices(options):
@@ -358,14 +364,16 @@ def scan(options):
                         if options.output_format not in scanimage_file_formats:
                             real_image_filename += temporary_suffix
                         xmp_filename = image_filename + '.xmp'
+                        override = dict(
+                            media_type=media_types[options.output_format],
+                        )
+                        override.update(options.override_xmp)
                         with open(xmp_filename, 'w') as xmp_file:
                             xmp.write(
                                 xmp_file=xmp_file,
                                 image_filename=real_image_filename,
                                 device=device,
-                                override=dict(
-                                    media_type=media_types[options.output_format],
-                                )
+                                override=override
                             )
                     if options.output_format not in scanimage_file_formats:
                         convert_manager.add(image_filename)
@@ -386,6 +394,7 @@ def reconstruct_xmp(options):
                 xmp_file=xmp_file,
                 image_filename=image_filename,
                 device=device,
+                override=options.override_xmp
             )
 
 def clean_temporary_files(options):
