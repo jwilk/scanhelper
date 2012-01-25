@@ -153,7 +153,7 @@ class ArgumentParser(argparse.ArgumentParser):
         self.add_argument('-B', '--buffer-size', metavar='#', type=int, default=None, help='input buffer size (in kB; default: 32)')
         self.add_argument('--profile')
         group = self.add_argument_group('XMP support')
-        group.add_argument('--xmp', action='store_true', help='create sidecar XMP metdata')
+        group.add_argument('--xmp', action='store_true', help='create sidecar XMP metadata')
         group = self.add_argument_group('auxiliary actions')
         group.add_argument('-h', '--help', action=HelpAction, nargs=0, help='show this help message and exit')
         group.add_argument('-V', '--version', action='version', version=version, help='show version information and exit')
