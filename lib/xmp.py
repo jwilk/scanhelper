@@ -54,6 +54,12 @@ template = jinja2.Template('''\
 </rdf:RDF>
 ''')
 
+media_types = dict(
+    PPM='image/x-portable-anymap',
+    PNG='image/png',
+    TIFF='image/png',
+)
+
 def rfc3339(timestamp):
     return timestamp.strftime('%Y-%m-%dT%H:%M:%S') + '+00:00'
 
@@ -64,7 +70,7 @@ def mtime(filename):
 def now():
     return datetime.datetime.utcnow()
 
-def write(xmp_file, image_filename, device, media_type, **override):
+def write(xmp_file, image_filename, device, **override):
     image_timestamp = rfc3339(mtime(image_filename))
     metadata_timestamp = rfc3339(now())
     image = pil.open(image_filename)
@@ -73,6 +79,7 @@ def write(xmp_file, image_filename, device, media_type, **override):
         dpi = image.info['dpi']
     except LookupError:
         dpi = None
+    media_type = media_types[image.format]
     parameters = dict(
         version=__version__,
         device_vendor=device.vendor,

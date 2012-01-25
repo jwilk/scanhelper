@@ -154,6 +154,7 @@ class ArgumentParser(argparse.ArgumentParser):
         self.add_argument('--profile')
         group = self.add_argument_group('XMP support')
         group.add_argument('--xmp', action='store_true', help='create sidecar XMP metadata')
+        group.add_argument('--reconstruct-xmp', nargs='+', metavar='IMAGE', help='reconstruct sidecar XMP metadata from existing files (only for advanced users)')
         group = self.add_argument_group('auxiliary actions')
         group.add_argument('-h', '--help', action=HelpAction, nargs=0, help='show this help message and exit')
         group.add_argument('-V', '--version', action='version', version=version, help='show version information and exit')
@@ -165,6 +166,8 @@ class ArgumentParser(argparse.ArgumentParser):
         my_args = args[1:]
         my_args[:0] = config.get()
         result, extra_args = self.parse_known_args(my_args)
+        if result.reconstruct_xmp:
+            result.action = 'reconstruct_xmp'
         if result.profile is not None:
             my_args = args[1:]
             my_args[:0] = config.get(result.profile)
@@ -360,7 +363,9 @@ def scan(options):
                                 xmp_file=xmp_file,
                                 image_filename=real_image_filename,
                                 device=device,
-                                media_type=media_types[options.output_format],
+                                override=dict(
+                                    media_type=media_types[options.output_format],
+                                )
                             )
                     if options.output_format not in scanimage_file_formats:
                         convert_manager.add(image_filename)
@@ -370,6 +375,18 @@ def scan(options):
             logger.info('Interrupted by user')
     finally:
         convert_manager.close()
+
+def reconstruct_xmp(options):
+    device = get_device(options)
+    assert isinstance(device, scanner.Device)
+    for image_filename in options.reconstruct_xmp:
+        xmp_filename = image_filename + '.xmp'
+        with open(xmp_filename, 'w') as xmp_file:
+            xmp.write(
+                xmp_file=xmp_file,
+                image_filename=image_filename,
+                device=device,
+            )
 
 def clean_temporary_files(options):
     if options.target_directory is None:
