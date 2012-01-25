@@ -360,7 +360,7 @@ def scan(options):
                                 xmp_file=xmp_file,
                                 image_filename=real_image_filename,
                                 device=device,
-                                mediatype=media_types[options.output_format],
+                                media_type=media_types[options.output_format],
                             )
                     if options.output_format not in scanimage_file_formats:
                         convert_manager.add(image_filename)

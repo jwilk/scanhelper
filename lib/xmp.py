@@ -40,9 +40,9 @@ template = jinja2.Template('''\
         <xmp:CreatorTool>scanhelper {{version}}</xmp:CreatorTool>
         <xmp:CreateDate>{{image_timestamp}}</xmp:CreateDate>
         <xmp:MetadataDate>{{metadata_timestamp}}</xmp:MetadataDate>
-        <dc:format>{{mediatype}}</dc:format>
-        <tiff:Make>{{device.vendor}}</tiff:Make>
-        <tiff:Model>{{device.model}}</tiff:Model>
+        <dc:format>{{media_type}}</dc:format>
+        <tiff:Make>{{device_vendor}}</tiff:Make>
+        <tiff:Model>{{device_model}}</tiff:Model>
         <tiff:ImageWidth>{{width}}</tiff:ImageWidth>
         <tiff:ImageHeight>{{height}}</tiff:ImageHeight>
 {% if dpi %}\
@@ -64,7 +64,7 @@ def mtime(filename):
 def now():
     return datetime.datetime.utcnow()
 
-def write(xmp_file, image_filename, device, mediatype, **override):
+def write(xmp_file, image_filename, device, media_type, **override):
     image_timestamp = rfc3339(mtime(image_filename))
     metadata_timestamp = rfc3339(now())
     image = pil.open(image_filename)
@@ -75,9 +75,11 @@ def write(xmp_file, image_filename, device, mediatype, **override):
         dpi = None
     parameters = dict(
         version=__version__,
+        device_vendor=device.vendor,
+        device_model=device.model,
         image_timestamp=image_timestamp,
         metadata_timestamp=metadata_timestamp,
-        mediatype=mediatype,
+        media_type=media_type,
         device=device,
         width=width, height=height,
         dpi=dpi,
