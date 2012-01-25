@@ -29,7 +29,6 @@ except ImportError, ex:
 from . import __version__
 
 template = jinja2.Template('''\
-<?xml version="1.0"?>
 <rdf:RDF
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:xmp="http://ns.adobe.com/xap/1.0/"
