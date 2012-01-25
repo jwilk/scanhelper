@@ -69,7 +69,7 @@ def mtime(filename):
 def now():
     return datetime.datetime.utcnow()
 
-def write(xmp_file, image_filename, device, **override):
+def write(xmp_file, image_filename, device, override):
     image_timestamp = rfc3339(mtime(image_filename))
     metadata_timestamp = rfc3339(now())
     image = pil.open(image_filename)
