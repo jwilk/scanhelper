@@ -71,6 +71,7 @@ documented_template = '''\
 {% endif %}\
     </rdf:Description>
 </rdf:RDF>
+
 '''
 
 def _extend_doc():
