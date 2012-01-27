@@ -385,8 +385,19 @@ def scan(options):
         convert_manager.close()
 
 def reconstruct_xmp(options):
-    device = get_device(options)
-    assert isinstance(device, scanner.Device)
+    class device:
+        vendor = None
+        model = None
+    if ('device_vendor' in options.override_xmp and 'device_model' in options.override_xmp):
+        # Don't bother running get_device(), as it's time consuming.
+        pass
+    else:
+        try:
+            device = get_device(options)
+        except IndexError:
+            pass
+        else:
+            assert isinstance(device, scanner.Device)
     for image_filename in options.reconstruct_xmp:
         xmp_filename = image_filename + '.xmp'
         with open(xmp_filename, 'w') as xmp_file:

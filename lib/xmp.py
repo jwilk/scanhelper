@@ -56,8 +56,12 @@ documented_template = '''\
         <xmp:CreateDate>{{image_timestamp}}</xmp:CreateDate> # image creation date (e.g. ``2005-09-07T15:01:43-07:00``)
         <xmp:MetadataDate>{{metadata_timestamp}}</xmp:MetadataDate> # metadata creation date (e.g. ``2005-09-07T15:01:43-07:00``)
         <dc:format>{{media_type}}</dc:format> # media type (e.g. ``image/png``)
+{% if device_vendor %}\
         <tiff:Make>{{device_vendor}}</tiff:Make> # scanner vendor
+{% endif %}\
+{% if device_model %}\
         <tiff:Model>{{device_model}}</tiff:Model> # scanner model
+{% endif %}\
         <tiff:ImageWidth>{{width}}</tiff:ImageWidth> # image width, in pixels
         <tiff:ImageHeight>{{height}}</tiff:ImageHeight> # image height, in pixels
 {% if dpi %}\
