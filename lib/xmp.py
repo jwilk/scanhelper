@@ -11,7 +11,21 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 # General Public License for more details.
 
+'''
+For scanhelper ≥ 0.2, you can use the ``--xmp`` option to generate XMP_
+metadata for each scanned image in a separate file (so called *sidecar XMP
+file*).
+
+It is also possible to reconstruct XMP metadata for existing files using the
+``--reconstruct-xmp`` option. However, scanhelper is not always able to extract
+all the needed information correctly (e.g. old versions of scanhelper didn't
+preserve information about resolution). To work around this problem, there is
+``--override-xmp KEY=VALUE ...`` option that allows you to override some
+metadata items.
+'''
+
 import os
+import re
 import datetime
 
 try:
@@ -28,7 +42,7 @@ except ImportError, ex:
 
 from . import __version__
 
-template = jinja2.Template('''\
+documented_template = '''\
 <rdf:RDF
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:xmp="http://ns.adobe.com/xap/1.0/"
@@ -36,22 +50,45 @@ template = jinja2.Template('''\
     xmlns:tiff="http://ns.adobe.com/tiff/1.0/"
 >
     <rdf:Description rdf:about="">
-        <xmp:CreatorTool>scanhelper {{version}}</xmp:CreatorTool>
-        <xmp:CreateDate>{{image_timestamp}}</xmp:CreateDate>
-        <xmp:MetadataDate>{{metadata_timestamp}}</xmp:MetadataDate>
-        <dc:format>{{media_type}}</dc:format>
-        <tiff:Make>{{device_vendor}}</tiff:Make>
-        <tiff:Model>{{device_model}}</tiff:Model>
-        <tiff:ImageWidth>{{width}}</tiff:ImageWidth>
-        <tiff:ImageHeight>{{height}}</tiff:ImageHeight>
+        <xmp:CreatorTool>scanhelper {{version}}</xmp:CreatorTool> # version of scanhelper
+        <xmp:CreateDate>{{image_timestamp}}</xmp:CreateDate> # image creation date (e.g. ``2005-09-07T15:01:43-07:00``)
+        <xmp:MetadataDate>{{metadata_timestamp}}</xmp:MetadataDate> # metadata creation date (e.g. ``2005-09-07T15:01:43-07:00``)
+        <dc:format>{{media_type}}</dc:format> # media type (e.g. ``image/png``)
+        <tiff:Make>{{device_vendor}}</tiff:Make> # scanner vendor
+        <tiff:Model>{{device_model}}</tiff:Model> # scanner model
+        <tiff:ImageWidth>{{width}}</tiff:ImageWidth> # image width, in pixels
+        <tiff:ImageHeight>{{height}}</tiff:ImageHeight> # image height, in pixels
 {% if dpi %}\
-        <tiff:XResolution>{{dpi}}/1</tiff:XResolution>
+        <tiff:XResolution>{{dpi}}/1</tiff:XResolution> # image resolution, in dots per inch
         <tiff:YResolution>{{dpi}}/1</tiff:YResolution>
         <tiff:ResolutionUnit>2</tiff:ResolutionUnit>
 {% endif %}\
     </rdf:Description>
 </rdf:RDF>
-''')
+'''
+
+def _extend_doc():
+    global __doc__
+    documentation = re.findall('{{(\w+)}}.*#\s*(.*)', documented_template)
+    key_maxlen = max(len(key) for key, _ in documentation)
+    descr_maxlen = max(len(descr) for _, descr in documentation)
+    separator = ('=' * (key_maxlen)) + ' ' + ('=' * (descr_maxlen)) + '\n'
+    line_fmt = '{key:N} {description}\n'.replace('N', str(key_maxlen))
+    __doc__ += '\nList of available metadata keys:\n'
+    __doc__ += separator
+    __doc__ += line_fmt.format(
+        key='key'.center(key_maxlen),
+        description='description'.center(descr_maxlen)
+    )
+    __doc__ += separator
+    for key, description in re.findall('{{(\w+)}}.*#\s*(.*)', documented_template):
+        __doc__ += line_fmt.format(key=key, description=description)
+    __doc__ += separator
+
+_extend_doc()
+del _extend_doc
+
+template = jinja2.Template(re.sub('\s*#.*', '', documented_template))
 
 media_types = dict(
     PPM='image/x-portable-anymap',
