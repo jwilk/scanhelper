@@ -28,6 +28,8 @@ import os
 import re
 import datetime
 
+from . import utils
+
 try:
     import Image as pil
 except ImportError, ex:
