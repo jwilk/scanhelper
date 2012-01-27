@@ -1,9 +1,9 @@
-scanhelper (0.2) UNRELEASED; urgency=low
+scanhelper (0.2) unstable; urgency=low
 
   * Preserve resolution information in the PNG files.
   * Add support for creating sidecar XMP metadata.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Fri, 27 Jan 2012 16:14:08 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Fri, 27 Jan 2012 17:16:06 +0100
 
 scanhelper (0.1) unstable; urgency=low
 
