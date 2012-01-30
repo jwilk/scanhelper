@@ -1,9 +1,9 @@
-scanhelper (0.2.1) UNRELEASED; urgency=low
+scanhelper (0.2.1) unstable; urgency=low
 
   * Fix syntax error in generated XMP.
   * Wrap generated XMP in <x:xmpmeta> element.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Mon, 30 Jan 2012 21:44:06 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 30 Jan 2012 23:11:30 +0100
 
 scanhelper (0.2) unstable; urgency=low
 
