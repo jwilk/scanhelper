@@ -1,8 +1,8 @@
 scanhelper (0.2.1) UNRELEASED; urgency=low
 
-  * 
+  * Fix syntax error in generated XMP.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Mon, 30 Jan 2012 21:21:41 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 30 Jan 2012 21:32:09 +0100
 
 scanhelper (0.2) unstable; urgency=low
 

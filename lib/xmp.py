@@ -27,6 +27,7 @@ metadata items.
 import os
 import re
 import datetime
+import xml.dom.minidom as minidom
 
 from . import utils
 
@@ -76,7 +77,7 @@ documented_template = '''\
 
 def _extend_doc():
     global __doc__
-    documentation = re.findall('{{(\w+)}}.*#\s*(.*)', documented_template)
+    documentation = re.findall('{{(\w+)}}.*\s+#\s+(.*)', documented_template)
     key_maxlen = max(len(key) for key, _ in documentation)
     descr_maxlen = max(len(descr) for _, descr in documentation)
     separator = ('=' * (key_maxlen)) + ' ' + ('=' * (descr_maxlen)) + '\n'
@@ -88,14 +89,14 @@ def _extend_doc():
         description='description'.center(descr_maxlen)
     )
     __doc__ += separator
-    for key, description in re.findall('{{(\w+)}}.*#\s*(.*)', documented_template):
+    for key, description in documentation:
         __doc__ += line_fmt.format(key=key, description=description)
     __doc__ += separator
 
 _extend_doc()
 del _extend_doc
 
-template = jinja2.Template(re.sub('\s*#.*', '', documented_template))
+template = jinja2.Template(re.sub('\s+#\s+.*', '', documented_template))
 
 media_types = dict(
     PPM='image/x-portable-anymap',
@@ -135,7 +136,8 @@ def write(xmp_file, image_filename, device, override):
         dpi=dpi,
     )
     parameters.update(override)
-    xmp_data = template.render(**parameters)
+    xmp_data = template.render(**parameters).encode('UTF-8')
+    assert minidom.parseString(xmp_data)
     xmp_file.write(xmp_data.encode('UTF-8'))
 
 # vim:ts=4 sw=4 et
