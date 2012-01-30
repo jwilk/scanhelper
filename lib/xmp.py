@@ -46,12 +46,14 @@ except ImportError, ex:
 from . import __version__
 
 documented_template = '''\
-<rdf:RDF
+<x:xmpmeta
+    xmlns:x="adobe:ns:meta/"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:xmp="http://ns.adobe.com/xap/1.0/"
     xmlns:dc="http://purl.org/dc/elements/1.1/"
     xmlns:tiff="http://ns.adobe.com/tiff/1.0/"
 >
+<rdf:RDF>
     <rdf:Description rdf:about="">
         <xmp:CreatorTool>scanhelper {{version}}</xmp:CreatorTool> # version of scanhelper
         <xmp:CreateDate>{{image_timestamp}}</xmp:CreateDate> # image creation date (e.g. ``2005-09-07T15:01:43-07:00``)
@@ -72,6 +74,7 @@ documented_template = '''\
 {% endif %}\
     </rdf:Description>
 </rdf:RDF>
+</x:xmpmeta>
 
 '''
 
