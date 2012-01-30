@@ -108,7 +108,7 @@ media_types = dict(
 )
 
 def rfc3339(timestamp):
-    return timestamp.strftime('%Y-%m-%dT%H:%M:%S') + '+00:00'
+    return timestamp.strftime('%Y-%m-%dT%H:%M:%S') + 'Z'
 
 def mtime(filename):
     unix_timestamp = os.stat(filename).st_mtime
