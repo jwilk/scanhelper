@@ -1,8 +1,9 @@
 scanhelper (0.2.2) UNRELEASED; urgency=low
 
   * Add xmpMM:InstanceID and xmpMM:History elements to generated XMP.
+  * Produce more helpful error message when an external command is not found.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Wed, 01 Feb 2012 17:29:22 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Wed, 01 Feb 2012 18:53:19 +0100
 
 scanhelper (0.2.1) unstable; urgency=low
 
