@@ -27,6 +27,7 @@ metadata items.
 import os
 import re
 import datetime
+import uuid
 import xml.dom.minidom as minidom
 
 from . import utils
@@ -52,6 +53,8 @@ documented_template = '''\
     xmlns:xmp="http://ns.adobe.com/xap/1.0/"
     xmlns:dc="http://purl.org/dc/elements/1.1/"
     xmlns:tiff="http://ns.adobe.com/tiff/1.0/"
+    xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/"
+    xmlns:stEvt="http://ns.adobe.com/xap/1.0/sType/ResourceEvent#"
 >
 <rdf:RDF>
     <rdf:Description rdf:about="">
@@ -72,6 +75,17 @@ documented_template = '''\
         <tiff:YResolution>{{dpi}}/1</tiff:YResolution>
         <tiff:ResolutionUnit>2</tiff:ResolutionUnit>
 {% endif %}\
+        <xmpMM:InstanceID>{{instance_id}}</xmpMM:InstanceID>
+        <xmpMM:History>
+            <rdf:Seq>
+                <rdf:li rdf:parseType="Resource">
+                    <stEvt:action>created</stEvt:action>
+                    <stEvt:softwareAgent>scanhelper {{version}}</stEvt:softwareAgent>
+                    <stEvt:when>{{image_timestamp}}</stEvt:when>
+                    <stEvt:instanceID>{{instance_id}}</stEvt:instanceID>
+                </rdf:li>
+            </rdf:Seq>
+        </xmpMM:History>
     </rdf:Description>
 </rdf:RDF>
 </x:xmpmeta>
@@ -127,6 +141,7 @@ def write(xmp_file, image_filename, device, override):
     except LookupError:
         dpi = None
     media_type = media_types[image.format]
+    instance_id = 'uuid:' + str(uuid.uuid4()).replace('-', '')
     parameters = dict(
         version=__version__,
         device_vendor=device.vendor,
@@ -137,6 +152,7 @@ def write(xmp_file, image_filename, device, override):
         device=device,
         width=width, height=height,
         dpi=dpi,
+        instance_id=instance_id,
     )
     parameters.update(override)
     xmp_data = template.render(**parameters).encode('UTF-8')
