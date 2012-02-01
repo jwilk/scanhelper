@@ -159,4 +159,6 @@ def write(xmp_file, image_filename, device, override):
     assert minidom.parseString(xmp_data)
     xmp_file.write(xmp_data.encode('UTF-8'))
 
+__all__ = ['write']
+
 # vim:ts=4 sw=4 et
