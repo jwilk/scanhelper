@@ -1,6 +1,6 @@
 # encoding=UTF-8
 
-# Copyright © 2011 Jakub Wilk <jwilk@jwilk.net>
+# Copyright © 2011, 2012 Jakub Wilk <jwilk@jwilk.net>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -10,6 +10,8 @@
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 # General Public License for more details.
+
+'''direct access to some functions from GNU libc'''
 
 import ctypes
 
