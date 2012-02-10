@@ -137,7 +137,8 @@ def write(xmp_file, image_filename, device, override):
     image = pil.open(image_filename)
     width, height = image.size
     try:
-        dpi = image.info['dpi']
+        x_dpi, y_dpi = image.info['dpi']
+        dpi = max(x_dpi, y_dpi)
     except LookupError:
         dpi = None
     media_type = media_types[image.format]
