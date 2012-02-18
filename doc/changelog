@@ -1,9 +1,9 @@
-scanhelper (0.2.3) UNRELEASED; urgency=low
+scanhelper (0.2.3) unstable; urgency=low
 
   * Fix incorrect values of tiff:XResolution and tiff:YResolution elements of
     generated XMP.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Fri, 10 Feb 2012 23:04:58 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Sat, 18 Feb 2012 21:56:32 +0100
 
 scanhelper (0.2.2) unstable; urgency=low
 
