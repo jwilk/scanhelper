@@ -135,6 +135,7 @@ class rfc3339(object):
         return '%s%02d:%02d' % ('+' if offset < 0 else '-', hours, minutes)
 
     def __str__(self):
+        '''Format the timestamp object in accordance with RFC 3339.'''
         return self._str() + self._str_tz()
 
 def mtime(filename):
