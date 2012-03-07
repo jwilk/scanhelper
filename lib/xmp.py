@@ -26,7 +26,7 @@ metadata items.
 
 import os
 import re
-import datetime
+import time
 import uuid
 import xml.dom.minidom as minidom
 
@@ -121,19 +121,31 @@ media_types = dict(
     TIFF='image/png',
 )
 
-def rfc3339(timestamp):
-    return timestamp.strftime('%Y-%m-%dT%H:%M:%S') + 'Z'
+class rfc3339(object):
+
+    def __init__(self, unixtime):
+        self._localtime = time.localtime(unixtime)
+
+    def _str(self):
+        return time.strftime('%Y-%m-%dT%H:%M:%S', self._localtime)
+
+    def _str_tz(self):
+        offset = time.timezone if not self._localtime.tm_isdst else time.altzone
+        hours, minutes  = divmod(abs(offset) // 60, 60)
+        return '%s%02d:%02d' % ('+' if offset < 0 else '-', hours, minutes)
+
+    def __str__(self):
+        return self._str() + self._str_tz()
 
 def mtime(filename):
-    unix_timestamp = os.stat(filename).st_mtime
-    return datetime.datetime.utcfromtimestamp(unix_timestamp)
+    return rfc3339(os.stat(filename).st_mtime)
 
 def now():
-    return datetime.datetime.utcnow()
+    return rfc3339(time.time())
 
 def write(xmp_file, image_filename, device, override):
-    image_timestamp = rfc3339(mtime(image_filename))
-    metadata_timestamp = rfc3339(now())
+    image_timestamp = mtime(image_filename)
+    metadata_timestamp = now()
     image = pil.open(image_filename)
     width, height = image.size
     try:
