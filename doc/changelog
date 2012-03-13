@@ -1,8 +1,8 @@
-scanhelper (0.2.4) UNRELEASED; urgency=low
+scanhelper (0.2.4) unstable; urgency=low
 
   * Don't convert timestamps to UTC, as recommended by the XMP specification.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Wed, 07 Mar 2012 20:54:40 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Tue, 13 Mar 2012 19:43:35 +0100
 
 scanhelper (0.2.3) unstable; urgency=low
 
