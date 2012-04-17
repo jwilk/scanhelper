@@ -422,7 +422,7 @@ def clean_temporary_files(options):
     convert_manager.close()
     logger.info(
         'No files have been converted' if i == 0
-        else '1 file has been convert' if i == 1
+        else '1 file has been converted' if i == 1
         else '{0} files have been converted'.format(i)
     )
 

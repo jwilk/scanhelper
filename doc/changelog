@@ -1,3 +1,9 @@
+scanhelper (0.2.5) UNRELEASED; urgency=low
+
+  * Fix a typo. Thanks to Janusz S. Bień to the bug report.
+
+ -- Jakub Wilk <jwilk@jwilk.net>  Tue, 17 Apr 2012 14:54:41 +0200
+
 scanhelper (0.2.4) unstable; urgency=low
 
   * Don't convert timestamps to UTC, as recommended by the XMP specification.
