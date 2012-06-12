@@ -62,7 +62,7 @@ class HelpAction(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         parser.epilog = 'device-specific options:\n'
         if namespace.device is None:
-            parser.epilog += '''  use 'scanhelper -d DEVICE --help' to get list of all optons for DEVICE'''
+            parser.epilog += '''  use 'scanhelper -d DEVICE --help' to get list of all options for DEVICE'''
         else:
             commandline = ['scanimage', '-d', namespace.device, '--help']
             subprocess = ipc.Subprocess(commandline, stdout=ipc.PIPE)
