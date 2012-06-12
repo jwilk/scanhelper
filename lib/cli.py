@@ -1,6 +1,6 @@
 # encoding=UTF-8
 
-# Copyright © 2011 Jakub Wilk <jwilk@jwilk.net>
+# Copyright © 2011, 2012 Jakub Wilk <jwilk@jwilk.net>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,18 +29,13 @@ from . import gnu
 from . import ipc
 from . import scanner
 from . import utils
+from . import xdg
 from . import xmp
 
 try:
     import argparse
 except ImportError, ex:
     utils.enhance_import_error(ex, 'argparse', 'python-argparse', 'http://code.google.com/p/argparse/')
-    raise
-
-try:
-    import xdg.BaseDirectory as xdg
-except ImportError, ex:
-    utils.enhance_import_error(ex, 'PyXDG', 'python-xdg', 'http://www.freedesktop.org/wiki/Software/pyxdg')
     raise
 
 try:

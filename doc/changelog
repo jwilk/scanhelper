@@ -1,8 +1,9 @@
 scanhelper (0.2.5) UNRELEASED; urgency=low
 
   * Fix a typo. Thanks to Janusz S. Bień to the bug report.
+  * Use our own minimal XDG Base Directory implementation instead of PyXDG.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Tue, 17 Apr 2012 14:54:41 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Tue, 12 Jun 2012 20:19:08 +0200
 
 scanhelper (0.2.4) unstable; urgency=low
 
