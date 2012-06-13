@@ -6,9 +6,6 @@ Dependencies
 * argparse_ —
   Python command line parser
 
-* PyXDG_ —
-  Python library to access freedesktop.org standards
-
 * Python Imaging Library (PIL_)
 
 * Scanner Access Made Easy (SANE_) —
