@@ -23,7 +23,6 @@ cd "$sourceroot"
 make -C */ all
 make -C */ pyc-clean || true
 rm -rf */.hg*
-rm -rf */tools/
 tar -czf "$pwd/$name-$version.tar.gz" */
 rm -rf "$sourceroot"
 
