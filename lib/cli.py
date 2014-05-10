@@ -142,11 +142,12 @@ class ArgumentParser(argparse.ArgumentParser):
         group = self.add_argument_group('batch mode')
         group.add_argument('-b', '--batch-mode', metavar='TEMPLATE', dest='filename_template', help='output filename template (default: p%%04d.<ext>)')
         group.add_argument('--batch-start', metavar='#', default=1, type=int, help='page number to start naming files with (default: 1)')
-        group.add_argument('--batch-count', metavar='#', default=infinity, type=int, help='how many pages to scan in batch mode (default: no limit)')
+        group.add_argument('--batch-count', metavar='#', default=infinity, type=int, help='number of pages to scan in a single batch (default: no limit)')
         group.add_argument('--batch-increment', metavar='#', default=1, type=int, help='increase page number in filename by # (default: 1)')
         group.add_argument('--batch-double', action='store_const', dest='batch_increment', const=2, help='same as --batch-increment=2')
         group.add_argument('--batch-prompt', action='store_true', help='(not supported)')
         group.add_argument('--batch-button', metavar='BUTTON', help='button triggering next batch')
+        group.add_argument('--page-count', metavar='#', default=infinity, type=int, help='total number of pages to scan (default: no limit)')
         group.add_argument('--list-buttons', action='store_const', const='list_buttons', dest='action', help='show available buttons')
         group = self.add_argument_group('XMP support')
         group.add_argument('--xmp', action='store_true', help='create sidecar XMP metadata')
@@ -346,14 +347,15 @@ def scan(options):
         logger.info('Target directory: %s', target_directory)
     os.chdir(target_directory)
     start = options.batch_start
-    count = options.batch_count
     increment = options.batch_increment
+    batch_count = options.batch_count
+    total_count = options.page_count
     convert_manager = ConvertManager()
     try:
         try:
-            while count > 0:
+            while total_count > 0:
                 wait_for_button(device, options.batch_button)
-                for page in scan_single_batch(options, device, start, count, increment):
+                for page in scan_single_batch(options, device, start, min(total_count, batch_count), increment):
                     image_filename = gnu.sprintf(options.filename_template, start)
                     if options.xmp:
                         real_image_filename = image_filename
@@ -374,7 +376,7 @@ def scan(options):
                     if options.output_format not in scanimage_file_formats:
                         convert_manager.add(image_filename)
                     start += increment
-                    count -= 1
+                    total_count -= 1
         except KeyboardInterrupt:
             logger.info('Interrupted by user')
     finally:
