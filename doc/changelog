@@ -7,9 +7,10 @@ scanhelper (0.3) UNRELEASED; urgency=low
     batch, rather that total number of pages. This is useful for scanners
     without ADF, or with ADF that doesn't correctly report when it's empty.
   * Add the --page-count option for limiting total number of pages to scan.
+  * Reorder options in the --help output.
   * Use HTTPS URLs when they are available, in documentation and code.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Sat, 10 May 2014 21:24:50 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Sat, 10 May 2014 21:38:08 +0200
 
 scanhelper (0.2.4) unstable; urgency=low
 
