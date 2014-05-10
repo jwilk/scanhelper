@@ -15,9 +15,9 @@ Dependencies
   Python templating library 
 
 .. _Python:
-   http://python.org/
+   https://www.python.org/
 .. _argparse:
-   http://code.google.com/p/argparse/
+   https://code.google.com/p/argparse/
 .. _pyxdg:
    http://www.freedesktop.org/wiki/Software/pyxdg
 .. _PIL:

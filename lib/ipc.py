@@ -24,7 +24,7 @@ from . import utils
 # CalledProcessError, CalledProcessInterrupted
 # ============================================
 
-# Work-around for http://bugs.debian.org/596232:
+# Work-around for https://bugs.debian.org/596232:
 if os.name == 'posix':
     signal.signal(signal.SIGCHLD, signal.SIG_DFL)
 

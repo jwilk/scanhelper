@@ -35,13 +35,13 @@ from . import xmp
 try:
     import argparse
 except ImportError, ex:
-    utils.enhance_import_error(ex, 'argparse', 'python-argparse', 'http://code.google.com/p/argparse/')
+    utils.enhance_import_error(ex, 'argparse', 'python-argparse', 'https://code.google.com/p/argparse/')
     raise
 
 try:
     import Image as pil
 except ImportError, ex:
-    utils.enhance_import_error(ex, 'Python Imaging Library', 'python-imaging', 'http://www.pythonware.com/products/pil/')
+    utils.enhance_import_error(ex, 'Python Imaging Library', 'python-imaging', 'https://www.pythonware.com/products/pil/')
     raise
 
 temporary_suffix = '.tmp.scanhelper~'
