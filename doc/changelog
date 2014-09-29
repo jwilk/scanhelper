@@ -1,8 +1,8 @@
 scanhelper (0.3.1) UNRELEASED; urgency=low
 
-  * 
+  * Import “Image” from the “PIL” namespace.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Sat, 10 May 2014 21:40:44 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 29 Sep 2014 22:44:37 +0200
 
 scanhelper (0.3) unstable; urgency=low
 

@@ -39,7 +39,7 @@ except ImportError, ex:
     raise
 
 try:
-    import Image as pil
+    import PIL.Image as pil
 except ImportError, ex:
     utils.enhance_import_error(ex, 'Python Imaging Library', 'python-imaging', 'http://www.pythonware.com/products/pil/')
     raise
