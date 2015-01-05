@@ -145,8 +145,8 @@ class ArgumentParser(argparse.ArgumentParser):
         group.add_argument('--batch-count', metavar='#', default=infinity, type=int, help='number of pages to scan in a single batch (default: no limit)')
         group.add_argument('--batch-increment', metavar='#', default=1, type=int, help='increase page number in filename by # (default: 1)')
         group.add_argument('--batch-double', action='store_const', dest='batch_increment', const=2, help='same as --batch-increment=2')
-        group.add_argument('--batch-prompt', action='store_true', help='(not supported)')
-        group.add_argument('--batch-button', metavar='BUTTON', help='button triggering next batch')
+        group.add_argument('--batch-prompt', action='store_const', dest='batch_button', const=None, help='wait for ENTER before eatch batch (the default)')
+        group.add_argument('--batch-button', metavar='BUTTON', help='wait for the scanner button before each batch')
         group.add_argument('--page-count', metavar='#', default=infinity, type=int, help='total number of pages to scan (default: no limit)')
         group.add_argument('--list-buttons', action='store_const', const='list_buttons', dest='action', help='show available buttons')
         group = self.add_argument_group('XMP support')
@@ -172,7 +172,7 @@ class ArgumentParser(argparse.ArgumentParser):
             my_args[:0] = config.get()
             result, extra_args = self.parse_known_args(my_args)
         result.config = config
-        for opt in 'batch-prompt', 'dont-scan', 'test':
+        for opt in 'dont-scan', 'test':
             if getattr(result, opt.replace('-', '_')):
                 raise NotImplementedError('The --{0} option is not yet supported'.format(opt))
         result.extra_args = extra_args
@@ -240,6 +240,7 @@ def get_scanimage_commandline(options, device, start=0, count=infinity, incremen
 
 def wait_for_button(device, button, sleep_interval=0.1):
     if button is None:
+        raw_input('Press ENTER to continue\n')
         return
     print 'Press %r button to continue' % button
     while not device[button]:
