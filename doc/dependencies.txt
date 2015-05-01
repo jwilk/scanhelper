@@ -17,7 +17,7 @@ Dependencies
 .. _Python:
    https://www.python.org/
 .. _argparse:
-   https://code.google.com/p/argparse/
+   https://pypi.python.org/pypi/argparse
 .. _PIL:
    http://www.pythonware.com/products/pil/
 .. _SANE:
