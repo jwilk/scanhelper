@@ -293,7 +293,7 @@ def create_unique_directory(prefix=''):
 class ConvertManager(object):
 
     def __init__(self, nthreads=None):
-        if nthreads == None:
+        if nthreads is None:
             nthreads = utils.get_cpu_count()
         if nthreads < 1:
             nthreads = 1
