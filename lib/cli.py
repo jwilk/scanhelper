@@ -249,7 +249,6 @@ def wait_for_button(device, button, sleep_interval=0.1):
 def scan_single_batch(options, device, start=0, count=infinity, increment=1):
     assert isinstance(device, scanner.Device)
     device.close()
-    result = []
     commandline = get_scanimage_commandline(options, device, start, count, increment)
     master, slave = pty.openpty()
     master = os.fdopen(master, 'r', 1)
