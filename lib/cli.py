@@ -216,7 +216,7 @@ def get_scanimage_commandline(options, device, start=0, count=infinity, incremen
     result += ['--device-name', device.name]
     result += ['--format={0}'.format('pnm' if options.output_format == 'pnm' else 'tiff')]
     if options.icc_profile is not None:
-        result +=['--icc-profile', options.icc_profile]
+        result += ['--icc-profile', options.icc_profile]
     result += ['--batch={template}{suffix}'.format(
         template=options.filename_template,
         suffix=('' if options.output_format in scanimage_file_formats else temporary_suffix)
