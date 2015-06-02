@@ -174,7 +174,7 @@ class ArgumentParser(argparse.ArgumentParser):
         result.config = config
         for opt in 'dont-scan', 'test':
             if getattr(result, opt.replace('-', '_')):
-                raise NotImplementedError('The --{0} option is not yet supported'.format(opt))
+                raise self.error('--{0} option is not yet supported'.format(opt))
         result.extra_args = extra_args
         if result.filename_template is None:
             result.filename_template = 'p%04d.{0}'.format(result.output_format[:3])
@@ -192,21 +192,31 @@ def list_devices(options):
 def get_device(options):
     scanners = scanner.get_devices()
     if len(scanners) == 0:
-        raise IndexError('No scanner devices')
+        raise IndexError('no scanner devices')
     if options.device is None:
         if len(scanners) > 1:
-            raise IndexError('Please select a scanner device')
+            raise IndexError('please select a scanner device')
         name, vendor, model, type_ = scanners[0]
     else:
         for name, vendor, model, type_ in scanners:
             if name == options.device:
                 break
         else:
-            raise IndexError('No such device: {0}'.format(options.device))
+            raise IndexError('no such device: {0}'.format(options.device))
     return scanner.Device(name, vendor, model, type_)
 
+def error(message, *args, **kwargs):
+    message = str(message)
+    if args or kwargs:
+        message = message.format(*args, **kwargs)
+    print >>sys.stderr, 'scanhelper: error: {msg}'.format(msg=message)
+    sys.exit(1)
+
 def list_buttons(options):
-    device = get_device(options)
+    try:
+        device = get_device(options)
+    except IndexError as exc:
+        error(exc)
     for name in device:
         print name
 
@@ -336,7 +346,10 @@ class ConvertManager(object):
             self._convert(filename)
 
 def scan(options):
-    device = get_device(options)
+    try:
+        device = get_device(options)
+    except IndexError as exc:
+        error(exc)
     assert isinstance(device, scanner.Device)
     target_directory = options.target_directory
     if target_directory is None:
