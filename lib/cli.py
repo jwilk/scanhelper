@@ -11,6 +11,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 # General Public License for more details.
 
+from __future__ import print_function
+
 import Queue as queue
 import collections
 import datetime
@@ -187,7 +189,7 @@ class ArgumentParser(argparse.ArgumentParser):
 
 def list_devices(options):
     for d in scanner.get_devices():
-        print '%-24s %r' % (d[0], d[1:])
+        print('%-24s %r' % (d[0], d[1:]))
 
 def get_device(options):
     scanners = scanner.get_devices()
@@ -209,7 +211,7 @@ def error(message, *args, **kwargs):
     message = str(message)
     if args or kwargs:
         message = message.format(*args, **kwargs)
-    print >>sys.stderr, 'scanhelper: error: {msg}'.format(msg=message)
+    print('scanhelper: error: {msg}'.format(msg=message), file=sys.stderr)
     sys.exit(1)
 
 def list_buttons(options):
@@ -218,7 +220,7 @@ def list_buttons(options):
     except IndexError as exc:
         error(exc)
     for name in device:
-        print name
+        print(name)
 
 def get_scanimage_commandline(options, device, start=0, count=infinity, increment=1):
     assert isinstance(device, scanner.Device)
@@ -252,7 +254,7 @@ def wait_for_button(device, button, sleep_interval=0.1):
     if button is None:
         raw_input('Press ENTER to continue\n')
         return
-    print 'Press %r button to continue' % button
+    print('Press %r button to continue' % button)
     while not device[button]:
         time.sleep(sleep_interval)
 
@@ -439,29 +441,29 @@ def clean_temporary_files(options):
 
 def show_config(options):
     tilde = os.path.expanduser('~')
-    print 'Configuration files:'
+    print('Configuration files:')
     for filename in options.config.get_paths(writable=True):
         if filename.startswith(tilde):
             filename = '~' + filename[len(tilde):]
-        print '    {0}'.format(filename)
+        print('    {0}'.format(filename))
     extra_options = options.config.get(None)
-    print
+    print()
     if extra_options:
-        print 'Default options:'
-        print '    {0}'.format(utils.shell_escape_list(extra_options))
+        print('Default options:')
+        print('    {0}'.format(utils.shell_escape_list(extra_options)))
     else:
-        print 'No default options'
+        print('No default options')
     i = 0
     for profile in options.config.get_profiles():
-        print
-        print 'Options for profile {0!r}:'.format(profile)
+        print()
+        print('Options for profile {0!r}:'.format(profile))
         extra_options = options.config.get(profile)
-        print '    {0}'.format(utils.shell_escape_list(extra_options))
+        print('    {0}'.format(utils.shell_escape_list(extra_options)))
         i += 1
     if i == 0:
-        print
-        print 'No profiles'
-    print
+        print()
+        print('No profiles')
+    print()
 
 def setup_logging():
     # Main logger:
