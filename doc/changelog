@@ -1,8 +1,9 @@
 scanhelper (0.4.2) UNRELEASED; urgency=low
 
   * Fix media type for TIFF images.
+  * Fix timezone offset calculations.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Tue, 02 Jun 2015 18:04:57 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Tue, 02 Jun 2015 20:19:50 +0200
 
 scanhelper (0.4.1) unstable; urgency=low
 

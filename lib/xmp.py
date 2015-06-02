@@ -24,6 +24,7 @@ preserve information about resolution). To work around this problem, there is
 metadata items.
 '''
 
+import datetime
 import os
 import re
 import time
@@ -125,14 +126,19 @@ class rfc3339(object):
 
     def __init__(self, unixtime):
         self._localtime = time.localtime(unixtime)
+        self._tzdelta = (
+            datetime.datetime.fromtimestamp(unixtime) -
+            datetime.datetime.utcfromtimestamp(unixtime)
+        )
 
     def _str(self):
         return time.strftime('%Y-%m-%dT%H:%M:%S', self._localtime)
 
     def _str_tz(self):
-        offset = time.timezone if not self._localtime.tm_isdst else time.altzone
+        offset = self._tzdelta.days * 3600 * 24 + self._tzdelta.seconds
         hours, minutes = divmod(abs(offset) // 60, 60)
-        return '%s%02d:%02d' % ('+' if offset < 0 else '-', hours, minutes)
+        sign = '+' if offset >= 0 else '-'
+        return '{s}{h:02}:{m:02}'.format(s=sign, h=hours, m=minutes)
 
     def __str__(self):
         '''Format the timestamp object in accordance with RFC 3339.'''
