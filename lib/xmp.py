@@ -118,7 +118,7 @@ template = jinja2.Template(re.sub('\s+#\s+.*', '', documented_template))
 media_types = dict(
     PPM='image/x-portable-anymap',
     PNG='image/png',
-    TIFF='image/png',
+    TIFF='image/tiff',
 )
 
 class rfc3339(object):
