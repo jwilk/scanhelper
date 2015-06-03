@@ -189,7 +189,7 @@ class ArgumentParser(argparse.ArgumentParser):
 
 def list_devices(options):
     for d in scanner.get_devices():
-        print('%-24s %r' % (d[0], d[1:]))
+        print('\t'.join(d))
 
 def get_device(options):
     scanners = scanner.get_devices()
