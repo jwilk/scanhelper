@@ -181,4 +181,4 @@ def write(xmp_file, image_filename, device, override):
 
 __all__ = ['write']
 
-# vim:ts=4 sw=4 et
+# vim:ts=4 sts=4 sw=4 et

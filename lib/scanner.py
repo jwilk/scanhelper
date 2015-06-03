@@ -97,4 +97,4 @@ STATUS_IO_ERROR = 9
 STATUS_NO_MEM = 10
 STATUS_ACCESS_DENIED = 11
 
-# vim:ts=4 sw=4 et
+# vim:ts=4 sts=4 sw=4 et
