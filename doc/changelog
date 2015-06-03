@@ -1,11 +1,11 @@
-scanhelper (0.4.2) UNRELEASED; urgency=low
+scanhelper (0.5) UNRELEASED; urgency=low
 
   * Make -L/--list-devices use tab-separated output.
   * Fix media type for TIFF images.
   * Fix timezone offset calculations.
   * Improve error handling.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Wed, 03 Jun 2015 12:14:54 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Wed, 03 Jun 2015 12:16:06 +0200
 
 scanhelper (0.4.1) unstable; urgency=low
 
