@@ -36,13 +36,13 @@ from . import xmp
 
 try:
     import argparse
-except ImportError, ex:
+except ImportError as ex:
     utils.enhance_import_error(ex, 'argparse', 'python-argparse', 'https://pypi.python.org/pypi/argparse')
     raise
 
 try:
     import PIL.Image as pil
-except ImportError, ex:
+except ImportError as ex:
     utils.enhance_import_error(ex, 'Python Imaging Library', 'python-imaging', 'http://www.pythonware.com/products/pil/')
     raise
 
@@ -281,7 +281,7 @@ def scan_single_batch(options, device, start=0, count=infinity, increment=1):
             yield int(match.group(1), 10)
     try:
         subprocess.wait()
-    except ipc.CalledProcessError, ex:
+    except ipc.CalledProcessError as ex:
         if ex.returncode in (scanner.STATUS_NO_DOCS, scanner.STATUS_JAMMED):
             pass
         else:

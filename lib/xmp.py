@@ -35,13 +35,13 @@ from . import utils
 
 try:
     import PIL.Image as pil
-except ImportError, ex:
+except ImportError as ex:
     utils.enhance_import_error(ex, 'Python Imaging Library', 'python-imaging', 'http://www.pythonware.com/products/pil/')
     raise
 
 try:
     import jinja2
-except ImportError, ex:
+except ImportError as ex:
     utils.enhance_import_error(ex, 'Jinja2 templating library', 'python-jinja2', 'http://jinja.pocoo.org/')
     raise
 
