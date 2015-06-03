@@ -24,7 +24,9 @@ from . import utils
 # CalledProcessError, CalledProcessInterrupted
 # ============================================
 
-# Work-around for https://bugs.debian.org/596232:
+# Protect from scanadf[0] and possibly other software that sets
+# SIGCHLD to SIG_IGN.
+# [0] https://bugs.debian.org/596232
 if os.name == 'posix':
     signal.signal(signal.SIGCHLD, signal.SIG_DFL)
 
