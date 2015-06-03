@@ -17,7 +17,6 @@ import errno
 import locale
 import os
 import signal
-import stat
 import tempfile
 import shutil
 
@@ -128,7 +127,7 @@ class test_environment():
             with open(command_path, 'wt') as file:
                 print('#!/bin/sh', file=file)
                 print('printf 42', file=file)
-            os.chmod(command_path, stat.S_IRWXU)
+            os.chmod(command_path, 0o700)
             path[:0] = [tmpdir]
             path = ':'.join(path)
             with interim_environ(PATH=path):
