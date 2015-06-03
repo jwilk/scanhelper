@@ -57,6 +57,17 @@ def exception(exc_type, string=None, regex=None, callback=None):
         raise AssertionError(message)
 
 @contextlib.contextmanager
+def interim(obj, **override):
+    copy = dict((key, getattr(obj, key)) for key in override)
+    for key, value in override.iteritems():
+        setattr(obj, key, value)
+    try:
+        yield
+    finally:
+        for key, value in copy.iteritems():
+            setattr(obj, key, value)
+
+@contextlib.contextmanager
 def interim_environ(**override):
     keys = set(override)
     copy_keys = keys & set(os.environ)
@@ -151,6 +162,7 @@ __all__ = [
     'assert_regexp_matches',
     'assert_rfc3339_timestamp',
     'fork_isolation',
+    'interim',
     'interim_environ',
 ]
 
