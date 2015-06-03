@@ -254,7 +254,7 @@ def wait_for_button(device, button, sleep_interval=0.1):
     if button is None:
         raw_input('Press ENTER to continue\n')
         return
-    print('Press %r button to continue' % button)
+    print('Press {0!r} button to continue'.format(button))
     while not device[button]:
         time.sleep(sleep_interval)
 
