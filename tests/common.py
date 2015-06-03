@@ -24,6 +24,24 @@ from nose.tools import (
     assert_true,
 )
 
+if sys.version_info >= (2, 7):
+    from nose.tools import (
+        assert_greater_equal,
+        assert_is_instance,
+    )
+else:
+    # Python 2.6:
+    def assert_greater_equal(x, y):
+        assert_true(
+            x >= y,
+            msg='{0!r} not greater than or equal to {1!r}'.format(x, y)
+        )
+    def assert_is_instance(obj, cls):
+        assert_true(
+            isinstance(obj, cls),
+            msg='{0!r} is not an instance of {1!r}'.format(obj, cls)
+        )
+
 def assert_regexp_matches(regexp, text):
     if isinstance(regexp, basestring):
         regexp = re.compile(regexp)
@@ -158,9 +176,11 @@ if 'coverage' in sys.modules:
 __all__ = [
     'SkipTest',
     'assert_equal',
-    'assert_true',
+    'assert_greater_equal',
+    'assert_is_instance',
     'assert_regexp_matches',
     'assert_rfc3339_timestamp',
+    'assert_true',
     'fork_isolation',
     'interim',
     'interim_environ',

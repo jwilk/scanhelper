@@ -14,6 +14,8 @@
 import sys
 
 from . common import (
+    assert_is_instance,
+    assert_greater_equal,
     exception,
     interim,
 )
@@ -61,5 +63,10 @@ class test_enhance_import():
                     )
                     raise
                 nonexistent.f()  # quieten pyflakes
+
+def test_get_cpu_count():
+    n = utils.get_cpu_count()
+    assert_is_instance(n, int)
+    assert_greater_equal(n, 1)
 
 # vim:ts=4 sts=4 sw=4 et
