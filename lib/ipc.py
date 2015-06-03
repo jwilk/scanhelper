@@ -19,8 +19,6 @@ import re
 import signal
 import subprocess
 
-from . import utils
-
 # CalledProcessError, CalledProcessInterrupted
 # ============================================
 
@@ -65,6 +63,17 @@ class CalledProcessInterrupted(CalledProcessError):
 
 del get_signal_names
 
+# shell escape
+# ============
+
+def shell_escape(s, safe=re.compile('^[a-zA-Z0-9_+/=.,:%-]+$').match):
+    if safe(s):
+        return s
+    return "'%s'" % s.replace("'", r"'\''")
+
+def shell_escape_list(lst):
+    return ' '.join(map(shell_escape, lst))
+
 # Subprocess
 # ==========
 
@@ -97,7 +106,7 @@ class Subprocess(subprocess.Popen):
         except KeyError:
             commandline = args[0]
         if logger.isEnabledFor(logging.DEBUG):
-            logger.debug(' '.join(utils.shell_escape(s) for s in commandline))
+            logger.debug(shell_escape_list(commandline))
         self.__command = commandline[0]
         try:
             subprocess.Popen.__init__(self, *args, **kwargs)
@@ -128,6 +137,7 @@ logger = logging.getLogger('scanhelper.ipc')
 
 __all__ = [
     'CalledProcessError', 'CalledProcessInterrupted',
+    'shell_escape', 'shell_escape_list',
     'Subprocess', 'PIPE',
 ]
 

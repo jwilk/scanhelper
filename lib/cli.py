@@ -450,7 +450,7 @@ def show_config(options):
     print()
     if extra_options:
         print('Default options:')
-        print('    {0}'.format(utils.shell_escape_list(extra_options)))
+        print('    {0}'.format(ipc.shell_escape_list(extra_options)))
     else:
         print('No default options')
     i = 0
@@ -458,7 +458,7 @@ def show_config(options):
         print()
         print('Options for profile {0!r}:'.format(profile))
         extra_options = options.config.get(profile)
-        print('    {0}'.format(utils.shell_escape_list(extra_options)))
+        print('    {0}'.format(ipc.shell_escape_list(extra_options)))
         i += 1
     if i == 0:
         print()
