@@ -1,4 +1,4 @@
-scanhelper (0.5) UNRELEASED; urgency=low
+scanhelper (0.5) unstable; urgency=low
 
   * Make -L/--list-devices use tab-separated output.
   * Fix media type for TIFF images.
@@ -6,7 +6,7 @@ scanhelper (0.5) UNRELEASED; urgency=low
   * Improve error handling.
   * Add a test suite.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Wed, 03 Jun 2015 13:11:56 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Wed, 03 Jun 2015 14:13:33 +0200
 
 scanhelper (0.4.1) unstable; urgency=low
 
