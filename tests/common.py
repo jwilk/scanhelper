@@ -28,6 +28,7 @@ if sys.version_info >= (2, 7):
     from nose.tools import (
         assert_greater_equal,
         assert_is_instance,
+        assert_regexp_matches,
     )
 else:
     # Python 2.6:
@@ -41,18 +42,17 @@ else:
             isinstance(obj, cls),
             msg='{0!r} is not an instance of {1!r}'.format(obj, cls)
         )
-
-def assert_regexp_matches(regexp, text):
-    if isinstance(regexp, basestring):
-        regexp = re.compile(regexp)
-    if not regexp.search(text):
-        message = "regexp doesn't match: {0!r} not found in {1!r}".format(regexp.pattern, text)
-        raise AssertionError(message)
+    def assert_regexp_matches(text, regexp):
+        if isinstance(regexp, basestring):
+            regexp = re.compile(regexp)
+        if not regexp.search(text):
+            message = "Regexp didn't match: {0!r} not found in {1!r}".format(regexp.pattern, text)
+            assert_true(False, msg=message)
 
 def assert_rfc3339_timestamp(timestamp):
     return assert_regexp_matches(
+        timestamp,
         '^[0-9]{4}(-[0-9]{2}){2}T[0-9]{2}(:[0-9]{2}){2}([+-][0-9]{2}:[0-9]{2}|Z)$',
-        timestamp
     )
 
 @contextlib.contextmanager
