@@ -14,9 +14,10 @@
 import sys
 
 from . common import (
+    assert_equal,
     assert_greater_equal,
     assert_is_instance,
-    exception,
+    assert_raises,
     interim,
 )
 
@@ -30,29 +31,25 @@ class test_enhance_import():
 
     def test_debian(self):
         with interim(utils, debian=True):
-            msg = (
+            with assert_raises(ImportError) as ecm:
+                try:
+                    import nonexistent
+                except ImportError as ex:
+                    utils.enhance_import_error(ex,
+                        'PyNonexistent',
+                        'python-nonexistent',
+                        'http://pynonexistent.example.net/'
+                    )
+                    raise
+                nonexistent.f()  # quieten pyflakes
+            assert_equal(str(ecm.exception),
                 'No module named nonexistent; '
                 'please install the python-nonexistent package'
             )
-            with exception(ImportError, msg):
-                try:
-                    import nonexistent
-                except ImportError as ex:
-                    utils.enhance_import_error(ex,
-                        'PyNonexistent',
-                        'python-nonexistent',
-                        'http://pynonexistent.example.net/'
-                    )
-                    raise
-                nonexistent.f()  # quieten pyflakes
 
     def test_nondebian(self):
         with interim(utils, debian=False):
-            msg = (
-                'No module named nonexistent; '
-                'please install the PyNonexistent package <http://pynonexistent.example.net/>'
-            )
-            with exception(ImportError, msg):
+            with assert_raises(ImportError) as ecm:
                 try:
                     import nonexistent
                 except ImportError as ex:
@@ -63,6 +60,10 @@ class test_enhance_import():
                     )
                     raise
                 nonexistent.f()  # quieten pyflakes
+            assert_equal(str(ecm.exception),
+                'No module named nonexistent; '
+                'please install the PyNonexistent package <http://pynonexistent.example.net/>'
+            )
 
 def test_get_cpu_count():
     n = utils.get_cpu_count()

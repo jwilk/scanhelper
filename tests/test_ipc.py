@@ -24,7 +24,7 @@ from tests.common import (
     SkipTest,
     assert_equal,
     assert_true,
-    exception,
+    assert_raises,
     interim_environ,
 )
 
@@ -55,14 +55,16 @@ class test_wait():
 
     def test1(self):
         child = ipc.Subprocess(['false'])
-        with exception(ipc.CalledProcessError, "Command 'false' returned non-zero exit status 1"):
+        with assert_raises(ipc.CalledProcessError) as ecm:
             child.wait()
+        assert_equal(str(ecm.exception), "Command 'false' returned non-zero exit status 1")
 
     def _test_signal(self, name):
         child = ipc.Subprocess(['cat'], stdin=ipc.PIPE)  # Any long-standing process would do.
         os.kill(child.pid, getattr(signal, name))
-        with exception(ipc.CalledProcessInterrupted, "Command 'cat' was interrupted by signal " + name):
+        with assert_raises(ipc.CalledProcessInterrupted) as ecm:
             child.wait()
+        assert_equal(str(ecm.exception), "Command 'cat' was interrupted by signal " + name)
 
     def test_wait_signal(self):
         for name in 'SIGINT', 'SIGABRT', 'SIGSEGV':
@@ -186,12 +188,13 @@ class test_environment():
             self._test_locale()
 
 def test_init_exception():
+    with assert_raises(OSError) as ecm:
+        ipc.Subprocess([nonexistent_command])
     exc_message = "[Errno {errno.ENOENT}] No such file or directory: {cmd!r}".format(
         errno=errno,
         cmd=nonexistent_command,
     )
-    with exception(OSError, exc_message):
-        ipc.Subprocess([nonexistent_command])
+    assert_equal(str(ecm.exception), exc_message)
 
 class test_shell_escape():
 

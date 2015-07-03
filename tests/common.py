@@ -28,6 +28,7 @@ if sys.version_info >= (2, 7):
     from nose.tools import (
         assert_greater_equal,
         assert_is_instance,
+        assert_raises,
         assert_regexp_matches,
     )
 else:
@@ -42,6 +43,19 @@ else:
             isinstance(obj, cls),
             msg='{0!r} is not an instance of {1!r}'.format(obj, cls)
         )
+    class assert_raises(object):
+        def __init__(self, exc_type):
+            self._exc_type = exc_type
+            self.exception = None
+        def __enter__(self):
+            return self
+        def __exit__(self, exc_type, exc_value, tb):
+            if exc_type is None:
+                assert_true(False, '{0} not raised'.format(elf._exc_type.__name__))
+            if not issubclass(exc_type, self._exc_type):
+                return False
+            self.exception = exc_value
+            return True
     def assert_regexp_matches(text, regexp):
         if isinstance(regexp, basestring):
             regexp = re.compile(regexp)
@@ -54,25 +68,6 @@ def assert_rfc3339_timestamp(timestamp):
         timestamp,
         '^[0-9]{4}(-[0-9]{2}){2}T[0-9]{2}(:[0-9]{2}){2}([+-][0-9]{2}:[0-9]{2}|Z)$',
     )
-
-@contextlib.contextmanager
-def exception(exc_type, string=None, regex=None, callback=None):
-    if sum(x is not None for x in (string, regex, callback)) != 1:
-        raise ValueError('exactly one of: string, regex, callback must be provided')
-    if string is not None:
-        def callback(exc):
-            assert_equal(str(exc), string)
-    elif regex is not None:
-        def callback(exc):
-            assert_regexp_matches(regex, str(exc))
-    try:
-        yield None
-    except exc_type:
-        _, exc, _ = sys.exc_info()
-        callback(exc)
-    else:
-        message = '{0} was not raised'.format(exc_type.__name__)
-        raise AssertionError(message)
 
 @contextlib.contextmanager
 def interim(obj, **override):
