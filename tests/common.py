@@ -173,6 +173,7 @@ __all__ = [
     'assert_equal',
     'assert_greater_equal',
     'assert_is_instance',
+    'assert_raises',
     'assert_regexp_matches',
     'assert_rfc3339_timestamp',
     'assert_true',
