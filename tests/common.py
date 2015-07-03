@@ -51,7 +51,7 @@ else:
             return self
         def __exit__(self, exc_type, exc_value, tb):
             if exc_type is None:
-                assert_true(False, '{0} not raised'.format(elf._exc_type.__name__))
+                assert_true(False, '{0} not raised'.format(self._exc_type.__name__))
             if not issubclass(exc_type, self._exc_type):
                 return False
             self.exception = exc_value
