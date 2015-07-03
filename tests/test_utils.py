@@ -14,8 +14,8 @@
 import sys
 
 from . common import (
-    assert_is_instance,
     assert_greater_equal,
+    assert_is_instance,
     exception,
     interim,
 )
