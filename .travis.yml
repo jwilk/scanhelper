@@ -11,6 +11,6 @@ install:
 - pip install docutils
 script:
 - nosetests -v
-- grep -r -l ft=rst doc/ | xargs -t -n1 -I{} rst2pseudoxml.py --strict {} /dev/null
+- grep -r -l ft=rst doc/ | xargs -t -n1 -I{} rst2xml.py --strict {} /dev/null
 
 # vim:ts=2 sts=2 sw=2 et
