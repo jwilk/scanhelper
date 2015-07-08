@@ -12,7 +12,7 @@ Dependencies
   API and tools to access to scanner hardware
 
 * Jinja2_ -
-  Python templating library 
+  Python templating library
 
 .. _Python:
    https://www.python.org/
