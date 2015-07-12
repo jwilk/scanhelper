@@ -25,4 +25,4 @@ Dependencies
 .. _Jinja2:
    http://jinja.pocoo.org/
 
-.. vim:ft=rst ts=3 sw=3 et tw=72
+.. vim:ft=rst ts=3 sts=3 sw=3 et tw=72
