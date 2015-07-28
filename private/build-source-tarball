@@ -38,7 +38,7 @@ mkdir -p "$sourceroot/$name-$version"
 hg archive -r "$revision" "$sourceroot/$name-$version"
 cd "$sourceroot"/*
 make all
-make pyc-clean || true
+make pyc-clean
 rm -rf .hg*
 rm -f .travis.yml
 rm -f private/build-source-tarball
