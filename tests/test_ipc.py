@@ -20,7 +20,7 @@ import signal
 import tempfile
 import shutil
 
-from tests.common import (
+from .tools import (
     SkipTest,
     assert_equal,
     assert_true,
