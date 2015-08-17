@@ -29,7 +29,7 @@ if sys.version_info >= (2, 7):
         assert_greater_equal,
         assert_is_instance,
         assert_raises,
-        assert_regexp_matches,
+        assert_regexp_matches as assert_regex,
     )
 else:
     # Python 2.6:
@@ -56,15 +56,15 @@ else:
                 return False
             self.exception = exc_value
             return True
-    def assert_regexp_matches(text, regexp):
-        if isinstance(regexp, basestring):
-            regexp = re.compile(regexp)
-        if not regexp.search(text):
-            message = "Regexp didn't match: {0!r} not found in {1!r}".format(regexp.pattern, text)
+    def assert_regex(text, regex):
+        if isinstance(regex, basestring):
+            regex = re.compile(regex)
+        if not regex.search(text):
+            message = "Regex didn't match: {0!r} not found in {1!r}".format(regex.pattern, text)
             assert_true(False, msg=message)
 
 def assert_rfc3339_timestamp(timestamp):
-    return assert_regexp_matches(
+    return assert_regex(
         timestamp,
         '^[0-9]{4}(-[0-9]{2}){2}T[0-9]{2}(:[0-9]{2}){2}([+-][0-9]{2}:[0-9]{2}|Z)$',
     )
@@ -176,7 +176,7 @@ __all__ = [
     'assert_greater_equal',
     'assert_is_instance',
     'assert_raises',
-    'assert_regexp_matches',
+    'assert_regex',
     'assert_rfc3339_timestamp',
     'assert_true',
     'fork_isolation',
