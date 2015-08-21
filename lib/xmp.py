@@ -115,7 +115,10 @@ def _extend_doc():
 _extend_doc()
 del _extend_doc
 
-template = jinja2.Template(re.sub('\s+#\s+.*', '', documented_template))
+template = jinja2.Template(
+    re.sub('\s+#\s+.*', '', documented_template),
+    autoescape=True,
+)
 
 media_types = dict(
     PPM='image/x-portable-anymap',
