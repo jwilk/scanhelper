@@ -216,5 +216,4 @@ class test_shell_escape():
         r = ipc.shell_escape_list(l)
         assert_equal(r, "'$pam' eggs 's'\\''pam'")
 
-
 # vim:ts=4 sts=4 sw=4 et
