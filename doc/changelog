@@ -1,8 +1,10 @@
 scanhelper (0.5.1) UNRELEASED; urgency=low
 
-  * 
+  * Improve XMP support:
+    + Generate globally unique identifies in the urn:uuid namespace.
+      https://tools.ietf.org/html/rfc4122#section-3
 
- -- Jakub Wilk <jwilk@jwilk.net>  Wed, 03 Jun 2015 14:18:13 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Fri, 21 Aug 2015 21:14:44 +0200
 
 scanhelper (0.5) unstable; urgency=low
 

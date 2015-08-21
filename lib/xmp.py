@@ -150,6 +150,13 @@ def mtime(filename):
 def now():
     return rfc3339(time.time())
 
+def gen_uuid():
+    '''
+    generate an UUID URN, in accordance with RFC 4122
+    '''
+    # https://tools.ietf.org/html/rfc4122#section-3
+    return 'urn:uuid:{uuid}'.format(uuid=uuid.uuid4())
+
 def write(xmp_file, image_filename, device, override):
     image_timestamp = mtime(image_filename)
     metadata_timestamp = now()
@@ -161,7 +168,6 @@ def write(xmp_file, image_filename, device, override):
     except LookupError:
         dpi = None
     media_type = media_types[image.format]
-    instance_id = 'uuid:' + str(uuid.uuid4()).replace('-', '')
     parameters = dict(
         version=__version__,
         device_vendor=device.vendor,
@@ -172,7 +178,7 @@ def write(xmp_file, image_filename, device, override):
         device=device,
         width=width, height=height,
         dpi=dpi,
-        instance_id=instance_id,
+        instance_id=gen_uuid(),
     )
     parameters.update(override)
     xmp_data = template.render(**parameters).encode('UTF-8')

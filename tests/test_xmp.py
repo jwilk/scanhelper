@@ -11,10 +11,12 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 # General Public License for more details.
 
+import re
 import time
 
 from .tools import (
     assert_equal,
+    assert_regex,
     assert_rfc3339_timestamp,
     fork_isolation,
     interim_environ,
@@ -48,5 +50,13 @@ def test_timezones():
     t(1337075844, 'Europe/Warsaw', '2012-05-15T11:57:24+02:00')
     # offset changes:
     t(1394737792, 'Europe/Moscow', '2014-03-13T23:09:52+04:00')  # used to be +04:00, but it's +03:00 now
+
+def test_gen_uuid():
+    u = xmp.gen_uuid()
+    r = re.compile(
+        r'\Aurn:uuid:XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX\Z'
+        .replace('X', '[0-9a-f]')
+    )
+    assert_regex(u, r)
 
 # vim:ts=4 sts=4 sw=4 et
