@@ -1,0 +1,44 @@
+#!/usr/bin/python
+# encoding=UTF-8
+
+# Copyright © 2015 Jakub Wilk <jwilk@jwilk.net>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 2 dated June, 1991.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License for more details.
+
+import argparse
+import sys
+import os
+import tempfile
+
+import PIL.Image as pil
+
+sys.path[0] += '/..'
+
+from scanhelper import xmp
+
+class device:
+    vendor = '<dummy vendor>'
+    model = '<dummy model>'
+
+def dump_xmp(path):
+    xmp.write(sys.stdout, path, device, {})
+
+ap = argparse.ArgumentParser()
+ap.add_argument('path', metavar='<image>', nargs='?')
+options = ap.parse_args()
+if options.path is None:
+    with tempfile.NamedTemporaryFile(prefix='scanhelper.', suffix='.png') as fp:
+        im = pil.new('RGB', (23, 42))
+        im.save(fp)
+        dump_xmp(fp.name)
+else:
+    dump_xmp(options.path)
+
+# vim:ts=4 sts=4 sw=4 et
