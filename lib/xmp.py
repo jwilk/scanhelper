@@ -76,6 +76,7 @@ documented_template = '''\
         <tiff:YResolution>{{dpi}}/1</tiff:YResolution>
         <tiff:ResolutionUnit>2</tiff:ResolutionUnit>
 {% endif %}\
+        <xmpMM:DocumentID>{{document_id}}</xmpMM:DocumentID>
         <xmpMM:InstanceID>{{instance_id}}</xmpMM:InstanceID>
         <xmpMM:History>
             <rdf:Seq>
@@ -178,6 +179,7 @@ def write(xmp_file, image_filename, device, override):
         device=device,
         width=width, height=height,
         dpi=dpi,
+        document_id=gen_uuid(),
         instance_id=gen_uuid(),
     )
     parameters.update(override)
