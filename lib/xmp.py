@@ -48,6 +48,7 @@ except ImportError as ex:
 from . import __version__
 
 documented_template = '''\
+<?xml version="1.0"?>
 <x:xmpmeta
     xmlns:x="adobe:ns:meta/"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
