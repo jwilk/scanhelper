@@ -56,7 +56,7 @@ _uuid_regex = (
     .replace('X', '[0-9a-f]')
 )
 
-def assert_correct_uuid_format(uuid):
+def assert_uuid_urn(uuid):
     return assert_regex(
         uuid,
         _uuid_regex,
@@ -64,9 +64,9 @@ def assert_correct_uuid_format(uuid):
 
 def test_gen_uuid():
     uuid1 = xmp.gen_uuid()
-    assert_correct_uuid_format(uuid1)
+    assert_uuid_urn(uuid1)
     uuid2 = xmp.gen_uuid()
-    assert_correct_uuid_format(uuid2)
+    assert_uuid_urn(uuid2)
     assert_not_equal(uuid1, uuid2)
 
 # vim:ts=4 sts=4 sw=4 et
