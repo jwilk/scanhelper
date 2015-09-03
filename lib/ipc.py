@@ -66,7 +66,7 @@ del get_signal_names
 # shell escape
 # ============
 
-def shell_escape(s, safe=re.compile('^[a-zA-Z0-9_+/=.,:%-]+$').match):
+def shell_escape(s, safe=re.compile(r'\A[a-zA-Z0-9_+/=.,:%-]+\Z').match):
     if safe(s):
         return s
     return "'{0}'".format(s.replace("'", r"'\''"))
