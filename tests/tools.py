@@ -25,44 +25,51 @@ from nose.tools import (
     assert_true,
 )
 
-if sys.version_info >= (2, 7):
-    from nose.tools import (
-        assert_greater_equal,
-        assert_is_instance,
-        assert_raises,
-        assert_regexp_matches as assert_regex,
+import nose.tools
+
+def noseimport(vmaj, vmin, name=None):
+    def wrapper(f):
+        if sys.version_info >= (vmaj, vmin):
+            return getattr(nose.tools, name or f.__name__)
+        return f
+    return wrapper
+
+@noseimport(2, 7)
+def assert_greater_equal(x, y):
+    assert_true(
+        x >= y,
+        msg='{0!r} not greater than or equal to {1!r}'.format(x, y)
     )
-else:
-    # Python 2.6:
-    def assert_greater_equal(x, y):
-        assert_true(
-            x >= y,
-            msg='{0!r} not greater than or equal to {1!r}'.format(x, y)
-        )
-    def assert_is_instance(obj, cls):
-        assert_true(
-            isinstance(obj, cls),
-            msg='{0!r} is not an instance of {1!r}'.format(obj, cls)
-        )
-    class assert_raises(object):
-        def __init__(self, exc_type):
-            self._exc_type = exc_type
-            self.exception = None
-        def __enter__(self):
-            return self
-        def __exit__(self, exc_type, exc_value, tb):
-            if exc_type is None:
-                assert_true(False, '{0} not raised'.format(self._exc_type.__name__))
-            if not issubclass(exc_type, self._exc_type):
-                return False
-            self.exception = exc_value
-            return True
-    def assert_regex(text, regex):
-        if isinstance(regex, basestring):
-            regex = re.compile(regex)
-        if not regex.search(text):
-            message = "Regex didn't match: {0!r} not found in {1!r}".format(regex.pattern, text)
-            assert_true(False, msg=message)
+
+@noseimport(2, 7)
+def assert_is_instance(obj, cls):
+    assert_true(
+        isinstance(obj, cls),
+        msg='{0!r} is not an instance of {1!r}'.format(obj, cls)
+    )
+
+@noseimport(2, 7)
+class assert_raises(object):
+    def __init__(self, exc_type):
+        self._exc_type = exc_type
+        self.exception = None
+    def __enter__(self):
+        return self
+    def __exit__(self, exc_type, exc_value, tb):
+        if exc_type is None:
+            assert_true(False, '{0} not raised'.format(self._exc_type.__name__))
+        if not issubclass(exc_type, self._exc_type):
+            return False
+        self.exception = exc_value
+        return True
+
+@noseimport(2, 7, 'assert_regexp_matches')
+def assert_regex(text, regex):
+    if isinstance(regex, basestring):
+        regex = re.compile(regex)
+    if not regex.search(text):
+        message = "Regex didn't match: {0!r} not found in {1!r}".format(regex.pattern, text)
+        assert_true(False, msg=message)
 
 def assert_rfc3339_timestamp(timestamp):
     return assert_regex(
