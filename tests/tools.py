@@ -180,6 +180,7 @@ if 'coverage' in sys.modules:
         return f
 
 __all__ = [
+    # nose:
     'SkipTest',
     'assert_equal',
     'assert_greater_equal',
@@ -187,8 +188,9 @@ __all__ = [
     'assert_not_equal',
     'assert_raises',
     'assert_regex',
-    'assert_rfc3339_timestamp',
     'assert_true',
+    # misc:
+    'assert_rfc3339_timestamp',
     'fork_isolation',
     'interim',
     'interim_environ',
