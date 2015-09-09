@@ -3,7 +3,7 @@ scanhelper (0.5.1) UNRELEASED; urgency=low
   * Improve XMP support:
     + Add the XML declaration.
     + Add the xmpMM:DocumentID property.
-    + Generate globally unique identifies in the urn:uuid namespace.
+    + Generate globally unique identifiers in the urn:uuid namespace.
       https://tools.ietf.org/html/rfc4122#section-3
     + Escape values before putting them into an XML document.
 
