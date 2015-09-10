@@ -1,4 +1,4 @@
-scanhelper (0.6) UNRELEASED; urgency=low
+scanhelper (0.6) unstable; urgency=low
 
   * Improve XMP support:
     + Add the XML declaration.
@@ -7,7 +7,7 @@ scanhelper (0.6) UNRELEASED; urgency=low
       https://tools.ietf.org/html/rfc4122#section-3
     + Escape values before putting them into an XML document.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Thu, 10 Sep 2015 12:56:26 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Thu, 10 Sep 2015 18:56:50 +0200
 
 scanhelper (0.5) unstable; urgency=low
 
