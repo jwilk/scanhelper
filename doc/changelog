@@ -1,8 +1,8 @@
 scanhelper (0.6.1) UNRELEASED; urgency=low
 
-  * 
+  * Improve the test suite.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Fri, 11 Sep 2015 10:39:08 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 28 Sep 2015 12:16:37 +0200
 
 scanhelper (0.6) unstable; urgency=low
 

@@ -52,7 +52,7 @@ def test_timezones():
     t(1394737792, 'Europe/Moscow', '2014-03-13T23:09:52+04:00')  # used to be +04:00, but it's +03:00 now
 
 _uuid_regex = (
-    r'\Aurn:uuid:XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX\Z'
+    r'\Aurn:uuid:XXXXXXXX-XXXX-4XXX-[89ab]XXX-XXXXXXXXXXXX\Z'
     .replace('X', '[0-9a-f]')
 )
 
