@@ -97,7 +97,7 @@ documented_template = '''\
 
 def _extend_doc():
     global __doc__
-    documentation = re.findall('{{(\w+)}}.*\s+#\s+(.*)', documented_template)
+    documentation = re.findall(r'{{(\w+)}}.*\s+#\s+(.*)', documented_template)
     key_maxlen = max(len(key) for key, _ in documentation)
     descr_maxlen = max(len(descr) for _, descr in documentation)
     separator = ('=' * (key_maxlen)) + ' ' + ('=' * (descr_maxlen)) + '\n'
@@ -117,7 +117,7 @@ _extend_doc()
 del _extend_doc
 
 template = jinja2.Template(
-    re.sub('\s+#\s+.*', '', documented_template),
+    re.sub(r'\s+#\s+.*', '', documented_template),
     autoescape=True,
 )
 
