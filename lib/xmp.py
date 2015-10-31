@@ -106,7 +106,7 @@ def _extend_doc():
     __doc__ += separator
     __doc__ += line_fmt.format(
         key='key'.center(key_maxlen),
-        description='description'.center(descr_maxlen)
+        description='description'.center(descr_maxlen).rstrip()
     )
     __doc__ += separator
     for key, description in documentation:
