@@ -102,7 +102,7 @@ def _extend_doc():
     descr_maxlen = max(len(descr) for _, descr in documentation)
     separator = ('=' * (key_maxlen)) + ' ' + ('=' * (descr_maxlen)) + '\n'
     line_fmt = '{key:N} {description}\n'.replace('N', str(key_maxlen))
-    __doc__ += '\nList of available metadata keys:\n'
+    __doc__ += '\nList of available metadata keys:\n\n'
     __doc__ += separator
     __doc__ += line_fmt.format(
         key='key'.center(key_maxlen),
