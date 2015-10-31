@@ -112,6 +112,7 @@ def _extend_doc():
     for key, description in documentation:
         __doc__ += line_fmt.format(key=key, description=description)
     __doc__ += separator
+    __doc__ += '\n.. vi''m:ft=rst\n'
 
 _extend_doc()
 del _extend_doc
