@@ -12,7 +12,7 @@
 # General Public License for more details.
 
 '''
-For scanhelper ≥ 0.2, you can use the ``--xmp`` option to generate XMP_
+For scanhelper ≥ 0.2, you can use the ``--xmp`` option to generate XMP
 metadata for each scanned image in a separate file (so called *sidecar XMP
 file*).
 
