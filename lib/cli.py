@@ -266,7 +266,7 @@ def scan_single_batch(options, device, start=0, count=infinity, increment=1):
     master = os.fdopen(master, 'r', 1)
     subprocess = ipc.Subprocess(commandline, stdout=slave, stderr=slave)
     os.close(slave)
-    while 1:
+    while True:
         try:
             line = master.readline()
         except IOError:
