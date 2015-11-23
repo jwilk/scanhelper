@@ -147,7 +147,7 @@ class ArgumentParser(argparse.ArgumentParser):
         group.add_argument('--batch-count', metavar='#', default=infinity, type=int, help='number of pages to scan in a single batch (default: no limit)')
         group.add_argument('--batch-increment', metavar='#', default=1, type=int, help='increase page number in filename by # (default: 1)')
         group.add_argument('--batch-double', action='store_const', dest='batch_increment', const=2, help='same as --batch-increment=2')
-        group.add_argument('--batch-prompt', action='store_const', dest='batch_button', const=None, help='wait for ENTER before eatch batch (the default)')
+        group.add_argument('--batch-prompt', action='store_const', dest='batch_button', const=None, help='wait for ENTER before each batch (the default)')
         group.add_argument('--batch-button', metavar='BUTTON', help='wait for the scanner button before each batch')
         group.add_argument('--page-count', metavar='#', default=infinity, type=int, help='total number of pages to scan (default: no limit)')
         group.add_argument('--list-buttons', action='store_const', const='list_buttons', dest='action', help='show available buttons')

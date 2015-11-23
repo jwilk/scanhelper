@@ -1,8 +1,9 @@
 scanhelper (0.6.1) UNRELEASED; urgency=low
 
   * Improve the test suite.
+  * Fix typo in the help message.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Mon, 28 Sep 2015 12:16:37 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Tue, 24 Nov 2015 00:41:02 +0100
 
 scanhelper (0.6) unstable; urgency=low
 
