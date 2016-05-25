@@ -131,7 +131,7 @@ class ArgumentParser(argparse.ArgumentParser):
         self.add_argument('-d', '--device-name', metavar='DEVICE', dest='device', default=os.getenv('SANE_DEFAULT_DEVICE') or None, help='use a given scanner device')
         self.add_argument('-L', '--list-devices', action='store_const', const='list_devices', dest='action', help='show available scanner devices')
         self.add_argument('--format', choices=file_formats, dest='output_format', default='png', help='file format of output file (default: PNG)')
-        self.add_argument('-t', '--target-directory', metavar='DIRECTORY', help='output directory (default: an unique, time-based directory is created)')
+        self.add_argument('-t', '--target-directory', metavar='DIRECTORY', help='output directory (default: a unique, time-based directory is created)')
         self.add_argument('--target-directory-prefix', metavar='PREFIX', help='prefix for directory name if --target-directory is not used')
         self.add_argument('-i', '--icc-profile', metavar='PROFILE', help='include this ICC profile into TIFF file')
         self.add_argument('--accept-md5-only', action='store_true', help='only accept authorization requests using MD5')
