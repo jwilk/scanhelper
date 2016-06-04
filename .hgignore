@@ -3,4 +3,4 @@ syntax: glob
 *.py[co]
 .coverage
 doc/xmp.txt
-secret/
+secret
