@@ -1,6 +1,6 @@
 syntax: glob
 
-*.pyc
+*.py[co]
 .coverage
 doc/xmp.txt
 secret/
