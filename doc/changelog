@@ -30,7 +30,7 @@ scanhelper (0.4.1) unstable; urgency=low
 
   * Fix error reporting when scanimage was interrupted by signal.
   * Use PyPI instead of Google Code for argparse homepage.
-    http://google-opensource.blogspot.com/2015/03/farewell-to-google-code.html
+    https://google-opensource.blogspot.com/2015/03/farewell-to-google-code.html
 
  -- Jakub Wilk <jwilk@jwilk.net>  Fri, 01 May 2015 18:54:06 +0200
 
