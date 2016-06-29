@@ -158,7 +158,7 @@ def now():
 
 def gen_uuid():
     '''
-    generate an UUID URN, in accordance with RFC 4122
+    generate a UUID URN, in accordance with RFC 4122
     '''
     # https://tools.ietf.org/html/rfc4122#section-3
     return 'urn:uuid:{uuid}'.format(uuid=uuid.uuid4())
