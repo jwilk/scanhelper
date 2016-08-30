@@ -21,14 +21,14 @@ except ImportError as ex:
     utils.enhance_import_error(ex, 'Python Imaging Library', 'python-imaging-sane', 'http://www.pythonware.com/products/pil/')
     raise
 
-_initalized = False
+_initialized = False
 
 def initialize():
-    global _initalized
-    if _initalized:
+    global _initialized
+    if _initialized:
         return
     sane.init()
-    _initalized = True
+    _initialized = True
 
 def get_devices():
     initialize()
