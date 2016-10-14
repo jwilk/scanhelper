@@ -133,7 +133,7 @@ logger = logging.getLogger('scanhelper.ipc')
 
 __all__ = [
     'CalledProcessError', 'CalledProcessInterrupted',
-    'shell_escape', 'shell_escape_list',
+    'shell_escape',
     'Subprocess', 'PIPE',
 ]
 
