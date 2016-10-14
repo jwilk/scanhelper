@@ -14,7 +14,6 @@
 
 import argparse
 import sys
-import os
 import tempfile
 
 import PIL.Image as pil
