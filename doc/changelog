@@ -40,7 +40,7 @@ scanhelper (0.4) unstable; urgency=low
   * Implement the --batch-prompt option (wait for ENTER before starting new
     batch) and make it the default.
     Thanks to Janusz S. Bień to the bug report.
-    https://bitbucket.org/jwilk/scanhelper/issues/2
+    https://github.com/jwilk/scanhelper/issues/2
 
  -- Jakub Wilk <jwilk@jwilk.net>  Mon, 05 Jan 2015 18:03:18 +0100
 
