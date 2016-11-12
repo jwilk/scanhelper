@@ -1,5 +1,3 @@
-syntax: glob
-
 *.py[co]
 .coverage
 doc/xmp.txt
