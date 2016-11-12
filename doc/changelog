@@ -2,6 +2,8 @@ scanhelper (0.6.1) UNRELEASED; urgency=low
 
   * Improve the test suite.
   * Fix typo in the help message.
+  * Update bug tracker URLs.
+    The project repo has moved to GitHub.
 
  -- Jakub Wilk <jwilk@jwilk.net>  Tue, 24 Nov 2015 00:41:02 +0100
 
