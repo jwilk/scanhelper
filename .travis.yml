@@ -8,9 +8,11 @@ cache:
 install:
 - pip install pillow
 - pip install jinja2
+- pip install pyflakes
 - pip install docutils
 script:
 - nosetests -v
+- private/run-pyflakes
 - make
 - grep -r -l ft=rst doc/ | xargs -t -n1 -I{} rst2xml.py --strict {} /dev/null
 
