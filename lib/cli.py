@@ -147,7 +147,6 @@ class Config(object):
 class ArgumentParser(argparse.ArgumentParser):
 
     def __init__(self):
-        version = '%(prog)s ' + __version__
         argparse.ArgumentParser.__init__(self, add_help=False, formatter_class=argparse.RawDescriptionHelpFormatter)
         self.register('action', 'help', HelpAction)
         self.set_defaults(action='scan')
