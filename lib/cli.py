@@ -83,6 +83,29 @@ class HelpAction(argparse.Action):
         parser.print_help()
         parser.exit()
 
+class VersionAction(argparse.Action):
+
+    def __init__(self, option_strings, dest=argparse.SUPPRESS):
+        super(VersionAction, self).__init__(
+            option_strings=option_strings,
+            dest=dest,
+            nargs=0,
+            help="show program's version information and exit"
+        )
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        print('{prog} {0}'.format(__version__, prog=parser.prog))
+        print('+ Python {0}.{1}.{2}'.format(*sys.version_info))
+        pil_name = 'Pillow'
+        try:
+            pil_version = pil.PILLOW_VERSION
+        except AttributeError:
+            pil_name = 'PIL'
+            pil_version = pil.VERSION
+        print('+ {PIL} {0}'.format(pil_version, PIL=pil_name))
+        print('+ Jinja2 {0}'.format(xmp.jinja2.__version__))
+        parser.exit()
+
 class Config(object):
 
     @classmethod
@@ -157,7 +180,7 @@ class ArgumentParser(argparse.ArgumentParser):
         group.add_argument('--override-xmp', nargs='+', action='append', default=[], metavar='KEY=VALUE', help='override an XMP metadata item (only for advanced users)')
         group = self.add_argument_group('auxiliary actions')
         group.add_argument('-h', '--help', action=HelpAction, nargs=0, help='show this help message and exit')
-        group.add_argument('-V', '--version', action='version', version=version, help='show version information and exit')
+        group.add_argument('-V', '--version', action=VersionAction)
         group.add_argument('--clean-temporary-files', action='store_const', const='clean_temporary_files', dest='action', help='clean temporary files that might have been left by aborted runs of scanhelper')
         group.add_argument('--show-config', action='store_const', const='show_config', dest='action', help='show status of configuration files')
 
