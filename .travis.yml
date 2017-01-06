@@ -6,7 +6,8 @@ cache:
   directories:
   - $HOME/.cache/pip
 install:
-- pip install pillow
+- if [ "$TRAVIS_PYTHON_VERSION" = '2.6' ]; then PILLOW_VERSION=3.4.2; fi
+- pip install pillow${PILLOW_VERSION:+==$PILLOW_VERSION}
 - pip install jinja2
 - pip install pyflakes
 - pip install docutils
