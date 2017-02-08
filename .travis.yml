@@ -2,7 +2,6 @@ language: python
 python:
 - "2.6"
 - "2.7"
-cache: pip
 install:
 - if [ "$TRAVIS_PYTHON_VERSION" = '2.6' ]; then PILLOW_VERSION=3.4.2; fi
 - pip install --verbose pillow${PILLOW_VERSION:+==$PILLOW_VERSION}
