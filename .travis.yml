@@ -12,8 +12,8 @@ install:
 - pip install docutils
 script:
 - nosetests -v
-- private/run-pydiatra
-- private/run-pyflakes
+- py2diatra .
+- pyflakes .
 - make
 - private/check-rst
 
