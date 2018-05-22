@@ -16,7 +16,7 @@ Dependencies
 * Scanner Access Made Easy (SANE_) —
   API and tools to access to scanner hardware
 
-* Jinja2_ -
+* Jinja2_ —
   Python templating library
 
 .. _Python:
