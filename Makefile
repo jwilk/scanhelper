@@ -2,8 +2,8 @@
 all: doc/xmp.txt
 
 doc/xmp.txt: lib/xmp.py
-	python -c 'import lib.xmp; print lib.xmp.__doc__.strip()' > $(@)~
-	mv $(@)~ $(@)
+	python -c 'import lib.xmp; print lib.xmp.__doc__.strip()' > $(@).tmp
+	mv $(@).tmp $(@)
 
 .PHONY: clean
 clean: pyc-clean
