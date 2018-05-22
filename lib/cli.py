@@ -463,11 +463,11 @@ def clean_temporary_files(options):
     )
 
 def show_config(options):
-    tilde = os.path.expanduser('~')
+    tilde = os.path.expanduser('~/')
     print('Configuration files:')
     for filename in options.config.get_paths(writable=True):
         if filename.startswith(tilde):
-            filename = '~' + filename[len(tilde):]
+            filename = '~/' + filename[len(tilde):]
         print('    {0}'.format(filename))
     extra_options = options.config.get(None)
     print()
