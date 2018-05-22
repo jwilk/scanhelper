@@ -44,6 +44,7 @@ make pyc-clean
 rm .git*
 rm .travis.yml
 rm private/build-source-tarball
+rm README.rst  # shipped as doc/README
 cd ..
 mkdir -p "$pwd/dist"
 tar -czf "$pwd/dist/$name-$version.tar.gz" */
