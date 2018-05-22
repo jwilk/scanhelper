@@ -45,7 +45,7 @@ def main():
     ] + modules
     path = os.path.join(
         'tests',
-        'coverage.txt'
+        'coverage'
     )
     plugin = Coverage()
     report_stream = plugin.stream = io.BytesIO()
