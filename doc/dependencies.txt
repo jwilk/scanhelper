@@ -3,7 +3,7 @@ Dependencies
 
 * Python_ ≥ 2.6
 
-* argparse_ —
+* argparse_ (only for Python 2.6) —
   Python command line parser
 
 * Python Imaging Library (PIL_)
