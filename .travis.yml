@@ -5,11 +5,12 @@ python:
 - "2.6"
 - "2.7"
 before_install:
-- if [[ $TRAVIS_PYTHON_VERSION = 2.6 ]]; then pillow_suffix===3.4.2; fi
+- pillow=pillow
+- if [[ $TRAVIS_PYTHON_VERSION = 2.6 ]]; then pillow=pillow==3.4.2; fi
 - pyflakes=pyflakes
 - if [[ $TRAVIS_PYTHON_VERSION = 2.6 ]]; then pyflakes='pyflakes<2'; fi
 install:
-- pip install --verbose pillow${pillow_suffix}
+- pip install --verbose $pillow
 - pip install jinja2
 - pip install pydiatra $pyflakes
 - pip install docutils
