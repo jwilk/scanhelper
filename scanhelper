@@ -2,7 +2,7 @@
 
 import sys
 
-from scanhelper.cli import main
+from lib.cli import main
 
 main(sys.argv)
 
