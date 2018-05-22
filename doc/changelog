@@ -1,10 +1,15 @@
 scanhelper (0.7) UNRELEASED; urgency=low
 
+  * Fix the --show-config option:
+    + Fix printing options.
+       Regression introduced in 0.6.1.
+    + Fix incorrect shortening paths using the tilde notation.
+  * Fix printing paths for the --show-config option.
   * Make --version print also versions of Python and the libraries.
   * Make --version print to stdout, not stderr.
   * Update PyPI URLs.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Tue, 22 May 2018 16:38:04 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Tue, 22 May 2018 21:08:55 +0200
 
 scanhelper (0.6.1) unstable; urgency=low
 
