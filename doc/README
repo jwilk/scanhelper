@@ -6,7 +6,7 @@ Overview
 Dependencies
 ============
 
-* Python_ ≥ 2.6
+* Python_ 2.6 or 2.7
 
 * argparse_ (only for Python 2.6) —
   Python command line parser
