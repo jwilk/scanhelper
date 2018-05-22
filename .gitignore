@@ -1,4 +1,4 @@
 *.py[co]
 /.coverage
 /dist
-/doc/xmp.txt
+/doc/xmp

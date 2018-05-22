@@ -10,15 +10,15 @@
 # General Public License for more details.
 
 .PHONY: all
-all: doc/xmp.txt
+all: doc/xmp
 
-doc/xmp.txt: lib/xmp.py
+doc/xmp: lib/xmp.py
 	python -c 'import lib.xmp; print lib.xmp.__doc__.strip()' > $(@).tmp
 	mv $(@).tmp $(@)
 
 .PHONY: clean
 clean: pyc-clean
-	rm -f doc/xmp.txt
+	rm -f doc/xmp
 
 .PHONY: pyc-clean
 pyc-clean:
