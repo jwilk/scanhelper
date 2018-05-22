@@ -18,6 +18,7 @@ doc/xmp: lib/xmp.py
 
 .PHONY: clean
 clean: pyc-clean
+	rm -f .coverage
 	rm -f doc/xmp
 
 .PHONY: pyc-clean
