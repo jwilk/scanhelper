@@ -22,7 +22,7 @@ clean: pyc-clean
 	rm -f doc/xmp
 
 .PHONY: pyc-clean
-pyc-clean:
+pyc-clean:  # used by private/build-source-tarball
 	find . -name '*.py[co]' -delete
 
 # vim:ts=4 sts=4 sw=4 noet
