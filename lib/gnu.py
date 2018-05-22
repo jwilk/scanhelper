@@ -17,9 +17,9 @@ import ctypes
 
 libc = ctypes.CDLL(None)
 
-def sprintf(format, *args):
+def sprintf(fmt, *args):
     string = ctypes.c_char_p()
-    libc.asprintf(ctypes.byref(string), format, *args)
+    libc.asprintf(ctypes.byref(string), fmt, *args)
     try:
         return string.value
     finally:
