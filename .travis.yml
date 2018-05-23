@@ -24,6 +24,8 @@ script:
 - pyflakes .
 - make
 - private/check-rst
-- python scanhelper --version
+- make install PREFIX=~/.local
+- cd /
+- scanhelper --version
 
 # vim:ts=2 sts=2 sw=2 et
