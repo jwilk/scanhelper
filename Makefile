@@ -9,11 +9,13 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 # General Public License for more details.
 
+PYTHON = python
+
 .PHONY: all
 all: doc/xmp
 
 doc/xmp: lib/xmp.py
-	python -c 'import lib.xmp; print lib.xmp.__doc__.strip()' > $(@).tmp
+	$(PYTHON) -c 'import lib.xmp; print lib.xmp.__doc__.strip()' > $(@).tmp
 	mv $(@).tmp $(@)
 
 .PHONY: clean
