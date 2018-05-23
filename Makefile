@@ -11,12 +11,31 @@
 
 PYTHON = python
 
+PREFIX = /usr/local
+DESTDIR =
+
+bindir = $(PREFIX)/bin
+basedir = $(PREFIX)/share/scanhelper
+
 .PHONY: all
 all: doc/xmp
 
 doc/xmp: lib/xmp.py
 	$(PYTHON) -c 'import lib.xmp; print lib.xmp.__doc__.strip()' > $(@).tmp
 	mv $(@).tmp $(@)
+
+.PHONY: install
+install: scanhelper
+	install -d -m755 $(DESTDIR)$(bindir)
+	python_exe=$$($(PYTHON) -c 'import sys; print(sys.executable)') && \
+	sed \
+		-e "1 s@^#!.*@#!$$python_exe@" \
+		-e "s#^basedir = .*#basedir = '$(basedir)/'#" \
+		$(<) > $(DESTDIR)$(bindir)/$(<)
+	chmod 0755 $(DESTDIR)$(bindir)/$(<)
+	install -d -m755 $(DESTDIR)$(basedir)/lib
+	( find lib -type f ! -name '*.py[co]' ) \
+	| xargs -t -I {} install -p -m644 {} $(DESTDIR)$(basedir)/{}
 
 .PHONY: clean
 clean: pyc-clean
