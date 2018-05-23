@@ -41,7 +41,7 @@ except ImportError as ex:
 try:
     import jinja2
 except ImportError as ex:
-    utils.enhance_import_error(ex, 'Jinja2 templating library', 'python-jinja2', 'http://jinja.pocoo.org/')
+    utils.enhance_import_error(ex, 'Jinja2 templating library', 'python-jinja2', 'https://pypi.org/project/Jinja2/')
     raise
 
 from . import __version__
