@@ -6,6 +6,9 @@ Overview
 Dependencies
 ============
 
+* Scanner Access Made Easy (SANE_) —
+  API and tools to access to scanner hardware
+
 * Python_ 2.6 or 2.7
 
 * argparse_ (only for Python 2.6) —
@@ -13,20 +16,17 @@ Dependencies
 
 * Python Imaging Library (PIL_)
 
-* Scanner Access Made Easy (SANE_) —
-  API and tools to access to scanner hardware
-
 * Jinja2_ —
   Python templating library
 
+.. _SANE:
+   http://www.sane-project.org/
 .. _Python:
    https://www.python.org/
 .. _argparse:
    https://pypi.org/project/argparse/
 .. _PIL:
    http://www.pythonware.com/products/pil/
-.. _SANE:
-   http://www.sane-project.org/
 .. _Jinja2:
    https://pypi.org/project/Jinja2/
 
