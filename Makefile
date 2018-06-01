@@ -31,7 +31,7 @@ install: scanhelper
 	install -d -m755 $(DESTDIR)$(bindir)
 	python_exe=$$($(PYTHON) -c 'import sys; print(sys.executable)') && \
 	sed \
-		-e "1 s@^#!.*@#!$$python_exe@" \
+		-e "1 s@^#![^ ]*@#!$$python_exe@" \
 		-e "s#^basedir = .*#basedir = '$(basedir)/'#" \
 		$(<) > $(DESTDIR)$(bindir)/$(<)
 	chmod 0755 $(DESTDIR)$(bindir)/$(<)
