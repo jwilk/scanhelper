@@ -14,7 +14,11 @@ Dependencies
 * argparse_ (only for Python 2.6) —
   Python command line parser
 
-* Python Imaging Library (PIL_)
+* Pillow_ —
+  Python imaging library
+
+* python-sane_ —
+  Python SANE interface
 
 * Jinja2_ —
   Python templating library
@@ -25,8 +29,10 @@ Dependencies
    https://www.python.org/
 .. _argparse:
    https://pypi.org/project/argparse/
-.. _PIL:
-   http://www.pythonware.com/products/pil/
+.. _Pillow:
+   https://pypi.org/project/Pillow/
+.. _python-sane:
+   https://pypi.org/project/python-sane/
 .. _Jinja2:
    https://pypi.org/project/Jinja2/
 

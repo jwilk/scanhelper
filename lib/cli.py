@@ -49,7 +49,7 @@ except ImportError as ex:
 try:
     import PIL.Image as pil
 except ImportError as ex:
-    utils.enhance_import_error(ex, 'Python Imaging Library', 'python-imaging', 'http://www.pythonware.com/products/pil/')
+    utils.enhance_import_error(ex, 'Pillow', 'python-pil', 'https://pypi.org/project/Pillow/')
     raise
 
 temporary_suffix = '.tmp.scanhelper~'
