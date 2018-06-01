@@ -22,7 +22,7 @@ import PIL.Image as pil
 
 sys.path[0] += '/..'
 
-from scanhelper import xmp
+from lib import xmp
 
 class device:
     vendor = '<dummy vendor>'
