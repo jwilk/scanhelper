@@ -1,3 +1,7 @@
+'''
+scanhelper's private modules
+'''
+
 import sys
 
 if sys.version_info < (2, 6):
