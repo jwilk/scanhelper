@@ -23,7 +23,7 @@ basedir = $(PREFIX)/share/scanhelper
 all: doc/xmp
 
 doc/xmp: lib/xmp.py
-	$(PYTHON) -c 'import lib.xmp; print lib.xmp.__doc__.strip()' > $(@).tmp
+	$(PYTHON) -m lib.xmp > $(@).tmp
 	mv $(@).tmp $(@)
 
 .PHONY: install

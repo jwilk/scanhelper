@@ -13,17 +13,9 @@
 # FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 # more details.
 
-'''
-You can use the ``--xmp`` option to generate XMP metadata for each scanned
-image in a separate file (so called *sidecar XMP file*).
+'''XMP support'''
 
-It is also possible to reconstruct XMP metadata for existing files using the
-``--reconstruct-xmp`` option. However, scanhelper is not always able to extract
-all the needed information correctly (e.g. old versions of scanhelper didn't
-preserve information about resolution). To work around this problem, there is
-``--override-xmp KEY=VALUE ...`` option that allows you to override some
-metadata items.
-'''
+from __future__ import print_function
 
 import datetime
 import os
@@ -96,27 +88,41 @@ documented_template = '''\
 
 '''
 
-def _extend_doc():
-    global __doc__
+doc_header = '''\
+You can use the ``--xmp`` option to generate XMP metadata for each scanned
+image in a separate file (so called *sidecar XMP file*).
+
+It is also possible to reconstruct XMP metadata for existing files using the
+``--reconstruct-xmp`` option. However, scanhelper is not always able to extract
+all the needed information correctly (e.g. old versions of scanhelper didn't
+preserve information about resolution). To work around this problem, there is
+``--override-xmp KEY=VALUE ...`` option that allows you to override some
+metadata items.
+'''
+
+def print_doc():
     documentation = re.findall(r'{{(\w+)}}.*\s+#\s+(.*)', documented_template)
     key_maxlen = max(len(key) for key, _ in documentation)
     descr_maxlen = max(len(descr) for _, descr in documentation)
-    separator = ('=' * (key_maxlen)) + ' ' + ('=' * (descr_maxlen)) + '\n'
-    line_fmt = '{key:N} {description}\n'.replace('N', str(key_maxlen))
-    __doc__ += '\nList of available metadata keys:\n\n'
-    __doc__ += separator
-    __doc__ += line_fmt.format(
+    separator = ('=' * (key_maxlen)) + ' ' + ('=' * (descr_maxlen))
+    line_fmt = '{key:N} {description}'.replace('N', str(key_maxlen))
+    print(doc_header)
+    print('List of available metadata keys:')
+    print()
+    print(separator)
+    print(line_fmt.format(
         key='key'.center(key_maxlen),
         description='description'.center(descr_maxlen).rstrip()
-    )
-    __doc__ += separator
+    ))
+    print(separator)
     for key, description in documentation:
-        __doc__ += line_fmt.format(key=key, description=description)
-    __doc__ += separator
-    __doc__ += '\n.. vi''m:ft=rst\n'
+        print(line_fmt.format(key=key, description=description))
+    print(separator)
+    print()
+    print('.. vi''m:ft=rst')
 
-_extend_doc()
-del _extend_doc
+if __name__ == '__main__':
+    print_doc()
 
 template = jinja2.Template(
     re.sub(r'\s+#\s+.*', '', documented_template),
