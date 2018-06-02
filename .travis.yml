@@ -13,15 +13,18 @@ before_install:
 - if [[ $TRAVIS_PYTHON_VERSION = 2.6 ]]; then pillow='pillow==3.4.2'; fi
 - pyflakes=pyflakes
 - if [[ $TRAVIS_PYTHON_VERSION = 2.6 ]]; then pyflakes='pyflakes<2'; fi
+- if [[ $TRAVIS_PYTHON_VERSION = 2.6 ]]; then if_pylint=:; fi
 install:
 - pip install --verbose $pillow python-sane
 - pip install jinja2
 - pip install pydiatra $pyflakes
+- $if_pylint pip install pylint
 - pip install docutils
 script:
 - nosetests -v
 - py2diatra .
 - pyflakes .
+- $if_pylint private/run-pylint
 - make
 - private/check-rst
 - make install PREFIX=~/.local
