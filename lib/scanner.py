@@ -75,7 +75,7 @@ class Device(object):
     def open(self):
         if self._device is not None:
             return
-        self._device = sane._open(self.name)
+        self._device = sane._open(self.name)  # pylint: disable=protected-access
 
     def close(self):
         if self._device is None:

@@ -344,7 +344,7 @@ def create_unique_directory(prefix=''):
             except (OSError, IOError):
                 continue
             return path
-    raise
+    raise  # pylint: disable=misplaced-bare-raise
 
 def scan(options):
     if options.output_format == 'png':

@@ -6,7 +6,7 @@ basedir = None
 if basedir is not None:
     sys.path[:0] = [basedir]
 
-from lib.cli import main
+from lib.cli import main  # pylint: disable=wrong-import-position
 
 main(sys.argv)
 

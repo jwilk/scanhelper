@@ -59,7 +59,7 @@ class assert_raises(object):
         return self
     def __exit__(self, exc_type, exc_value, tb):
         if exc_type is None:
-            assert_true(False, '{0} not raised'.format(self._exc_type.__name__))
+            assert_true(False, '{0} not raised'.format(self._exc_type.__name__))  # pylint: disable=redundant-unittest-assert
         if not issubclass(exc_type, self._exc_type):
             return False
         self.exception = exc_value
@@ -71,7 +71,7 @@ def assert_regex(text, regex):
         regex = re.compile(regex)
     if not regex.search(text):
         message = "Regex didn't match: {0!r} not found in {1!r}".format(regex.pattern, text)
-        assert_true(False, msg=message)
+        assert_true(False, msg=message)  # pylint: disable=redundant-unittest-assert
 
 def assert_rfc3339_timestamp(timestamp):
     return assert_regex(
@@ -129,7 +129,7 @@ def fork_isolation(f):
     EXIT_EXCEPTION = 101
     EXIT_SKIP_TEST = 102
 
-    exit = os._exit
+    exit = os._exit  # pylint: disable=protected-access,redefined-builtin
     # sys.exit() can't be used here, because nose catches all exceptions,
     # including SystemExit
 
@@ -147,7 +147,7 @@ def fork_isolation(f):
                 with os.fdopen(writefd, 'wb') as fp:
                     fp.write(s)
                 exit(EXIT_SKIP_TEST)
-            except Exception:
+            except Exception:  # pylint: disable=broad-except
                 exctp, exc, tb = sys.exc_info()
                 s = traceback.format_exception(exctp, exc, tb, _n_relevant_tb_levels(tb))
                 s = ''.join(s)
@@ -176,7 +176,7 @@ def fork_isolation(f):
 
 if 'coverage' in sys.modules:
     fork_isolation  # quieten pyflakes
-    def fork_isolation(f):
+    def fork_isolation(f):  # pylint: disable=function-redefined
         # Fork isolation would break coverage measurements.
         # Oh well. FIXME.
         return f

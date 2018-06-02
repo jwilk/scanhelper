@@ -56,8 +56,8 @@ class CalledProcessInterrupted(CalledProcessError):
 
     _signal_names = get_signal_names()
 
-    def __init__(self, signal_id, command):
-        Exception.__init__(self, command, signal_id)
+    def __init__(self, signal_id, command):  # pylint: disable=super-init-not-called
+        Exception.__init__(self, command, signal_id)  # pylint: disable=non-parent-init-called
         self.returncode = None
 
     def __str__(self):
