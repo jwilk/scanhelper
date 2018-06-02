@@ -148,37 +148,64 @@ class ArgumentParser(argparse.ArgumentParser):
         argparse.ArgumentParser.__init__(self, add_help=False, formatter_class=argparse.RawDescriptionHelpFormatter)
         self.register('action', 'help', HelpAction)
         self.set_defaults(action='scan')
-        self.add_argument('-d', '--device-name', metavar='DEVICE', dest='device', default=os.getenv('SANE_DEFAULT_DEVICE') or None, help='use a given scanner device')
-        self.add_argument('-L', '--list-devices', action='store_const', const='list_devices', dest='action', help='show available scanner devices')
-        self.add_argument('--format', choices=file_formats, type=str.lower, dest='output_format', default='png', help='file format of output file (default: PNG)')
-        self.add_argument('-t', '--target-directory', metavar='DIRECTORY', help='output directory (default: a unique, time-based directory is created)')
-        self.add_argument('--target-directory-prefix', metavar='PREFIX', help='prefix for directory name if --target-directory is not used')
-        self.add_argument('-i', '--icc-profile', metavar='PROFILE', help='include this ICC profile into TIFF file')
-        self.add_argument('--accept-md5-only', action='store_true', help='only accept authorization requests using MD5')
-        self.add_argument('-n', '--dont-scan', action='store_true', help='(not supported)')
-        self.add_argument('-T', '--test', action='store_true', help='(not supported)')
-        self.add_argument('-B', '--buffer-size', metavar='#', type=int, default=None, help='input buffer size (in kB; default: 32)')
-        self.add_argument('-p', '--progress', action='store_true', help='print progress messages')
-        self.add_argument('-v', '--verbose', action='store_true', help='more informational messages')
+        sane_default_dev = os.getenv('SANE_DEFAULT_DEVICE') or None
+        self.add_argument('-d', '--device-name', metavar='DEVICE', dest='device', default=sane_default_dev,
+            help='use a given scanner device')
+        self.add_argument('-L', '--list-devices', action='store_const', const='list_devices', dest='action',
+            help='show available scanner devices')
+        self.add_argument('--format', choices=file_formats, type=str.lower, dest='output_format', default='png',
+            help='file format of output file (default: PNG)')
+        self.add_argument('-t', '--target-directory', metavar='DIRECTORY',
+            help='output directory (default: a unique, time-based directory is created)')
+        self.add_argument('--target-directory-prefix', metavar='PREFIX',
+            help='prefix for directory name if --target-directory is not used')
+        self.add_argument('-i', '--icc-profile', metavar='PROFILE',
+            help='include this ICC profile into TIFF file')
+        self.add_argument('--accept-md5-only', action='store_true',
+            help='only accept authorization requests using MD5')
+        self.add_argument('-n', '--dont-scan', action='store_true',
+            help='(not supported)')
+        self.add_argument('-T', '--test', action='store_true',
+            help='(not supported)')
+        self.add_argument('-B', '--buffer-size', metavar='#', type=int, default=None,
+            help='input buffer size (in kB; default: 32)')
+        self.add_argument('-p', '--progress', action='store_true',
+            help='print progress messages')
+        self.add_argument('-v', '--verbose', action='store_true',
+            help='more informational messages')
         self.add_argument('--profile')
         group = self.add_argument_group('batch mode')
-        group.add_argument('-b', '--batch-mode', metavar='TEMPLATE', dest='filename_template', help='output filename template (default: p%%04d.<ext>)')
-        group.add_argument('--batch-start', metavar='#', default=1, type=int, help='page number to start naming files with (default: 1)')
-        group.add_argument('--batch-count', metavar='#', default=infinity, type=int, help='number of pages to scan in a single batch (default: no limit)')
-        group.add_argument('--batch-increment', metavar='#', default=1, type=int, help='increase page number in filename by # (default: 1)')
-        group.add_argument('--batch-double', action='store_const', dest='batch_increment', const=2, help='same as --batch-increment=2')
-        group.add_argument('--batch-prompt', action='store_const', dest='batch_button', const=None, help='wait for ENTER before each batch (the default)')
-        group.add_argument('--batch-button', metavar='BUTTON', help='wait for the scanner button before each batch')
-        group.add_argument('--page-count', metavar='#', default=infinity, type=int, help='total number of pages to scan (default: no limit)')
-        group.add_argument('--list-buttons', action='store_const', const='list_buttons', dest='action', help='show available buttons')
+        group.add_argument('-b', '--batch-mode', metavar='TEMPLATE', dest='filename_template',
+            help='output filename template (default: p%%04d.<ext>)')
+        group.add_argument('--batch-start', metavar='#', default=1, type=int,
+            help='page number to start naming files with (default: 1)')
+        group.add_argument('--batch-count', metavar='#', default=infinity, type=int,
+            help='number of pages to scan in a single batch (default: no limit)')
+        group.add_argument('--batch-increment', metavar='#', default=1, type=int,
+            help='increase page number in filename by # (default: 1)')
+        group.add_argument('--batch-double', action='store_const', dest='batch_increment', const=2,
+            help='same as --batch-increment=2')
+        group.add_argument('--batch-prompt', action='store_const', dest='batch_button', const=None,
+            help='wait for ENTER before each batch (the default)')
+        group.add_argument('--batch-button', metavar='BUTTON',
+            help='wait for the scanner button before each batch')
+        group.add_argument('--page-count', metavar='#', default=infinity, type=int,
+            help='total number of pages to scan (default: no limit)')
+        group.add_argument('--list-buttons', action='store_const', const='list_buttons', dest='action',
+            help='show available buttons')
         group = self.add_argument_group('XMP support')
-        group.add_argument('--xmp', action='store_true', help='create sidecar XMP metadata')
-        group.add_argument('--reconstruct-xmp', nargs='+', metavar='IMAGE', help='reconstruct sidecar XMP metadata from existing files (only for advanced users)')
-        group.add_argument('--override-xmp', nargs='+', action='append', default=[], metavar='KEY=VALUE', help='override an XMP metadata item (only for advanced users)')
+        group.add_argument('--xmp', action='store_true',
+            help='create sidecar XMP metadata')
+        group.add_argument('--reconstruct-xmp', nargs='+', metavar='IMAGE',
+            help='reconstruct sidecar XMP metadata from existing files (only for advanced users)')
+        group.add_argument('--override-xmp', nargs='+', action='append', default=[], metavar='KEY=VALUE',
+            help='override an XMP metadata item (only for advanced users)')
         group = self.add_argument_group('auxiliary actions')
-        group.add_argument('-h', '--help', action=HelpAction, nargs=0, help='show this help message and exit')
+        group.add_argument('-h', '--help', action=HelpAction, nargs=0,
+            help='show this help message and exit')
         group.add_argument('-V', '--version', action=VersionAction)
-        group.add_argument('--show-config', action='store_const', const='show_config', dest='action', help='show status of configuration files')
+        group.add_argument('--show-config', action='store_const', const='show_config', dest='action',
+            help='show status of configuration files')
 
     def parse_args(self, args, namespace=None):
         config = Config()
