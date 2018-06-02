@@ -22,6 +22,8 @@ import signal
 import tempfile
 import shutil
 
+from lib import ipc
+
 from .tools import (
     SkipTest,
     assert_equal,
@@ -29,8 +31,6 @@ from .tools import (
     assert_raises,
     interim_environ,
 )
-
-from lib import ipc
 
 nonexistent_command = 'didjvu-nonexistent-command'
 

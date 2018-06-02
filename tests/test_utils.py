@@ -15,13 +15,13 @@
 
 import sys
 
+from lib import utils
+
 from .tools import (
     assert_equal,
     assert_raises,
     interim,
 )
-
-from lib import utils
 
 class test_enhance_import():
 

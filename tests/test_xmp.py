@@ -15,6 +15,8 @@
 
 import time
 
+from lib import xmp
+
 from .tools import (
     assert_equal,
     assert_not_equal,
@@ -23,8 +25,6 @@ from .tools import (
     fork_isolation,
     interim_environ,
 )
-
-from lib import xmp
 
 def test_now():
     ts = xmp.now()
