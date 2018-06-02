@@ -61,6 +61,7 @@ class Device(object):
     def _init_options(self):
         self._options = {}
         for index, name, title, desc, type_, unit, size, capabilities, constraint in self._device.get_options():
+            del title, desc
             if name is None:
                 continue
             if name == 'button' or (capabilities & sane.CAP_HARD_SELECT):
