@@ -207,7 +207,7 @@ class ArgumentParser(argparse.ArgumentParser):
         group.add_argument('--show-config', action='store_const', const='show_config', dest='action',
             help='show status of configuration files')
 
-    def parse_args(self, args, namespace=None):
+    def parse_args(self, args=None, namespace=None):
         config = Config()
         my_args = args[1:]
         my_args[:0] = config.get()
