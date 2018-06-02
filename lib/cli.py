@@ -432,7 +432,7 @@ def reconstruct_xmp(options):
         # Don't bother running get_device(), as it's time consuming.
         pass
     else:
-        device  # quieten pyflakes
+        assert device  # quieten pyflakes
         try:
             device = get_device(options)
         except IndexError:

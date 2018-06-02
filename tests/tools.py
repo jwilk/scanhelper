@@ -175,7 +175,7 @@ def fork_isolation(f):
     return wrapper
 
 if 'coverage' in sys.modules:
-    fork_isolation  # quieten pyflakes
+    assert fork_isolation  # quieten pyflakes
     def fork_isolation(f):  # pylint: disable=function-redefined
         # Fork isolation would break coverage measurements.
         # Oh well. FIXME.
