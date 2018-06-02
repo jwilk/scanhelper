@@ -17,8 +17,6 @@ import sys
 
 from .tools import (
     assert_equal,
-    assert_greater_equal,
-    assert_is_instance,
     assert_raises,
     interim,
 )
@@ -66,10 +64,5 @@ class test_enhance_import():
                 'No module named nonexistent; '
                 'please install the PyNonexistent package <http://pynonexistent.example.net/>'
             )
-
-def test_get_cpu_count():
-    n = utils.get_cpu_count()
-    assert_is_instance(n, int)
-    assert_greater_equal(n, 1)
 
 # vim:ts=4 sts=4 sw=4 et

@@ -28,15 +28,4 @@ def enhance_import_error(exception, package, debian_package, homepage):
         message += ' <{url}>'.format(url=homepage)
     exception.args = [message]
 
-def get_cpu_count():
-    try:
-        import multiprocessing
-        return multiprocessing.cpu_count()
-    except (ImportError, NotImplementedError):  # no coverage
-        pass
-    try:  # no coverage
-        return os.sysconf('SC_NPROCESSORS_ONLN')
-    except (ValueError, OSError, AttributeError):  # no coverage
-        return 1
-
 # vim:ts=4 sts=4 sw=4 et
