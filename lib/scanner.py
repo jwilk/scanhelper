@@ -20,7 +20,7 @@ from . import utils
 try:
     import _sane as sane
 except ImportError as ex:
-    utils.enhance_import_error(ex, 'Python Imaging Library', 'python-imaging-sane', 'http://www.pythonware.com/products/pil/')
+    utils.enhance_import_error(ex, 'Python Imaging Library', 'python-sane', 'http://www.pythonware.com/products/pil/')
     raise
 
 _initialized = False
