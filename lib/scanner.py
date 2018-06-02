@@ -56,6 +56,9 @@ class Device(object):
         self._device = None
         self.open()
         assert self._device is not None
+        self._init_options()
+
+    def _init_options(self):
         self._options = {}
         for index, name, title, desc, type_, unit, size, capabilities, constraint in self._device.get_options():
             if name is None:
