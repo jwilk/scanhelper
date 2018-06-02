@@ -234,6 +234,7 @@ class ArgumentParser(argparse.ArgumentParser):
         return result
 
 def list_devices(options):
+    del options
     for d in scanner.get_devices():
         print('\t'.join(d))
 
