@@ -104,4 +104,11 @@ class Status:
     NO_MEM = 10
     ACCESS_DENIED = 11
 
+__all__ = [
+    'Device',
+    'Status',
+    'get_devices',
+    'initialize',
+]
+
 # vim:ts=4 sts=4 sw=4 et
