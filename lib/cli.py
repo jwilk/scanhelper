@@ -19,7 +19,6 @@ scanhelper's command-line interface
 
 from __future__ import print_function
 
-import Queue as queue
 import collections
 import datetime
 import distutils.version
@@ -31,7 +30,6 @@ import pty
 import re
 import shlex
 import sys
-import threading
 import time
 
 from . import __version__
@@ -48,15 +46,7 @@ except ImportError as ex:
     utils.enhance_import_error(ex, 'argparse', 'python-argparse', 'https://pypi.org/project/argparse/')
     raise
 
-try:
-    import PIL.Image as pil
-except ImportError as ex:
-    utils.enhance_import_error(ex, 'Python Imaging Library', 'python-imaging', 'http://www.pythonware.com/products/pil/')
-    raise
-
-temporary_suffix = '.tmp.scanhelper~'
-scanimage_file_formats = ('pnm', 'tiff')
-file_formats = scanimage_file_formats + ('png',)
+file_formats = ('pnm', 'tiff', 'png')
 media_types = dict(
     pnm='image/x-portable-anymap',
     tiff='image/tiff',
@@ -106,10 +96,10 @@ class VersionAction(argparse.Action):
         print('+ Python {0}.{1}.{2}'.format(*sys.version_info))
         pil_name = 'Pillow'
         try:
-            pil_version = pil.PILLOW_VERSION
+            pil_version = xmp.pil.PILLOW_VERSION
         except AttributeError:
             pil_name = 'PIL'
-            pil_version = pil.VERSION
+            pil_version = xmp.pil.VERSION
         print('+ {PIL} {0}'.format(pil_version, PIL=pil_name))
         print('+ Jinja2 {0}'.format(xmp.jinja2.__version__))
         parser.exit()
@@ -188,7 +178,6 @@ class ArgumentParser(argparse.ArgumentParser):
         group = self.add_argument_group('auxiliary actions')
         group.add_argument('-h', '--help', action=HelpAction, nargs=0, help='show this help message and exit')
         group.add_argument('-V', '--version', action=VersionAction)
-        group.add_argument('--clean-temporary-files', action='store_const', const='clean_temporary_files', dest='action', help='clean temporary files that might have been left by aborted runs of scanhelper')
         group.add_argument('--show-config', action='store_const', const='show_config', dest='action', help='show status of configuration files')
 
     def parse_args(self, args, namespace=None):
@@ -272,12 +261,11 @@ def get_scanimage_args(options, device, start=0, count=infinity, increment=1):
     assert isinstance(device, scanner.Device)
     result = []
     result += ['--device-name', device.name]
-    result += ['--format={0}'.format('pnm' if options.output_format == 'pnm' else 'tiff')]
+    result += ['--format={0}'.format(options.output_format)]
     if options.icc_profile is not None:
         result += ['--icc-profile', options.icc_profile]
-    result += ['--batch={template}{suffix}'.format(
+    result += ['--batch={template}'.format(
         template=options.filename_template,
-        suffix=('' if options.output_format in scanimage_file_formats else temporary_suffix)
     )]
     if start >= 0:
         result += ['--batch-start={0}'.format(start)]
@@ -295,6 +283,17 @@ def get_scanimage_args(options, device, start=0, count=infinity, increment=1):
         result += ['--buffer-size={0}'.format(options.buffer_size)]
     assert all(isinstance(x, str) for x in result)
     return result + options.extra_args
+
+def get_scanimage_version():
+    proc = run_scanimage('--version', stdout=ipc.PIPE)
+    line = proc.stdout.readline()
+    proc.stdout.close()
+    proc.wait()
+    match = re.match('^scanimage [(]sane-backends[)] ([0-9.]+)', line)
+    if match is None:
+        error('cannot parse scanimage version')
+    version = match.group(1)
+    return distutils.version.LooseVersion(version)
 
 def wait_for_button(device, button, sleep_interval=0.1):
     if button is None:
@@ -347,53 +346,14 @@ def create_unique_directory(prefix=''):
             return path
     raise
 
-class ConvertManager(object):
-
-    def __init__(self, nthreads=None):
-        if nthreads is None:
-            nthreads = utils.get_cpu_count()
-        if nthreads < 1:
-            nthreads = 1
-        self.queue = queue.Queue(0)
-        self.threads = [threading.Thread(target=self._work) for x in xrange(nthreads)]
-        for thread in self.threads:
-            thread.start()
-
-    def add(self, filename):
-        self.queue.put(filename)
-
-    def close(self):
-        for thread in self.threads:
-            self.queue.put(None)
-        qsize = self.queue.qsize()
-        if qsize > 0:
-            logger.info('Waiting for converter threads to finish ({0})...'.format(
-                '~{0} files left'.format(qsize) if qsize > 0
-                else '1 file left'
-            ))
-        for thread in self.threads:
-            thread.join()
-
-    def _convert(self, filename):
-        logger.debug('Converting %s', filename)
-        image = pil.open(filename + temporary_suffix)
-        options = {}
-        try:
-            options['dpi'] = image.info['dpi']
-        except LookupError:
-            pass
-        image.save(filename, **options)
-        os.stat(filename)
-        os.remove(filename + temporary_suffix)
-
-    def _work(self):
-        while True:
-            filename = self.queue.get()
-            if filename is None:
-                return
-            self._convert(filename)
-
 def scan(options):
+    if options.output_format == 'png':
+        if get_scanimage_version() < '1.0.25':
+            if utils.debian:
+                pkg = 'sane-utils'
+            else:
+                pkg = 'scanimage (sane-backends)'
+            error('PNG output format requires {pkg} >= 1.0.25'.format(pkg=pkg))
     try:
         device = get_device(options)
     except IndexError as exc:
@@ -411,37 +371,29 @@ def scan(options):
     increment = options.batch_increment
     batch_count = options.batch_count
     total_count = options.page_count
-    convert_manager = ConvertManager()
     try:
-        try:
-            while total_count > 0:
-                wait_for_button(device, options.batch_button)
-                for page in scan_single_batch(options, device, start, min(total_count, batch_count), increment):
-                    image_filename = gnu.sprintf(options.filename_template, start)
-                    if options.xmp:
-                        real_image_filename = image_filename
-                        if options.output_format not in scanimage_file_formats:
-                            real_image_filename += temporary_suffix
-                        xmp_filename = image_filename + '.xmp'
-                        override = dict(
-                            media_type=media_types[options.output_format],
+        while total_count > 0:
+            wait_for_button(device, options.batch_button)
+            for page in scan_single_batch(options, device, start, min(total_count, batch_count), increment):
+                image_filename = gnu.sprintf(options.filename_template, start)
+                if options.xmp:
+                    real_image_filename = image_filename
+                    xmp_filename = image_filename + '.xmp'
+                    override = dict(
+                        media_type=media_types[options.output_format],
+                    )
+                    override.update(options.override_xmp)
+                    with open(xmp_filename, 'w') as xmp_file:
+                        xmp.write(
+                            xmp_file=xmp_file,
+                            image_filename=real_image_filename,
+                            device=device,
+                            override=override
                         )
-                        override.update(options.override_xmp)
-                        with open(xmp_filename, 'w') as xmp_file:
-                            xmp.write(
-                                xmp_file=xmp_file,
-                                image_filename=real_image_filename,
-                                device=device,
-                                override=override
-                            )
-                    if options.output_format not in scanimage_file_formats:
-                        convert_manager.add(image_filename)
-                    start += increment
-                    total_count -= 1
-        except KeyboardInterrupt:
-            logger.info('Interrupted by user')
-    finally:
-        convert_manager.close()
+                start += increment
+                total_count -= 1
+    except KeyboardInterrupt:
+        logger.info('Interrupted by user')
 
 def reconstruct_xmp(options):
     class device:
@@ -467,24 +419,6 @@ def reconstruct_xmp(options):
                 device=device,
                 override=options.override_xmp
             )
-
-def clean_temporary_files(options):
-    if options.target_directory is None:
-        ArgumentParser().error('--target-directory is obligatory with --clean-temporary-files')
-    i = 0
-    convert_manager = ConvertManager()
-    for root, dirs, files in os.walk(options.target_directory):
-        for filename in files:
-            filename = os.path.join(root, filename)
-            if filename.endswith(temporary_suffix):
-                convert_manager.add(filename[:-len(temporary_suffix)])
-                i += 1
-    convert_manager.close()
-    logger.info(
-        'No files have been converted' if i == 0
-        else '1 file has been converted' if i == 1
-        else '{0} files have been converted'.format(i)
-    )
 
 def show_config(options):
     tilde = os.path.expanduser('~/')
