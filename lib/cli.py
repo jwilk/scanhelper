@@ -107,7 +107,7 @@ class VersionAction(argparse.Action):
 class Config(object):
 
     @classmethod
-    def get_paths(cls, writable=True):
+    def get_paths(cls):
         xdg.save_config_path('scanhelper')
         for x in xdg.load_config_paths('scanhelper'):
             yield os.path.join(x, 'config')
@@ -450,7 +450,7 @@ def reconstruct_xmp(options):
 def show_config(options):
     tilde = os.path.expanduser('~/')
     print('Configuration files:')
-    for filename in options.config.get_paths(writable=True):
+    for filename in options.config.get_paths():
         if filename.startswith(tilde):
             filename = '~/' + filename[len(tilde):]
         print('    {0}'.format(filename))
