@@ -22,6 +22,8 @@ from __future__ import print_function
 import Queue as queue
 import collections
 import datetime
+import distutils.version
+import errno
 import itertools
 import logging
 import os
@@ -72,8 +74,8 @@ class HelpAction(argparse.Action):
         if namespace.device is None:
             parser.epilog += '''  use 'scanhelper -d DEVICE --help' to get list of all options for DEVICE'''
         else:
-            commandline = ['scanimage', '-d', namespace.device, '--help']
-            subprocess = ipc.Subprocess(commandline, stdout=ipc.PIPE)
+            scanimage_args = ['-d', namespace.device, '--help']
+            subprocess = run_scanimage(*scanimage_args, stdout=ipc.PIPE)
             for line in subprocess.stdout:
                 if not line.startswith('Options specific to device'):
                     continue
@@ -250,9 +252,25 @@ def list_buttons(options):
     for name in device:
         print(name)
 
-def get_scanimage_commandline(options, device, start=0, count=infinity, increment=1):
+def run_scanimage(*args, **kwargs):
+    cmdline = ['scanimage']
+    cmdline += args
+    try:
+        proc = ipc.Subprocess(cmdline, **kwargs)
+    except OSError as exc:
+        if exc.errno == errno.ENOENT:
+            message = 'scanimage not found; please install '
+            if utils.debian:
+                message += 'the sane-utils package'
+            else:
+                message += 'sane-backends <http://www.sane-project.org/>'
+            error(message)
+        raise
+    return proc
+
+def get_scanimage_args(options, device, start=0, count=infinity, increment=1):
     assert isinstance(device, scanner.Device)
-    result = ['scanimage']
+    result = []
     result += ['--device-name', device.name]
     result += ['--format={0}'.format('pnm' if options.output_format == 'pnm' else 'tiff')]
     if options.icc_profile is not None:
@@ -289,10 +307,10 @@ def wait_for_button(device, button, sleep_interval=0.1):
 def scan_single_batch(options, device, start=0, count=infinity, increment=1):
     assert isinstance(device, scanner.Device)
     device.close()
-    commandline = get_scanimage_commandline(options, device, start, count, increment)
+    scanimage_args = get_scanimage_args(options, device, start, count, increment)
     master, slave = pty.openpty()
     master = os.fdopen(master, 'r', 1)
-    subprocess = ipc.Subprocess(commandline, stdout=slave, stderr=slave)
+    subprocess = run_scanimage(*scanimage_args, stdout=slave, stderr=slave)
     os.close(slave)
     while True:
         try:
