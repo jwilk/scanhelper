@@ -44,4 +44,9 @@ def load_config_paths(resource):
         if os.path.exists(path):
             yield path
 
+__all__ = [
+    'load_config_paths',
+    'save_config_path',
+]
+
 # vim:ts=4 sts=4 sw=4 et
