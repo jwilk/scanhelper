@@ -240,7 +240,7 @@ def list_devices(options):
 
 def get_device(options):
     scanners = scanner.get_devices()
-    if len(scanners) == 0:
+    if not scanners:
         raise IndexError('no scanner devices')
     if options.device is None:
         if len(scanners) > 1:
@@ -390,7 +390,7 @@ def scan(options):
     target_directory = options.target_directory
     if target_directory is None:
         prefix = options.target_directory_prefix or ''
-        if len(prefix) > 0 and prefix[-1].isalnum():
+        if prefix and prefix[-1].isalnum():
             prefix += '-'
         target_directory = create_unique_directory(prefix)
         logger.info('Target directory: %s', target_directory)
