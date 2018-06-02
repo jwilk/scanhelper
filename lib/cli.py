@@ -54,6 +54,7 @@ media_types = dict(
 )
 
 logger = None
+ipc_logger = None
 
 infinity = 1.0e9999
 
@@ -399,6 +400,7 @@ def scan(options):
     increment = options.batch_increment
     batch_count = options.batch_count
     total_count = options.page_count
+    ipc_logger.setLevel(logging.DEBUG)
     try:
         while total_count > 0:
             wait_for_button(device, options.batch_button)
@@ -485,12 +487,13 @@ def setup_logging():
     logger.addHandler(handler)
     logger.setLevel(logging.INFO)
     # IPC logger:
+    global ipc_logger
     ipc_logger = logging.getLogger('scanhelper.ipc')
     formatter = logging.Formatter('+ %(message)s')
     handler = logging.StreamHandler()
     handler.setFormatter(formatter)
     ipc_logger.addHandler(handler)
-    ipc_logger.setLevel(logging.DEBUG)
+    ipc_logger.setLevel(logging.INFO)
 
 def main(args):
     setup_logging()
