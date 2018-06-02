@@ -1,0 +1,26 @@
+[MASTER]
+extension-pkg-whitelist = _sane
+load-plugins = pylint.extensions.check_elif
+
+[MESSAGES CONTROL]
+disable =
+    bad-continuation,
+    global-statement,
+    invalid-name,
+    invalid-name,
+    no-init,
+    no-self-use,
+    old-style-class,
+    too-few-public-methods,
+    too-many-arguments,
+    too-many-locals,
+
+[REPORTS]
+reports = no
+msg-template = {C}: {path}:{line}: {symbol} [{obj}] {msg}
+
+[FORMAT]
+max-line-length = 120
+expected-line-ending-format = LF
+
+# vim:ft=dosini ts=4 sts=4 sw=4 et
