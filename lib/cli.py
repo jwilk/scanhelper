@@ -403,6 +403,7 @@ def scan(options):
         while total_count > 0:
             wait_for_button(device, options.batch_button)
             for page in scan_single_batch(options, device, start, min(total_count, batch_count), increment):
+                del page
                 image_filename = gnu.sprintf(options.filename_template, start)
                 if options.xmp:
                     real_image_filename = image_filename
