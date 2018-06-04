@@ -8,6 +8,7 @@ addons:
   apt:
     packages:
     - libsane-dev
+    - sane-utils
 before_install:
 - pillow=pillow
 - if [[ $TRAVIS_PYTHON_VERSION = 2.6 ]]; then pillow='pillow==3.4.2'; fi
