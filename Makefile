@@ -48,4 +48,6 @@ clean: pyc-clean
 pyc-clean:  # used by private/build-source-tarball
 	find . -name '*.py[co]' -delete
 
+.error = GNU make is required
+
 # vim:ts=4 sts=4 sw=4 noet
