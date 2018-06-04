@@ -29,7 +29,7 @@ from . import utils
 try:
     import PIL.Image as pil
 except ImportError as ex:
-    utils.enhance_import_error(ex, 'Python Imaging Library', 'python-pil', 'http://www.pythonware.com/products/pil/')
+    utils.enhance_import_error(ex, 'Pillow', 'python-pil', 'https://pypi.org/project/Pillow/')
     raise
 
 try:
