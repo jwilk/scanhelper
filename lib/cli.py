@@ -94,6 +94,11 @@ class VersionAction(argparse.Action):
 
     def __call__(self, parser, namespace, values, option_string=None):
         print('{prog} {0}'.format(__version__, prog=parser.prog))
+        sane_version = scanner.get_sane_version()
+        print('+ SANE {0}'.format(sane_version))
+        scanimage_version = get_scanimage_version()
+        if scanimage_version != sane_version:
+            print('+ scanimage {0}'.format(scanimage_version))
         print('+ Python {0}.{1}.{2}'.format(*sys.version_info))
         pil_name = 'Pillow'
         try:
