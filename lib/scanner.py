@@ -15,6 +15,8 @@
 
 '''scanner support'''
 
+import distutils.version
+
 from . import utils
 
 try:
@@ -23,14 +25,18 @@ except ImportError as ex:
     utils.enhance_import_error(ex, 'Python Imaging Library', 'python-sane', 'http://www.pythonware.com/products/pil/')
     raise
 
-_initialized = False
+_version = None
 
 def initialize():
-    global _initialized
-    if _initialized:
+    global _version
+    if _version:
         return
-    sane.init()
-    _initialized = True
+    _version = sane.init()
+
+def get_sane_version():
+    initialize()
+    version = '.'.join(map(str, _version[1:]))
+    return distutils.version.LooseVersion(version)
 
 def get_devices():
     initialize()
@@ -108,6 +114,7 @@ __all__ = [
     'Device',
     'Status',
     'get_devices',
+    'get_sane_version',
     'initialize',
 ]
 
