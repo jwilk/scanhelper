@@ -1,4 +1,4 @@
-scanhelper (0.7) UNRELEASED; urgency=low
+scanhelper (0.7) unstable; urgency=low
 
   * Don't do TIFF to PNG conversions.
     Instead, required scanimage (sane-backends) >= 1.0.25, which can use the
@@ -28,7 +28,7 @@ scanhelper (0.7) UNRELEASED; urgency=low
     + Don't mention minimum version required for XMP support.
       (Versions that didn't support the feature are no longer relevant.)
 
- -- Jakub Wilk <jwilk@jwilk.net>  Mon, 04 Jun 2018 11:39:22 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 04 Jun 2018 16:40:45 +0200
 
 scanhelper (0.6.1) unstable; urgency=low
 
