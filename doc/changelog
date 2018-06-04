@@ -1,15 +1,34 @@
 scanhelper (0.7) UNRELEASED; urgency=low
 
+  * Don't do TIFF to PNG conversions.
+    Instead, required scanimage (sane-backends) >= 1.0.25, which can use the
+    PNG output format directly.
+    Thanks to Janusz S. Bień to the bug report.
+    https://github.com/jwilk/scanhelper/issues/1
   * Fix the --show-config option:
     + Fix printing options.
-       Regression introduced in 0.6.1.
+      Regression introduced in 0.6.1.
     + Fix incorrect shortening paths using the tilde notation.
-  * Fix printing paths for the --show-config option.
-  * Make --version print also versions of Python and the libraries.
+  * Make argument for --format case-insensitive.
+  * Make --version print also versions of scanimage, Python and the libraries.
   * Make --version print to stdout, not stderr.
-  * Update PyPI URLs.
+  * Require Pillow, instead of long unmaintained Python Imaging Library.
+  * Improve error message printed when scanimage(1) was not found.
+  * Improve the makefile:
+    + Fix portability of the clean target.
+    + Add install target.
+    + Make the used Python interpreter customizable.
+  * Improve documentation:
+    + Add README. Move dependency information there.
+    + Clarify that Python 3.X is not supported.
+    + Update the credits file to make it clear that the project is no longer
+      being funded.
+    + Document that argparse is only needed for Python 2.6.
+    + Update PyPI URLs.
+    + Don't mention minimum version required for XMP support.
+      (Versions that didn't support the feature are no longer relevant.)
 
- -- Jakub Wilk <jwilk@jwilk.net>  Tue, 22 May 2018 21:08:55 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 04 Jun 2018 11:39:22 +0200
 
 scanhelper (0.6.1) unstable; urgency=low
 
