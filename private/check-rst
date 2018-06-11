@@ -14,7 +14,7 @@
 # more details.
 
 set -e -u
-here=$(dirname "$0")
+here=${0%/*}
 rst2xml=$(command -v rst2xml) \
 || rst2xml=$(command -v rst2xml.py) \
 || { printf 'rst2xml not found\n' >&2; exit 1; }
