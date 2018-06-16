@@ -22,6 +22,7 @@ install:
 - $if_pylint pip install pylint
 - pip install docutils
 script:
+- dpkg-parsechangelog -ldoc/changelog --all 2>&1 >/dev/null | { ! grep .; }
 - nosetests -v
 - py2diatra .
 - pyflakes .
