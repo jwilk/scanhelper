@@ -6,22 +6,12 @@ Overview
 Dependencies
 ============
 
-* Scanner Access Made Easy (SANE_) —
-  API and tools to access to scanner hardware
-
+* Scanner Access Made Easy (SANE_)
 * Python_ 2.6 or 2.7
-
-* argparse_ (only for Python 2.6) —
-  Python command line parser
-
-* Pillow_ —
-  Python imaging library
-
-* python-sane_ —
-  Python SANE interface
-
-* Jinja2_ —
-  Python templating library
+* argparse_ (only for Python 2.6)
+* Pillow_
+* python-sane_
+* Jinja2_
 
 .. _SANE:
    http://www.sane-project.org/
