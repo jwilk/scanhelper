@@ -15,6 +15,9 @@ disable =
     too-many-arguments,
     too-many-locals,
 
+[BASIC]
+no-docstring-rgx = .*
+
 [REPORTS]
 reports = no
 msg-template = {C}: {path}:{line}: {symbol} [{obj}] {msg}
