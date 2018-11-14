@@ -28,6 +28,7 @@ doc/xmp: lib/xmp.py
 
 .PHONY: install
 install: scanhelper
+	$(PYTHON) - < lib/__init__.py  # Python version check
 	install -d $(DESTDIR)$(bindir)
 	python_exe=$$($(PYTHON) -c 'import sys; print(sys.executable)') && \
 	sed \
