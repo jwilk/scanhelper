@@ -38,6 +38,9 @@ install: scanhelper
 	chmod 0755 $(DESTDIR)$(bindir)/$(<)
 	install -d $(DESTDIR)$(basedir)/lib
 	install -p -m644 lib/*.py $(DESTDIR)$(basedir)/lib/
+ifeq "$(DESTDIR)" ""
+	umask 022 && $(PYTHON) -m compileall $(basedir)/lib/
+endif
 
 .PHONY: clean
 clean: pyc-clean
