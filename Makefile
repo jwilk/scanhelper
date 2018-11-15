@@ -34,8 +34,9 @@ install: scanhelper
 	sed \
 		-e "1 s@^#![^ ]*@#!$$python_exe@" \
 		-e "s#^basedir = .*#basedir = '$(basedir)/'#" \
-		$(<) > $(DESTDIR)$(bindir)/$(<)
-	chmod 0755 $(DESTDIR)$(bindir)/$(<)
+		$(<) > $(<).tmp
+	install $(<).tmp $(DESTDIR)$(bindir)/$(<)
+	rm $(<).tmp
 	install -d $(DESTDIR)$(basedir)/lib
 	install -p -m644 lib/*.py $(DESTDIR)$(basedir)/lib/
 ifeq "$(DESTDIR)" ""
@@ -44,6 +45,7 @@ endif
 
 .PHONY: clean
 clean: pyc-clean
+	rm -f *.tmp
 	rm -f .coverage
 	rm -f doc/xmp
 
