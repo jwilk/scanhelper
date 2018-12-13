@@ -7,7 +7,6 @@ disable =
     bad-continuation,
     global-statement,
     invalid-name,
-    invalid-name,
     no-init,
     no-self-use,
     old-style-class,
