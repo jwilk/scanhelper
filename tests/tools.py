@@ -29,6 +29,9 @@ from nose.tools import (
 
 import nose.tools
 
+def assert_fail(msg):
+    assert_true(False, msg=msg)  # pylint: disable=redundant-unittest-assert
+
 def noseimport(vmaj, vmin, name=None):
     def wrapper(f):
         if sys.version_info >= (vmaj, vmin):
