@@ -62,7 +62,8 @@ class assert_raises(object):
         return self
     def __exit__(self, exc_type, exc_value, tb):
         if exc_type is None:
-            assert_true(False, '{0} not raised'.format(self._exc_type.__name__))  # pylint: disable=redundant-unittest-assert
+            message = '{0} not raised'.format(self._exc_type.__name__)
+            assert_fail(message)
         if not issubclass(exc_type, self._exc_type):
             return False
         self.exception = exc_value
@@ -74,7 +75,7 @@ def assert_regex(text, regex):
         regex = re.compile(regex)
     if not regex.search(text):
         message = "Regex didn't match: {0!r} not found in {1!r}".format(regex.pattern, text)
-        assert_true(False, msg=message)  # pylint: disable=redundant-unittest-assert
+        assert_fail(message)
 
 def assert_rfc3339_timestamp(timestamp):
     return assert_regex(
