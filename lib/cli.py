@@ -108,7 +108,7 @@ class VersionAction(argparse.Action):
                 pil_version = xmp.pil.__version__
             except AttributeError:
                 pil_name = 'PIL'
-                pil_version = xmp.pil.VERSION
+                pil_version = xmp.pil.VERSION  # pylint: disable=no-member
         print('+ {PIL} {0}'.format(pil_version, PIL=pil_name))
         print('+ Jinja2 {0}'.format(xmp.jinja2.__version__))
         parser.exit()
