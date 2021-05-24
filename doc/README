@@ -7,8 +7,7 @@ Dependencies
 ============
 
 * Scanner Access Made Easy (SANE_)
-* Python_ 2.6 or 2.7
-* argparse_ (only for Python 2.6)
+* Python_ 2.7
 * Pillow_
 * python-sane_
 * Jinja2_
@@ -17,8 +16,6 @@ Dependencies
    http://www.sane-project.org/
 .. _Python:
    https://www.python.org/
-.. _argparse:
-   https://pypi.org/project/argparse/
 .. _Pillow:
    https://pypi.org/project/Pillow/
 .. _python-sane:
