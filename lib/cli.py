@@ -216,6 +216,13 @@ class ArgumentParser(argparse.ArgumentParser):
         group.add_argument('--show-config', action='store_const', const='show_config', dest='action',
             help='show status of configuration files')
 
+    def do_not_print_usage(self, file=None):
+        pass
+
+    def xerror(self, message):
+        self.print_usage = self.do_not_print_usage
+        self.error(message)
+
     def parse_args(self, args=None, namespace=None):
         config = Config()
         my_args = args[1:]
@@ -225,7 +232,11 @@ class ArgumentParser(argparse.ArgumentParser):
             result.action = 'reconstruct_xmp'
         if result.profile is not None:
             my_args = args[1:]
-            my_args[:0] = config.get(result.profile)
+            try:
+                my_args[:0] = config.get(result.profile)
+            except KeyError:
+                self.xerror('profile not found: {0!r}'.format(result.profile))
+                raise ValueError
             my_args[:0] = config.get()
             result, extra_args = self.parse_known_args(my_args)
         result.config = config
