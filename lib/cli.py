@@ -19,6 +19,7 @@ scanhelper's command-line interface
 
 from __future__ import print_function
 
+import argparse
 import collections
 import datetime
 import distutils.version
@@ -39,12 +40,6 @@ from . import scanner
 from . import utils
 from . import xdg
 from . import xmp
-
-try:
-    import argparse
-except ImportError as ex:
-    utils.enhance_import_error(ex, 'argparse', 'python-argparse', 'https://pypi.org/project/argparse/')
-    raise
 
 file_formats = ('pnm', 'tiff', 'png')
 media_types = dict(
