@@ -43,8 +43,7 @@ cd "$sourceroot"/*
 mv COPYING doc/
 make all
 make pyc-clean
-rm .git*
-rm .travis.yml
+rm -r .git*
 rm private/build-source-tarball
 rm README.rst  # shipped as doc/README
 cd ..
