@@ -32,7 +32,7 @@ def dump_xmp(path):
     xmp.write(sys.stdout, path, device, {})
 
 ap = argparse.ArgumentParser()
-ap.add_argument('path', metavar='<image>', nargs='?')
+ap.add_argument('path', metavar='IMAGE', nargs='?')
 options = ap.parse_args()
 if options.path is None:
     with tempfile.NamedTemporaryFile(prefix='scanhelper.', suffix='.png') as fp:
