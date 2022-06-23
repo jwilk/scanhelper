@@ -35,7 +35,7 @@ def initialize():
 
 def get_sane_version():
     initialize()
-    version = '.'.join(map(str, _version[1:]))
+    version = str.join('.', map(str, _version[1:]))
     return distutils.version.LooseVersion(version)
 
 def get_devices():

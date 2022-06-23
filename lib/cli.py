@@ -251,7 +251,7 @@ class ArgumentParser(argparse.ArgumentParser):
 def list_devices(options):
     del options
     for d in scanner.get_devices():
-        print('\t'.join(d))
+        print(str.join('\t', d))
 
 def get_device(options):
     scanners = scanner.get_devices()
@@ -380,7 +380,7 @@ def create_unique_directory(prefix=''):
     prefix += str(datetime.datetime.now()).replace(' ', 'T')[:19]
     for i in range(4):
         for suffix in itertools.product(*[alphabet] * i):
-            path = prefix + ''.join(suffix)
+            path = prefix + str.join('', suffix)
             try:
                 logger.debug('Trying to create target directory: %r', path)
                 os.mkdir(path)
