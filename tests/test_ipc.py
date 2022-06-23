@@ -123,7 +123,7 @@ class test_environment():
             assert_equal(stderr, '')
 
     def test_path(self):
-        path = os.getenv('PATH').split(':')
+        path = os.getenv('PATH')
         tmpdir = tempfile.mkdtemp(prefix='scanhelper.')
         try:
             command_name = 'eggs'
@@ -132,8 +132,7 @@ class test_environment():
                 print('#!/bin/sh', file=file)
                 print('printf 42', file=file)
             os.chmod(command_path, 0o700)
-            path[:0] = [tmpdir]
-            path = ':'.join(path)
+            path = str.join(os.pathsep, [tmpdir, path])
             with interim_environ(PATH=path):
                 child = ipc.Subprocess([command_name],
                     stdout=ipc.PIPE, stderr=ipc.PIPE,
