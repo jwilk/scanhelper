@@ -366,7 +366,7 @@ def scan_single_batch(options, device, start=0, count=infinity, increment=1):
         sys.stdout.write('| ' + line)
         sys.stdout.flush()
         if match:
-            yield int(match.group(1), 10)
+            yield int(match.group(1))
     try:
         subprocess.wait()
     except ipc.CalledProcessError as ex:
