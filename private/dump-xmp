@@ -15,12 +15,14 @@
 # more details.
 
 import argparse
+import os
 import sys
 import tempfile
 
 import PIL.Image as pil
 
-sys.path[0] += '/..'
+here = os.path.dirname(__file__)
+sys.path[:0] = [here + '/..']
 
 from lib import xmp
 
