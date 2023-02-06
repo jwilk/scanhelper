@@ -24,7 +24,7 @@ import PIL.Image as pil
 here = os.path.dirname(__file__)
 sys.path[:0] = [here + '/..']
 
-from lib import xmp
+from lib import xmp  # pylint: disable=wrong-import-position
 
 class device:
     vendor = '<dummy vendor>'
