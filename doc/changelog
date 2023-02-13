@@ -1,8 +1,15 @@
 scanhelper (0.7.1) UNRELEASED; urgency=low
 
-  * 
+  * Improve error handling for non-existent profiles.
+  * Drop support for Python 2.6.
+  * Simplify dependency list in README.
+  * Improve the build system:
+    + Check Python version on install.
+    + Byte-compile Python code on install (if DESTDIR is not set).
+    + Use install(1) to install the executable.
+  * Future-proof Pillow version check.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Fri, 15 Jun 2018 22:42:46 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Mon, 13 Feb 2023 12:59:39 +0100
 
 scanhelper (0.7) unstable; urgency=low
 
