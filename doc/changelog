@@ -58,7 +58,7 @@ scanhelper (0.6) unstable; urgency=low
     + Add the XML declaration.
     + Add the xmpMM:DocumentID property.
     + Generate globally unique identifiers in the urn:uuid namespace.
-      https://tools.ietf.org/html/rfc4122#section-3
+      https://www.rfc-editor.org/rfc/rfc4122.html#section-3
     + Escape values before putting them into an XML document.
 
  -- Jakub Wilk <jwilk@jwilk.net>  Thu, 10 Sep 2015 18:56:50 +0200
