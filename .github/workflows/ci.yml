@@ -7,21 +7,25 @@ jobs:
     strategy:
       matrix:
         include:
-        - os: ubuntu-20.04
-    runs-on: ${{matrix.os}}
+        - container: python:2.7
+    runs-on: ubuntu-latest
+    container: ${{matrix.container}}
+    defaults:
+      run:
+        shell: bash
     steps:
     - uses: actions/checkout@v3
-    - name: set up Python 2.7
-      uses: actions/setup-python@v4
-      with:
-        python-version: 2.7
+    - name: set up PATH
+      run: |
+        PATH+=:~/.local/bin
+        echo "$PATH" >> $GITHUB_PATH
     - name: set up APT
       run: |
-        printf 'Apt::Install-Recommends "false";\n' | sudo tee -a /etc/apt/apt.conf
-        sudo apt-get update
+        printf 'Apt::Install-Recommends "false";\n' | tee -a /etc/apt/apt.conf
+        apt-get update
     - name: install deps
       run: |
-        sudo apt-get install libsane-dev sane-utils
+        apt-get install -y libsane-dev sane-utils
         python -m pip install pillow
         python -m pip install python-sane
         python -m pip install jinja2
