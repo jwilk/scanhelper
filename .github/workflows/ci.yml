@@ -22,7 +22,7 @@ jobs:
     - name: set up Python 2.7
       run: |
         sudo apt-get install python-is-python2 python2-dev
-        curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
+        wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
         sudo python get-pip.py
         rm get-pip.py
     - name: install deps
