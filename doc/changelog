@@ -1,4 +1,4 @@
-scanhelper (0.7.1) UNRELEASED; urgency=low
+scanhelper (0.7.1) unstable; urgency=low
 
   * Improve error handling for non-existent profiles.
   * Drop support for Python 2.6.
@@ -9,7 +9,7 @@ scanhelper (0.7.1) UNRELEASED; urgency=low
     + Use install(1) to install the executable.
   * Future-proof Pillow version check.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Mon, 13 Feb 2023 12:59:39 +0100
+ -- Jakub Wilk <jwilk@jwilk.net>  Wed, 31 Jan 2024 10:20:47 +0100
 
 scanhelper (0.7) unstable; urgency=low
 
