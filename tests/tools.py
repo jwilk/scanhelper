@@ -16,7 +16,6 @@
 import contextlib
 import functools
 import os
-import re
 import sys
 import traceback
 
@@ -30,8 +29,6 @@ from nose.tools import (
     assert_regexp_matches as assert_regex,
     assert_true,
 )
-
-import nose.tools
 
 def assert_fail(msg):
     assert_true(False, msg=msg)  # pylint: disable=redundant-unittest-assert
