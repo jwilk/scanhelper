@@ -30,6 +30,7 @@ import os
 import pty
 import re
 import shlex
+import string
 import sys
 import time
 
@@ -376,7 +377,7 @@ def scan_single_batch(options, device, start=0, count=infinity, increment=1):
             raise
 
 def create_unique_directory(prefix=''):
-    alphabet = [chr(c) for c in xrange(ord('a'), ord('z') + 1)]
+    alphabet = string.lowercase
     prefix += str(datetime.datetime.now()).replace(' ', 'T')[:19]
     for i in range(4):
         for suffix in itertools.product(*[alphabet] * i):
