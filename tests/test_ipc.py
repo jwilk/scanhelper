@@ -32,7 +32,7 @@ from .tools import (
     interim_environ,
 )
 
-nonexistent_command = 'didjvu-nonexistent-command'
+nonexistent_command = 'scanhelper-nonexistent-command'
 
 class test_exceptions():
 
@@ -91,9 +91,9 @@ utf8_locale = get_utf8_locale()
 class test_environment():
 
     def test1(self):
-        with interim_environ(didjvu='42'):
+        with interim_environ(scanhelper='42'):
             child = ipc.Subprocess(
-                ['sh', '-c', 'printf $didjvu'],
+                ['sh', '-c', 'printf $scanhelper'],
                 stdout=ipc.PIPE, stderr=ipc.PIPE,
             )
             stdout, stderr = child.communicate()
@@ -101,9 +101,9 @@ class test_environment():
             assert_equal(stderr, '')
 
     def test2(self):
-        with interim_environ(didjvu='42'):
+        with interim_environ(scanhelper='42'):
             child = ipc.Subprocess(
-                ['sh', '-c', 'printf $didjvu'],
+                ['sh', '-c', 'printf $scanhelper'],
                 stdout=ipc.PIPE, stderr=ipc.PIPE,
                 env={},
             )
@@ -112,11 +112,11 @@ class test_environment():
             assert_equal(stderr, '')
 
     def test3(self):
-        with interim_environ(didjvu='42'):
+        with interim_environ(scanhelper='42'):
             child = ipc.Subprocess(
-                ['sh', '-c', 'printf $didjvu'],
+                ['sh', '-c', 'printf $scanhelper'],
                 stdout=ipc.PIPE, stderr=ipc.PIPE,
-                env=dict(didjvu='24'),
+                env=dict(scanhelper='24'),
             )
             stdout, stderr = child.communicate()
             assert_equal(stdout, '24')
