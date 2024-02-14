@@ -97,8 +97,8 @@ class test_environment():
                 stdout=ipc.PIPE, stderr=ipc.PIPE,
             )
             stdout, stderr = child.communicate()
-            assert_equal(stdout, '42')
-            assert_equal(stderr, '')
+            assert_equal(stdout, b'42')
+            assert_equal(stderr, b'')
 
     def test2(self):
         with interim_environ(scanhelper='42'):
@@ -108,8 +108,8 @@ class test_environment():
                 env={},
             )
             stdout, stderr = child.communicate()
-            assert_equal(stdout, '42')
-            assert_equal(stderr, '')
+            assert_equal(stdout, b'42')
+            assert_equal(stderr, b'')
 
     def test3(self):
         with interim_environ(scanhelper='42'):
@@ -119,8 +119,8 @@ class test_environment():
                 env=dict(scanhelper='24'),
             )
             stdout, stderr = child.communicate()
-            assert_equal(stdout, '24')
-            assert_equal(stderr, '')
+            assert_equal(stdout, b'24')
+            assert_equal(stderr, b'')
 
     def test_path(self):
         path = os.getenv('PATH')
@@ -138,8 +138,8 @@ class test_environment():
                     stdout=ipc.PIPE, stderr=ipc.PIPE,
                 )
                 stdout, stderr = child.communicate()
-                assert_equal(stdout, '42')
-                assert_equal(stderr, '')
+                assert_equal(stdout, b'42')
+                assert_equal(stderr, b'')
         finally:
             shutil.rmtree(tmpdir)
 
@@ -148,9 +148,8 @@ class test_environment():
             stdout=ipc.PIPE, stderr=ipc.PIPE
         )
         stdout, stderr = child.communicate()
+        assert_equal(stderr, b'')
         stdout = stdout.splitlines()
-        stderr = stderr.splitlines()
-        assert_equal(stderr, [])
         data = dict(line.split('=', 1) for line in stdout)
         has_lc_all = has_lc_ctype = has_lang = 0
         for key, value in data.iteritems():
