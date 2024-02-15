@@ -18,9 +18,9 @@ from __future__ import print_function
 import errno
 import locale
 import os
+import shutil
 import signal
 import tempfile
-import shutil
 
 from lib import ipc
 
