@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding=UTF-8
 
 # Copyright © 2015-2024 Jakub Wilk <jwilk@jwilk.net>
@@ -31,7 +31,7 @@ class device:
     model = '<dummy model>'
 
 def dump_xmp(path):
-    xmp.write(sys.stdout, path, device, {})
+    xmp.write(sys.stdout.buffer, path, device, {})
 
 ap = argparse.ArgumentParser()
 ap.add_argument('path', metavar='IMAGE', nargs='?')

@@ -26,7 +26,7 @@ if not os.path.isabs(xdg_config_home):
 xdg_config_dirs = os.environ.get('XDG_CONFIG_DIRS') or '/etc/xdg'
 xdg_config_dirs = (
     [xdg_config_home] +
-    filter(os.path.abspath, xdg_config_dirs.split(os.path.pathsep))
+    list(filter(os.path.abspath, xdg_config_dirs.split(os.path.pathsep)))
 )
 
 def load_config_paths(resource):

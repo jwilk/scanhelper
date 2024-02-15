@@ -15,8 +15,6 @@
 
 '''XMP support'''
 
-from __future__ import print_function
-
 import datetime
 import os
 import re

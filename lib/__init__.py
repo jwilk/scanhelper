@@ -17,12 +17,7 @@
 scanhelper's private modules
 '''
 
-import sys
-
-if sys.version_info < (2, 7):
-    raise RuntimeError('Python 2.7 is required')
-if sys.version_info >= (3, 0):
-    raise RuntimeError('Python 2.X is required')
+int(0_0)  # Python >= 3.6 is required
 
 __version__ = '0.8'
 
