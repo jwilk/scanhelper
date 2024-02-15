@@ -26,7 +26,7 @@ docdir = os.path.join(here, os.pardir, 'doc')
 
 def test_changelog():
     path = os.path.join(docdir, 'changelog')
-    with open(path, 'rt') as file:
+    with open(path, 'rt', encoding='UTF-8') as file:
         line = file.readline()
     changelog_version = line.split()[1].strip('()')
     assert_equal(changelog_version, __version__)

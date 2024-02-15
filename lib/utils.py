@@ -20,13 +20,13 @@ import os
 debian = os.path.exists('/etc/debian_version')
 
 def enhance_import_error(exception, package, debian_package, homepage):
-    message = str(exception)
+    message = exception.msg
     if debian:
         package = debian_package
     message += '; please install the {pkg} package'.format(pkg=package)
     if not debian:
         message += ' <{url}>'.format(url=homepage)
-    exception.args = [message]
+    exception.msg = message
 
 __all__ = [
     'debian',

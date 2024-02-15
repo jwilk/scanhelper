@@ -1,4 +1,4 @@
-#!/usr/bin/python -u
+#!/usr/bin/python3 -u
 # encoding=UTF-8
 
 # Copyright © 2011-2024 Jakub Wilk <jwilk@jwilk.net>

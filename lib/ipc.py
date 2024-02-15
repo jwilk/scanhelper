@@ -17,8 +17,8 @@
 
 import logging
 import os
-import pipes
 import re
+import shlex
 import signal
 import subprocess
 
@@ -48,7 +48,7 @@ def get_signal_names():
             del data['SIGCLD']
     except KeyError:  # no coverage
         pass
-    return {no: name for name, no in data.iteritems()}
+    return {no: name for name, no in data.items()}
 
 CalledProcessError = subprocess.CalledProcessError
 
@@ -70,7 +70,7 @@ del get_signal_names
 # ============
 
 def shell_escape(commandline):
-    return str.join(' ', map(pipes.quote, commandline))
+    return str.join(' ', map(shlex.quote, commandline))
 
 # Subprocess
 # ==========
@@ -86,7 +86,7 @@ class Subprocess(subprocess.Popen):
         lc_ctype = env.get('LC_ALL') or env.get('LC_CTYPE') or env.get('LANG')
         env = {
             k: v
-            for k, v in env.iteritems()
+            for k, v in env.items()
             if not (k.startswith('LC_') or k in {'LANG', 'LANGUAGE'})
         }
         if lc_ctype:
@@ -112,8 +112,8 @@ class Subprocess(subprocess.Popen):
             ex.filename = self.__command
             raise
 
-    def wait(self):
-        return_code = subprocess.Popen.wait(self)
+    def wait(self, *args, **kwargs):
+        return_code = subprocess.Popen.wait(self, *args, **kwargs)
         if return_code > 0:
             raise CalledProcessError(return_code, self.__command)
         if return_code < 0:

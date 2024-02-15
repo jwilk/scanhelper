@@ -7,7 +7,7 @@ Dependencies
 ============
 
 * Scanner Access Made Easy (SANE_)
-* Python_ 2.7
+* Python_ ≥ 3.6
 * Pillow_
 * python-sane_
 * Jinja2_
