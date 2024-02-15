@@ -18,6 +18,7 @@ import locale
 import os
 import shutil
 import signal
+import sys
 import tempfile
 
 from lib import ipc
@@ -193,6 +194,9 @@ def test_init_exception():
         errno=errno,
         cmd=nonexistent_command,
     )
+    if sys.version_info < (3, 8):
+        # https://bugs.python.org/issue32490 "subprocess: duplicate filename in exception message"
+        ecm.exception.strerror = ecm.exception.strerror.split(':', 1)[0]
     assert_equal(str(ecm.exception), exc_message)
 
 class test_shell_escape:
