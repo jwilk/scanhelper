@@ -8,7 +8,20 @@ jobs:
     strategy:
       matrix:
         include:
-        - os: ubuntu-22.04
+        - python: '3.6'
+          os: ubuntu-20.04
+        - python: '3.7'
+          os: ubuntu-20.04
+        - python: '3.8'
+          os: ubuntu-20.04
+        - python: '3.9'
+          os: ubuntu-20.04
+        - python: '3.10'
+          os: ubuntu-22.04
+        - python: '3.11'
+          os: ubuntu-22.04
+        - python: '3.12'
+          os: ubuntu-22.04
     runs-on: ${{matrix.os}}
     steps:
     - uses: actions/checkout@v4
@@ -20,13 +33,16 @@ jobs:
       run: |
         printf 'Apt::Install-Recommends "false";\n' | sudo tee -a /etc/apt/apt.conf
         sudo apt-get update
-    - name: set up Python 2.7
+    - name: set up Python ${{matrix.python}}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{matrix.python}}
+    - name: set up distutils
       run: |
-        sudo apt-get install python2-dev
-        sudo ln -sf python2 /usr/bin/python
-        wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
-        sudo python get-pip.py
-        rm get-pip.py
+        if ! [ -d ${{env.pythonLocation}}/lib/python*/distutils/ ]; then
+          python -m pip install setuptools
+          echo SETUPTOOLS_USE_DISTUTILS=local | tee -a $GITHUB_ENV;
+        fi
     - name: install deps
       run: |
         sudo apt-get install -y libsane-dev sane-utils
@@ -35,6 +51,22 @@ jobs:
         python -m pip install jinja2
     - name: install nose
       run: |
+        # work-around for <https://github.com/nose-devs/nose/issues/1115>:
+        python -m pip install --upgrade 'setuptools<58'
+        case ${{matrix.python}} in 3.*)
+          # stolen from <https://github.com/pypa/setuptools/commit/6653e747c3815b14>
+          sed -i -e "s/^register_.*[(]pkgutil[.]ImpImporter,/if hasattr(pkgutil, 'ImpImporter'):\\n &/" ${{env.pythonLocation || '/usr/local'}}/lib/python*/*-packages/pkg_resources/__init__.py
+        esac
+        python -m pip install --upgrade 'wheel<0.38'
+        # work-around for <https://github.com/nose-devs/nose/issues/1099>:
+        python -m pip install --no-build-isolation --no-binary ':all:' nose
+        case ${{matrix.python}} in 3.*)
+          # work-around for <https://github.com/nose-devs/nose/issues/1116>:
+          sed -i -e 's/ from unittest import _TextTestResult$/ from unittest import TextTestResult as _TextTestResult/' ${{env.pythonLocation || '/usr/local'}}/lib/python*/site-packages/nose/result.py
+        esac
+        if ! python -c 'import imp'; then
+          python -m pip install zombie-imp
+        fi
         python -m pip install nose
     - name: run tests
       run: |

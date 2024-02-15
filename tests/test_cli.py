@@ -40,7 +40,7 @@ def scan_config():
     tmpdir = tempfile.mkdtemp(prefix='scanhelper.')
     try:
         path = os.path.join(tmpdir, 'dll.conf')
-        with open(path, 'w') as fp:
+        with open(path, 'wt', encoding='ASCII') as fp:
             fp.write('test')
         with interim_environ(SANE_CONFIG_DIR=tmpdir):
             with interim(lib.xdg, xdg_config_dirs=()):
@@ -48,17 +48,15 @@ def scan_config():
     finally:
         shutil.rmtree(tmpdir)
 
-def run_scanhelper(*args, **kwargs):
-    stdout = io.BytesIO()
-    stderr = io.BytesIO()
+def run_scanhelper(*args, stdin=None):
+    stdout = io.StringIO()
+    stderr = io.StringIO()
     stdio = dict(
         stdout=stdout,
         stderr=stderr
     )
-    if kwargs:
-        stdin = kwargs.pop('stdin')
-        assert not kwargs
-        stdio.update(stdin=io.BytesIO(stdin))
+    if stdin:
+        stdio.update(stdin=io.StringIO(stdin))
     argv = ['scanhelper']
     argv += args
     cwd = os.getcwd()

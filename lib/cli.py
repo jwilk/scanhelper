@@ -17,8 +17,6 @@
 scanhelper's command-line interface
 '''
 
-from __future__ import print_function
-
 import argparse
 import collections
 import datetime
@@ -62,7 +60,10 @@ class HelpAction(argparse.Action):
             parser.epilog += '''  use 'scanhelper -d DEVICE --help' to get list of all options for DEVICE'''
         else:
             scanimage_args = ['--format=pnm', '-d', namespace.device, '--help']
-            subprocess = run_scanimage(*scanimage_args, stdout=ipc.PIPE)
+            subprocess = run_scanimage(*scanimage_args, stdout=ipc.PIPE,
+               encoding=sys.stdout.encoding,
+               errors='replace',
+            )
             for line in subprocess.stdout:
                 if not line.startswith('Options specific to device'):
                     continue
@@ -122,7 +123,7 @@ class Config(object):
         for config in self.get_paths():
             if not os.path.exists(config):
                 continue
-            with open(config, 'r') as config:
+            with open(config, 'rt') as config:
                 for line in config:
                     if not line:
                         continue
@@ -330,7 +331,9 @@ def get_scanimage_args(options, device, start=0, count=infinity, increment=1):
     return result + options.extra_args
 
 def get_scanimage_version():
-    proc = run_scanimage('--version', stdout=ipc.PIPE)
+    proc = run_scanimage('--version', stdout=ipc.PIPE,
+        encoding='ASCII', errors='replace',
+    )
     line = proc.stdout.readline()
     proc.stdout.close()
     proc.wait()
@@ -342,7 +345,7 @@ def get_scanimage_version():
 
 def wait_for_button(device, button, sleep_interval=0.1):
     if button is None:
-        raw_input('Press ENTER to continue\n')
+        input('Press ENTER to continue\n')
         return
     if button not in device:
         error('no such button: {0}'.format(button))
@@ -380,7 +383,7 @@ def scan_single_batch(options, device, start=0, count=infinity, increment=1):
             raise
 
 def create_unique_directory(prefix=''):
-    alphabet = string.lowercase
+    alphabet = string.ascii_lowercase
     prefix += str(datetime.datetime.now()).replace(' ', 'T')[:19]
     for i in range(4):
         for suffix in itertools.product(*[alphabet] * i):
@@ -427,7 +430,8 @@ def scan(options):
                 return
             for page in scan_single_batch(options, device, start, min(total_count, batch_count), increment):
                 del page
-                image_filename = gnu.sprintf(options.filename_template, start)
+                image_filename = gnu.sprintf(os.fsencode(options.filename_template), start)
+                image_filename = os.fsdecode(image_filename)
                 if options.xmp:
                     real_image_filename = image_filename
                     xmp_filename = image_filename + '.xmp'
@@ -435,7 +439,7 @@ def scan(options):
                         media_type=media_types[options.output_format],
                     )
                     override.update(options.override_xmp)
-                    with open(xmp_filename, 'w') as xmp_file:
+                    with open(xmp_filename, 'wb') as xmp_file:
                         xmp.write(
                             xmp_file=xmp_file,
                             image_filename=real_image_filename,
@@ -465,7 +469,7 @@ def reconstruct_xmp(options):
             assert isinstance(device, scanner.Device)
     for image_filename in options.reconstruct_xmp:
         xmp_filename = image_filename + '.xmp'
-        with open(xmp_filename, 'w') as xmp_file:
+        with open(xmp_filename, 'wb') as xmp_file:
             xmp.write(
                 xmp_file=xmp_file,
                 image_filename=image_filename,

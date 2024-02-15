@@ -28,7 +28,7 @@ from nose.tools import (
     assert_is_instance,
     assert_not_equal,
     assert_raises,
-    assert_regexp_matches as assert_regex,
+    assert_regex,
     assert_true,
 )
 
@@ -47,12 +47,12 @@ def interim(obj, **override):
         key: getattr(obj, key)
         for key in override
     }
-    for key, value in override.iteritems():
+    for key, value in override.items():
         setattr(obj, key, value)
     try:
         yield
     finally:
-        for key, value in copy.iteritems():
+        for key, value in copy.items():
             setattr(obj, key, value)
 
 @contextlib.contextmanager
@@ -61,10 +61,10 @@ def interim_environ(**override):
     copy_keys = keys & set(os.environ)
     copy = {
         key: value
-        for key, value in os.environ.iteritems()
+        for key, value in os.environ.items()
         if key in copy_keys
     }
-    for key, value in override.iteritems():
+    for key, value in override.items():
         if value is None:
             os.environ.pop(key, None)
         else:
@@ -112,7 +112,7 @@ def fork_isolation(f):
             except Exception:  # pylint: disable=broad-except
                 exctp, exc, tb = sys.exc_info()
                 s = traceback.format_exception(exctp, exc, tb, _n_relevant_tb_levels(tb))
-                s = str.join('', s)
+                s = str.join('', s).encode('UTF-8')
                 del tb
                 with os.fdopen(writefd, 'wb') as fp:
                     fp.write(s)
@@ -123,7 +123,7 @@ def fork_isolation(f):
             os.close(writefd)
             with os.fdopen(readfd, 'rb') as fp:
                 msg = fp.read()
-            msg = msg.rstrip('\n')
+            msg = msg.decode('UTF-8').rstrip('\n')
             pid, status = os.waitpid(pid, 0)
             if status == (EXIT_EXCEPTION << 8):
                 raise IsolatedException('\n\n' + msg)

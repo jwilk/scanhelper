@@ -13,8 +13,6 @@
 # FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 # more details.
 
-from __future__ import print_function
-
 import errno
 import locale
 import os
@@ -59,7 +57,7 @@ class test_wait:
         child = ipc.Subprocess(['false'])
         with assert_raises(ipc.CalledProcessError) as ecm:
             child.wait()
-        assert_equal(str(ecm.exception), "Command 'false' returned non-zero exit status 1")
+        assert_equal(str(ecm.exception), "Command 'false' returned non-zero exit status 1.")
 
     def _test_signal(self, name):
         child = ipc.Subprocess(['cat'], stdin=ipc.PIPE)  # Any long-standing process would do.
@@ -128,7 +126,7 @@ class test_environment:
         try:
             command_name = 'eggs'
             command_path = os.path.join(tmpdir, command_name)
-            with open(command_path, 'wt') as file:
+            with open(command_path, 'wt', encoding='ASCII') as file:
                 print('#!/bin/sh', file=file)
                 print('printf 42', file=file)
             os.chmod(command_path, 0o700)
@@ -145,14 +143,15 @@ class test_environment:
 
     def _test_locale(self):
         child = ipc.Subprocess(['locale'],
-            stdout=ipc.PIPE, stderr=ipc.PIPE
+            stdout=ipc.PIPE, stderr=ipc.PIPE,
+            encoding='ASCII',
         )
         stdout, stderr = child.communicate()
-        assert_equal(stderr, b'')
+        assert_equal(stderr, '')
         stdout = stdout.splitlines()
         data = dict(line.split('=', 1) for line in stdout)
         has_lc_all = has_lc_ctype = has_lang = 0
-        for key, value in data.iteritems():
+        for key, value in data.items():
             if key == 'LC_ALL':
                 has_lc_all = 1
                 assert_equal(value, '')
