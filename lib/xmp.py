@@ -117,7 +117,7 @@ def print_doc():
         print(line_fmt.format(key=key, description=description))
     print(separator)
     print()
-    print('.. vi''m:ft=rst')
+    print('.. vi' + 'm:ft=rst')
 
 if __name__ == '__main__':
     print_doc()
