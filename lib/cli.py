@@ -82,7 +82,7 @@ class HelpAction(argparse.Action):
 class VersionAction(argparse.Action):
 
     def __init__(self, option_strings, dest=argparse.SUPPRESS):
-        super(VersionAction, self).__init__(
+        super().__init__(
             option_strings=option_strings,
             dest=dest,
             nargs=0,
