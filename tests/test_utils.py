@@ -33,7 +33,7 @@ class test_enhance_import:
         with interim(utils, debian=True):
             with assert_raises(ImportError) as ecm:
                 try:
-                    import nonexistent
+                    import nonexistent  # pylint: disable=import-outside-toplevel
                 except ImportError as ex:
                     utils.enhance_import_error(ex,
                         'PyNonexistent',
@@ -51,7 +51,7 @@ class test_enhance_import:
         with interim(utils, debian=False):
             with assert_raises(ImportError) as ecm:
                 try:
-                    import nonexistent
+                    import nonexistent  # pylint: disable=import-outside-toplevel
                 except ImportError as ex:
                     utils.enhance_import_error(ex,
                         'PyNonexistent',
