@@ -197,7 +197,7 @@ def write(xmp_file, image_filename, device, override):
     parameters.update(override)
     xmp_data = template.render(**parameters).encode('UTF-8')
     assert minidom.parseString(xmp_data)
-    xmp_file.write(xmp_data.encode('UTF-8'))
+    xmp_file.write(xmp_data)
 
 __all__ = ['write']
 
