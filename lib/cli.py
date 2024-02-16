@@ -52,7 +52,7 @@ media_types = dict(
 logger = None
 ipc_logger = None
 
-infinity = 1.0e9999
+infinity = 1e999
 
 class HelpAction(argparse.Action):
 
