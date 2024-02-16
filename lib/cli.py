@@ -234,7 +234,7 @@ class ArgumentParser(argparse.ArgumentParser):
                 my_args[:0] = config.get(result.profile)
             except KeyError:
                 self.xerror(f'profile not found: {result.profile!r}')
-                raise ValueError
+                raise ValueError from None
             my_args[:0] = config.get()
             result, extra_args = self.parse_known_args(my_args)
         result.config = config
