@@ -90,12 +90,12 @@ class VersionAction(argparse.Action):
         )
 
     def __call__(self, parser, namespace, values, option_string=None):
-        print('{prog} {0}'.format(__version__, prog=parser.prog))
+        print(f'{parser.prog} {__version__}')
         sane_version = scanner.get_sane_version()
-        print('+ SANE {0}'.format(sane_version))
+        print(f'+ SANE {sane_version}')
         scanimage_version = get_scanimage_version()
         if scanimage_version != sane_version:
-            print('+ scanimage {0}'.format(scanimage_version))
+            print(f'+ scanimage {scanimage_version}')
         print('+ Python {0}.{1}.{2}'.format(*sys.version_info))
         pil_name = 'Pillow'
         try:
@@ -106,8 +106,8 @@ class VersionAction(argparse.Action):
             except AttributeError:
                 pil_name = 'PIL'
                 pil_version = xmp.PIL.VERSION  # pylint: disable=no-member
-        print('+ {PIL} {0}'.format(pil_version, PIL=pil_name))
-        print('+ Jinja2 {0}'.format(xmp.jinja2.__version__))
+        print(f'+ {pil_name} {pil_version}')
+        print(f'+ Jinja2 {xmp.jinja2.__version__}')
         parser.exit()
 
 class Config(object):
@@ -233,17 +233,17 @@ class ArgumentParser(argparse.ArgumentParser):
             try:
                 my_args[:0] = config.get(result.profile)
             except KeyError:
-                self.xerror('profile not found: {0!r}'.format(result.profile))
+                self.xerror(f'profile not found: {result.profile!r}')
                 raise ValueError
             my_args[:0] = config.get()
             result, extra_args = self.parse_known_args(my_args)
         result.config = config
         for opt in 'dont-scan', 'test':
             if getattr(result, opt.replace('-', '_')):
-                self.xerror('--{0} option is not yet supported'.format(opt))
+                self.xerror(f'--{opt} option is not yet supported')
         result.extra_args = extra_args
         if result.filename_template is None:
-            result.filename_template = 'p%04d.{0}'.format(result.output_format[:3])
+            result.filename_template = f'p%04d.{result.output_format[:3]}'
         result.override_xmp = dict(
             item.split('=', 1)
             for items in result.override_xmp
@@ -269,14 +269,14 @@ def get_device(options):
             if name == options.device:
                 break
         else:
-            raise IndexError('no such device: {0}'.format(options.device))
+            raise IndexError(f'no such device: {options.device}')
     return scanner.Device(name, vendor, model, type_)
 
 def error(message, *args, **kwargs):
     message = str(message)
     if args or kwargs:
         message = message.format(*args, **kwargs)
-    print('scanhelper: error: {msg}'.format(msg=message), file=sys.stderr)
+    print(f'scanhelper: error: {message}', file=sys.stderr)
     sys.exit(1)
 
 def list_buttons(options):
@@ -307,18 +307,16 @@ def get_scanimage_args(options, device, start=0, count=infinity, increment=1):
     assert isinstance(device, scanner.Device)
     result = []
     result += ['--device-name', device.name]
-    result += ['--format={0}'.format(options.output_format)]
+    result += [f'--format={options.output_format}']
     if options.icc_profile is not None:
         result += ['--icc-profile', options.icc_profile]
-    result += ['--batch={template}'.format(
-        template=options.filename_template,
-    )]
+    result += [f'--batch={options.filename_template}']
     if start >= 0:
-        result += ['--batch-start={0}'.format(start)]
+        result += [f'--batch-start={start}']
     if count < infinity:
-        result += ['--batch-count={0}'.format(count)]
+        result += [f'--batch-count={count}']
     if increment > 1:
-        result += ['--batch-increment={0}'.format(increment)]
+        result += [f'--batch-increment={increment}']
     if options.accept_md5_only:
         result += ['--accept-md5-only']
     if options.progress:
@@ -326,7 +324,7 @@ def get_scanimage_args(options, device, start=0, count=infinity, increment=1):
     if options.verbose:
         result += ['--verbose']
     if options.buffer_size is not None:
-        result += ['--buffer-size={0}'.format(options.buffer_size)]
+        result += [f'--buffer-size={options.buffer_size}']
     assert all(isinstance(x, str) for x in result)
     return result + options.extra_args
 
@@ -348,8 +346,8 @@ def wait_for_button(device, button, sleep_interval=0.1):
         input('Press ENTER to continue\n')
         return
     if button not in device:
-        error('no such button: {0}'.format(button))
-    print('Press {0!r} button to continue'.format(button))
+        error(f'no such button: {button}')
+    print(f'Press {button!r} button to continue')
     while not device[button]:
         time.sleep(sleep_interval)
 
@@ -403,7 +401,7 @@ def scan(options):
                 pkg = 'sane-utils'
             else:
                 pkg = 'scanimage (sane-backends)'
-            error('PNG output format requires {pkg} >= 1.0.25'.format(pkg=pkg))
+            error(f'PNG output format requires {pkg} >= 1.0.25')
     try:
         device = get_device(options)
     except IndexError as exc:
@@ -488,20 +486,20 @@ def show_config(options):
     print('Configuration files:')
     for path in options.config.get_paths():
         path = unexpand_tilde(path)
-        print('    {0}'.format(path))
+        print(f'    {path}')
     extra_options = options.config.get(None)
     print()
     if extra_options:
         print('Default options:')
-        print('    {0}'.format(esc(extra_options)))
+        print(f'    {esc(extra_options)}')
     else:
         print('No default options')
     i = 0
     for profile in options.config.get_profiles():
         print()
-        print('Options for profile {0!r}:'.format(profile))
+        print(f'Options for profile {profile!r}:')
         extra_options = options.config.get(profile)
-        print('    {0}'.format(esc(extra_options)))
+        print(f'    {esc(extra_options)}')
         i += 1
     if i == 0:
         print()

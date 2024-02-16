@@ -149,7 +149,7 @@ class rfc3339(object):
         offset = self._tzdelta.days * 3600 * 24 + self._tzdelta.seconds
         hours, minutes = divmod(abs(offset) // 60, 60)
         sign = '+' if offset >= 0 else '-'
-        return '{s}{h:02}:{m:02}'.format(s=sign, h=hours, m=minutes)
+        return f'{sign}{hours:02}:{minutes:02}'
 
     def __str__(self):
         '''Format the timestamp object in accordance with RFC 3339.'''
@@ -166,7 +166,7 @@ def gen_uuid():
     generate a UUID URN, in accordance with RFC 4122
     '''
     # https://www.rfc-editor.org/rfc/rfc4122.html#section-3
-    return 'urn:uuid:{uuid}'.format(uuid=uuid.uuid4())
+    return f'urn:uuid:{uuid.uuid4()}'
 
 def write(xmp_file, image_filename, device, override):
     image_timestamp = mtime(image_filename)

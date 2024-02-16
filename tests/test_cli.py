@@ -133,7 +133,7 @@ def test_reconstruct_xpm():
 def _test_not_implemented(arg):
     (rc, stdout, stderr) = run_scanhelper(arg)
     assert_equal(stdout, '')
-    assert_equal(stderr, 'scanhelper: error: {arg} option is not yet supported\n'.format(arg=arg))
+    assert_equal(stderr, f'scanhelper: error: {arg} option is not yet supported\n')
     assert_equal(rc, 2)
 
 def test_dont_scan():

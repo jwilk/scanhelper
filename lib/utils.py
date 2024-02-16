@@ -23,9 +23,9 @@ def enhance_import_error(exception, package, debian_package, homepage):
     message = exception.msg
     if debian:
         package = debian_package
-    message += '; please install the {pkg} package'.format(pkg=package)
+    message += f'; please install the {package} package'
     if not debian:
-        message += ' <{url}>'.format(url=homepage)
+        message += f' <{homepage}>'
     exception.msg = message
 
 __all__ = [
