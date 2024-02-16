@@ -133,7 +133,7 @@ media_types = dict(
     TIFF='image/tiff',
 )
 
-class rfc3339(object):
+class rfc3339:
 
     def __init__(self, unixtime):
         self._localtime = time.localtime(unixtime)
