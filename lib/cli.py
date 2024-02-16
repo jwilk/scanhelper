@@ -96,7 +96,7 @@ class VersionAction(argparse.Action):
         scanimage_version = get_scanimage_version()
         if scanimage_version != sane_version:
             print(f'+ scanimage {scanimage_version}')
-        print('+ Python {0}.{1}.{2}'.format(*sys.version_info))
+        print('+ Python {0}.{1}.{2}'.format(*sys.version_info))  # pylint: disable=consider-using-f-string
         pil_name = 'Pillow'
         try:
             pil_version = xmp.PIL.PILLOW_VERSION
