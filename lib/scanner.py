@@ -15,8 +15,7 @@
 
 '''scanner support'''
 
-import distutils.version
-
+from . import vcmp
 from . import utils
 
 try:
@@ -36,7 +35,7 @@ def initialize():
 def get_sane_version():
     initialize()
     version = str.join('.', map(str, _version[1:]))
-    return distutils.version.LooseVersion(version)
+    return vcmp.LooseVersion(version)
 
 def get_devices():
     initialize()

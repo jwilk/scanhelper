@@ -49,6 +49,9 @@ jobs:
         python -m pip install pillow
         python -m pip install python-sane
         python -m pip install jinja2
+        if ! [ -d ${{env.pythonLocation}}/lib/python*/distutils/version.py ]; then
+          python -m pip install looseversion
+        fi
     - name: install nose
       run: |
         # work-around for <https://github.com/nose-devs/nose/issues/1115>:

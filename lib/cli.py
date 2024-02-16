@@ -20,7 +20,6 @@ scanhelper's command-line interface
 import argparse
 import collections
 import datetime
-import distutils.version
 import errno
 import itertools
 import logging
@@ -37,6 +36,7 @@ from . import gnu
 from . import ipc
 from . import scanner
 from . import utils
+from . import vcmp
 from . import xdg
 from . import xmp
 
@@ -339,7 +339,7 @@ def get_scanimage_version():
     if match is None:
         error('cannot parse scanimage version')
     version = match.group(1)
-    return distutils.version.LooseVersion(version)
+    return vcmp.LooseVersion(version)
 
 def wait_for_button(device, button, sleep_interval=0.1):
     if button is None:
