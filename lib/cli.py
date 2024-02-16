@@ -362,7 +362,7 @@ def scan_single_batch(options, device, start=0, count=infinity, increment=1):
     while True:
         try:
             line = master.readline()
-        except IOError:
+        except OSError:
             break
         if line == '':
             break
@@ -389,7 +389,7 @@ def create_unique_directory(prefix=''):
             try:
                 logger.debug('Trying to create target directory: %r', path)
                 os.mkdir(path)
-            except (OSError, IOError):
+            except OSError:
                 continue
             return path
     raise  # pylint: disable=misplaced-bare-raise
