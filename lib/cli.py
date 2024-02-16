@@ -110,7 +110,7 @@ class VersionAction(argparse.Action):
         print(f'+ Jinja2 {xmp.jinja2.__version__}')
         parser.exit()
 
-class Config(object):
+class Config:
 
     @classmethod
     def get_paths(cls):
