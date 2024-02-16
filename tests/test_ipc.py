@@ -190,7 +190,7 @@ class test_environment():
 def test_init_exception():
     with assert_raises(OSError) as ecm:
         ipc.Subprocess([nonexistent_command])
-    exc_message = "[Errno {errno.ENOENT}] No such file or directory: {cmd!r}".format(
+    exc_message = '[Errno {errno.ENOENT}] No such file or directory: {cmd!r}'.format(
         errno=errno,
         cmd=nonexistent_command,
     )
