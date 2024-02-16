@@ -29,7 +29,7 @@ class Coverage(nose.plugins.cover.Coverage):
     stream = None
 
     def report(self, stream):
-        return super(Coverage, self).report(self.stream)
+        return super().report(self.stream)
 
 basedir = os.path.join(
     os.path.dirname(__file__),
