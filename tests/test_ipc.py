@@ -46,7 +46,7 @@ class test_exceptions:
     def test_invalid_signo(self):
         # signal.NSIG is guaranteed not be a correct signal number
         ex = ipc.CalledProcessInterrupted(signal.NSIG, 'eggs')
-        assert_equal(str(ex), "Command 'eggs' was interrupted by signal {0}".format(signal.NSIG))
+        assert_equal(str(ex), f"Command 'eggs' was interrupted by signal {signal.NSIG}")
 
 class test_wait:
 
@@ -159,10 +159,8 @@ class test_environment:
             elif key == 'LC_CTYPE':
                 has_lc_ctype = 1
                 if utf8_locale is None:
-                    raise SkipTest(
-                        'UTF-8 locale missing '
-                        '({0})'.format(str.join(' or ', utf8_locale_candidates))
-                    )
+                    candidates_msg = str.join(' or ', utf8_locale_candidates)
+                    raise SkipTest(f'UTF-8 locale missing ({candidates_msg})')
                 assert_equal(value, utf8_locale)
             elif key == 'LANG':
                 has_lang = 1
@@ -190,10 +188,7 @@ class test_environment:
 def test_init_exception():
     with assert_raises(OSError) as ecm:
         ipc.Subprocess([nonexistent_command])
-    exc_message = '[Errno {errno.ENOENT}] No such file or directory: {cmd!r}'.format(
-        errno=errno,
-        cmd=nonexistent_command,
-    )
+    exc_message = f'[Errno {errno.ENOENT}] No such file or directory: {nonexistent_command!r}'
     if sys.version_info < (3, 8):
         # https://bugs.python.org/issue32490 "subprocess: duplicate filename in exception message"
         ecm.exception.strerror = ecm.exception.strerror.split(':', 1)[0]
