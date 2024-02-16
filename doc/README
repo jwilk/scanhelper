@@ -9,6 +9,7 @@ Dependencies
 * Scanner Access Made Easy (SANE_)
 * Python_ ≥ 3.6
 * Pillow_ ≥ 2.5
+* looseversion_ (for Python ≥ 3.12)
 * python-sane_
 * Jinja2_
 
@@ -16,6 +17,8 @@ Dependencies
    http://www.sane-project.org/
 .. _Python:
    https://www.python.org/
+.. _looseversion:
+   https://pypi.org/project/looseversion/
 .. _Pillow:
    https://pypi.org/project/Pillow/
 .. _python-sane:
