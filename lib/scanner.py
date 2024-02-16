@@ -42,7 +42,7 @@ def get_devices():
     initialize()
     return sane.get_devices()
 
-class OptionDescriptor(object):
+class OptionDescriptor:
 
     def __init__(self, index, type_, unit, size, capabilities, constraint):
         self.index = index
@@ -52,7 +52,7 @@ class OptionDescriptor(object):
         self.capabilities = capabilities
         self.constraint = constraint
 
-class Device(object):
+class Device:
 
     def __init__(self, name, vendor, model, type_):
         self.name = name

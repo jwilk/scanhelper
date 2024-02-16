@@ -23,7 +23,7 @@ from .tools import (
     interim,
 )
 
-class test_enhance_import():
+class test_enhance_import:
 
     @classmethod
     def setup_class(cls):

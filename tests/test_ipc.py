@@ -33,7 +33,7 @@ from .tools import (
 
 nonexistent_command = 'scanhelper-nonexistent-command'
 
-class test_exceptions():
+class test_exceptions:
 
     def test_valid(self):
         def t(name):
@@ -48,7 +48,7 @@ class test_exceptions():
         ex = ipc.CalledProcessInterrupted(signal.NSIG, 'eggs')
         assert_equal(str(ex), f"Command 'eggs' was interrupted by signal {signal.NSIG}")
 
-class test_wait():
+class test_wait:
 
     def test0(self):
         child = ipc.Subprocess(['true'])
@@ -87,7 +87,7 @@ def get_utf8_locale():
 
 utf8_locale = get_utf8_locale()
 
-class test_environment():
+class test_environment:
 
     def test1(self):
         with interim_environ(scanhelper='42'):
@@ -194,7 +194,7 @@ def test_init_exception():
         ecm.exception.strerror = ecm.exception.strerror.split(':', 1)[0]
     assert_equal(str(ecm.exception), exc_message)
 
-class test_shell_escape():
+class test_shell_escape:
 
     def test_no_escape(self):
         s = 'eggs'
