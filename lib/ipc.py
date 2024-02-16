@@ -108,7 +108,7 @@ class Subprocess(subprocess.Popen):
         self.__command = commandline[0]
         try:
             subprocess.Popen.__init__(self, *args, **kwargs)
-        except EnvironmentError as ex:
+        except OSError as ex:
             ex.filename = self.__command
             raise
 
