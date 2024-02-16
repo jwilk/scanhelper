@@ -123,7 +123,7 @@ class Config:
         for config in self.get_paths():
             if not os.path.exists(config):
                 continue
-            with open(config, 'rt') as config:
+            with open(config, 'rt') as config:  # pylint: disable=unspecified-encoding
                 for line in config:
                     if not line:
                         continue
