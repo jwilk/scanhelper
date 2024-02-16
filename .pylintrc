@@ -4,13 +4,10 @@ load-plugins = pylint.extensions.check_elif
 
 [MESSAGES CONTROL]
 disable =
-    bad-continuation,
     fixme,
     global-statement,
     invalid-name,
-    no-init,
     no-self-use,
-    old-style-class,
     too-few-public-methods,
     too-many-arguments,
     too-many-locals,
