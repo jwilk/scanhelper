@@ -11,6 +11,7 @@ disable =
     too-few-public-methods,
     too-many-arguments,
     too-many-locals,
+    use-dict-literal,
 
 [BASIC]
 no-docstring-rgx = .*
