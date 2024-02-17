@@ -123,7 +123,7 @@ class test_environment():
             assert_equal(stderr, b'')
 
     def test_path(self):
-        path = os.getenv('PATH')
+        path = os.getenv('PATH', os.defpath)
         tmpdir = tempfile.mkdtemp(prefix='scanhelper.')
         try:
             command_name = 'eggs'
