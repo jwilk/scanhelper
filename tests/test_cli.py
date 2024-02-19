@@ -51,7 +51,7 @@ def run_scanhelper(*args):
             try:
                 lib.cli.main(cmdline)
             except SystemExit as exc:
-                [rc] = exc.args
+                rc = exc.code
             else:
                 rc = 0
     return (rc, stdout.getvalue(), stderr.getvalue())
