@@ -465,13 +465,17 @@ def reconstruct_xmp(options):
                 override=options.override_xmp
             )
 
+def unexpand_tilde(path):
+    home = os.path.expanduser('~/')
+    if path.startswith(home):
+        path = '~/' + path[len(home):]
+    return path
+
 def show_config(options):
     esc = ipc.shell_escape
-    tilde = os.path.expanduser('~/')
     print('Configuration files:')
     for filename in options.config.get_paths():
-        if filename.startswith(tilde):
-            filename = '~/' + filename[len(tilde):]
+        filename = unexpand_tilde(filename)
         print('    {0}'.format(filename))
     extra_options = options.config.get(None)
     print()
