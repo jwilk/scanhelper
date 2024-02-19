@@ -474,9 +474,9 @@ def unexpand_tilde(path):
 def show_config(options):
     esc = ipc.shell_escape
     print('Configuration files:')
-    for filename in options.config.get_paths():
-        filename = unexpand_tilde(filename)
-        print('    {0}'.format(filename))
+    for path in options.config.get_paths():
+        path = unexpand_tilde(path)
+        print('    {0}'.format(path))
     extra_options = options.config.get(None)
     print()
     if extra_options:
