@@ -29,15 +29,6 @@ xdg_config_dirs = (
     filter(os.path.abspath, xdg_config_dirs.split(os.path.pathsep))
 )
 
-def save_config_path(resource):
-    path = os.path.join(xdg_config_home, resource)
-    try:
-        os.makedirs(path, 0o700)
-    except OSError:
-        if not os.path.isdir(path):
-            raise
-    return path
-
 def load_config_paths(resource):
     for config_dir in xdg_config_dirs:
         path = os.path.join(config_dir, resource)
@@ -46,7 +37,6 @@ def load_config_paths(resource):
 
 __all__ = [
     'load_config_paths',
-    'save_config_path',
 ]
 
 # vim:ts=4 sts=4 sw=4 et

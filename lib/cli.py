@@ -113,7 +113,6 @@ class Config(object):
 
     @classmethod
     def get_paths(cls):
-        xdg.save_config_path('scanhelper')
         for x in xdg.load_config_paths('scanhelper'):
             yield os.path.join(x, 'config')
 
