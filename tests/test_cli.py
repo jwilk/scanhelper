@@ -62,6 +62,12 @@ def test_L():
     assert_equal(rc, 0)
     assert_not_equal(stdout, '')
 
+def test_list_buttons():
+    (rc, stdout, stderr) = run_scanhelper('-d', 'test:0', '--list-buttons')
+    assert_equal(stderr, '')
+    assert_equal(rc, 0)
+    assert_not_equal(stdout, '')
+
 def test_help():
     (rc, stdout, stderr) = run_scanhelper('--help')
     assert_equal(stderr, '')
