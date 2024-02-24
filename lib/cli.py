@@ -61,7 +61,7 @@ class HelpAction(argparse.Action):
         if namespace.device is None:
             parser.epilog += '''  use 'scanhelper -d DEVICE --help' to get list of all options for DEVICE'''
         else:
-            scanimage_args = ['-d', namespace.device, '--help']
+            scanimage_args = ['--format=pnm', '-d', namespace.device, '--help']
             subprocess = run_scanimage(*scanimage_args, stdout=ipc.PIPE)
             for line in subprocess.stdout:
                 if not line.startswith('Options specific to device'):
