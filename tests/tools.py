@@ -22,6 +22,7 @@ import traceback
 from nose import SkipTest
 from nose.tools import (
     assert_equal,
+    assert_greater,
     assert_greater_equal,
     assert_is_instance,
     assert_not_equal,
@@ -145,6 +146,7 @@ __all__ = [
     # nose:
     'SkipTest',
     'assert_equal',
+    'assert_greater',
     'assert_greater_equal',
     'assert_is_instance',
     'assert_not_equal',
