@@ -24,6 +24,7 @@ import lib.cli
 
 from .tools import (
     assert_equal,
+    assert_greater,
     assert_not_equal,
     interim,
     interim_environ,
@@ -73,6 +74,11 @@ def test_help():
     assert_equal(stderr, '')
     assert_equal(rc, 0)
     assert_not_equal(stdout, '')
+    (rc, stdout_d, stderr) = run_scanhelper('-d', 'test:0', '--help')
+    assert_equal(stderr, '')
+    assert_equal(rc, 0)
+    assert_not_equal(stdout_d, '')
+    assert_greater(len(stdout_d), len(stdout))
 
 def test_version():
     (rc, stdout, stderr) = run_scanhelper('--version')
