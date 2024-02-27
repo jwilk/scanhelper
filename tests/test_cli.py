@@ -58,6 +58,7 @@ def run_scanhelper(*args, **kwargs):
         stdio.update(stdin=io.BytesIO(stdin))
     cmdline = ['scanhelper']
     cmdline += args
+    cwd = os.getcwd()
     with sane_config():
         with interim(sys, **stdio):
             try:
@@ -66,6 +67,8 @@ def run_scanhelper(*args, **kwargs):
                 rc = exc.code
             else:
                 rc = 0
+            finally:
+                os.chdir(cwd)
     return (rc, stdout.getvalue(), stderr.getvalue())
 
 def test_L():
