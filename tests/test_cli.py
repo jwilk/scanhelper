@@ -14,11 +14,14 @@
 # more details.
 
 import contextlib
+import glob
 import io
 import os
 import shutil
 import sys
 import tempfile
+
+import PIL.Image
 
 import lib.cli
 
@@ -42,13 +45,21 @@ def sane_config():
     finally:
         shutil.rmtree(tmpdir)
 
-def run_scanhelper(*args):
+def run_scanhelper(*args, **kwargs):
     stdout = io.BytesIO()
     stderr = io.BytesIO()
+    stdio = dict(
+        stdout=stdout,
+        stderr=stderr
+    )
+    if kwargs:
+        stdin = kwargs.pop('stdin')
+        assert not kwargs
+        stdio.update(stdin=io.BytesIO(stdin))
     cmdline = ['scanhelper']
     cmdline += args
     with sane_config():
-        with interim(sys, stdout=stdout, stderr=stderr):
+        with interim(sys, **stdio):
             try:
                 lib.cli.main(cmdline)
             except SystemExit as exc:
@@ -67,6 +78,30 @@ def test_list_buttons():
     (rc, stdout, stderr) = run_scanhelper('-d', 'test:0', '--list-buttons')
     assert_equal(stderr, '')
     assert_equal(rc, 0)
+    assert_not_equal(stdout, '')
+
+def test_scanning():
+    tmpdir = tempfile.mkdtemp(prefix='scanhelper.')
+    try:
+        (rc, stdout, stderr) = run_scanhelper(
+            '-d', 'test:0',
+            '--page-count=1',
+            '--target-directory-prefix', os.path.join(tmpdir, 'test'),
+            stdin=b'\n'
+        )
+        paths = glob.glob(os.path.join(tmpdir, 'test-*', '*.png'))
+        assert_not_equal(paths, [])
+        assert_equal(len(paths), 1)
+        [path] = paths
+        img = PIL.Image.open(path)
+        try:
+            assert_equal(img.format, 'PNG')
+        finally:
+            img.close()
+    finally:
+        shutil.rmtree(tmpdir)
+    assert_equal(rc, 0)
+    assert_not_equal(stderr, '')
     assert_not_equal(stdout, '')
 
 def test_help():
