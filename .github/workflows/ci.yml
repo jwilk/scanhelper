@@ -31,9 +31,11 @@ jobs:
         python -m pip install pillow
         python -m pip install python-sane
         python -m pip install jinja2
-    - name: run tests
+    - name: install nose
       run: |
         python -m pip install nose
+    - name: run tests
+      run: |
         nosetests -v
     - name: build docs
       run: |
