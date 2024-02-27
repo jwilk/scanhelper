@@ -37,6 +37,7 @@ jobs:
     - name: run tests
       run: |
         nosetests -v
+      timeout-minutes: 1
     - name: build docs
       run: |
         make
