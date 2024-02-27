@@ -417,7 +417,10 @@ def scan(options):
     ipc_logger.setLevel(logging.DEBUG)
     try:
         while total_count > 0:
-            wait_for_button(device, options.batch_button)
+            try:
+                wait_for_button(device, options.batch_button)
+            except EOFError:
+                return
             for page in scan_single_batch(options, device, start, min(total_count, batch_count), increment):
                 del page
                 image_filename = gnu.sprintf(options.filename_template, start)
