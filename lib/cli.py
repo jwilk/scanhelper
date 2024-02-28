@@ -446,6 +446,7 @@ def scan(options):
                 total_count -= 1
     except KeyboardInterrupt:
         logger.info('Interrupted by user')
+        # TODO: re-raise SIGINT
 
 def reconstruct_xmp(options):
     class device:
