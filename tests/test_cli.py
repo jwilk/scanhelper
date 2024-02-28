@@ -116,6 +116,18 @@ def test_scanning(xmp=False):
 def test_scanning_xmp():
     test_scanning(xmp=True)
 
+def _test_not_implemented(arg):
+    (rc, stdout, stderr) = run_scanhelper(arg)
+    assert_equal(stdout, '')
+    assert_equal(stderr, 'scanhelper: error: {arg} option is not yet supported\n'.format(arg=arg))
+    assert_equal(rc, 2)
+
+def test_dont_scan():
+    _test_not_implemented('--dont-scan')
+
+def test_test():
+    _test_not_implemented('--test')
+
 def test_help():
     (rc, stdout, stderr) = run_scanhelper('--help')
     assert_equal(stderr, '')
