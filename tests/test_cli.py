@@ -61,7 +61,7 @@ def run_scanhelper(*args, **kwargs):
     cmdline += args
     cwd = os.getcwd()
     with sane_config():
-        with interim(sys, **stdio):
+        with interim(sys, argv=cmdline, **stdio):
             try:
                 lib.cli.main(cmdline)
             except SystemExit as exc:
