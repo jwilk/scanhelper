@@ -71,4 +71,7 @@ def test_gen_uuid():
     assert_uuid_urn(uuid2)
     assert_not_equal(uuid1, uuid2)
 
+# TODO: add test for write()
+# TODO: add test for print_doc()
+
 # vim:ts=4 sts=4 sw=4 et
