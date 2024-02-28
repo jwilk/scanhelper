@@ -237,7 +237,7 @@ class ArgumentParser(argparse.ArgumentParser):
         result.config = config
         for opt in 'dont-scan', 'test':
             if getattr(result, opt.replace('-', '_')):
-                self.error('--{0} option is not yet supported'.format(opt))
+                self.xerror('--{0} option is not yet supported'.format(opt))
         result.extra_args = extra_args
         if result.filename_template is None:
             result.filename_template = 'p%04d.{0}'.format(result.output_format[:3])
