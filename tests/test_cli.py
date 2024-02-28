@@ -71,7 +71,7 @@ def run_scanhelper(*args, **kwargs):
                 os.chdir(cwd)
     return (rc, stdout.getvalue(), stderr.getvalue())
 
-def test_L():
+def test_list_devices():
     (rc, stdout, stderr) = run_scanhelper('-L')
     assert_equal(stderr, '')
     assert_equal(rc, 0)
