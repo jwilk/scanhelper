@@ -220,13 +220,15 @@ class ArgumentParser(argparse.ArgumentParser):
 
     def parse_args(self, args=None, namespace=None):
         config = Config()
-        my_args = args[1:]
+        if args is None:
+            args = sys.argv[1:]
+        my_args = list(args)
         my_args[:0] = config.get()
         result, extra_args = self.parse_known_args(my_args)
         if result.reconstruct_xmp:
             result.action = 'reconstruct_xmp'
         if result.profile is not None:
-            my_args = args[1:]
+            my_args = list(args)
             try:
                 my_args[:0] = config.get(result.profile)
             except KeyError:
@@ -517,10 +519,10 @@ def setup_logging():
     ipc_logger.addHandler(handler)
     ipc_logger.setLevel(logging.INFO)
 
-def main(args):
+def main():
     setup_logging()
     parser = ArgumentParser()
-    options = parser.parse_args(args)
+    options = parser.parse_args()
     action = globals()[options.action]
     if options.verbose:
         logger.setLevel(logging.DEBUG)

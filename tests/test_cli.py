@@ -63,7 +63,7 @@ def run_scanhelper(*args, **kwargs):
     with sane_config():
         with interim(sys, argv=argv, **stdio):
             try:
-                lib.cli.main(argv)
+                lib.cli.main()
             except SystemExit as exc:
                 rc = exc.code
             else:
