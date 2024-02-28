@@ -94,7 +94,7 @@ def test_scanning(xmp=False):
     if xmp:
         args += ['--xmp']
     try:
-        (rc, stdout, stderr) = run_scanhelper(*args, stdin=b'\n')
+        (rc, stdout, stderr) = run_scanhelper(*args, stdin='\n')
         paths = glob.glob(os.path.join(tmpdir, 'test-*', '*.png'))
         assert_not_equal(paths, [])
         assert_equal(len(paths), 1)
