@@ -154,7 +154,7 @@ class ArgumentParser(argparse.ArgumentParser):
         self.set_defaults(action='scan')
         sane_default_dev = os.getenv('SANE_DEFAULT_DEVICE') or None
         self.add_argument('-d', '--device-name', metavar='DEVICE', dest='device', default=sane_default_dev,
-            help='use a given scanner device')
+            help='use the given scanner device')
         self.add_argument('-L', '--list-devices', action='store_const', const='list_devices', dest='action',
             help='show available scanner devices')
         self.add_argument('--format', choices=file_formats, type=str.lower, dest='output_format', default='png',
