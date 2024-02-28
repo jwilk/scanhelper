@@ -57,13 +57,13 @@ def run_scanhelper(*args, **kwargs):
         stdin = kwargs.pop('stdin')
         assert not kwargs
         stdio.update(stdin=io.BytesIO(stdin))
-    cmdline = ['scanhelper']
-    cmdline += args
+    argv = ['scanhelper']
+    argv += args
     cwd = os.getcwd()
     with sane_config():
-        with interim(sys, argv=cmdline, **stdio):
+        with interim(sys, argv=argv, **stdio):
             try:
-                lib.cli.main(cmdline)
+                lib.cli.main(argv)
             except SystemExit as exc:
                 rc = exc.code
             else:
