@@ -136,6 +136,13 @@ def test_bad_device():
     assert_equal(stderr, 'scanhelper: error: no such device: __bacon__\n')
     assert_equal(rc, 1)
 
+def test_bad_button():
+    (rc, stdout, stderr) = run_scanhelper('-d', 'test:0', '--batch-button=__bacon__')
+    assert_equal(stdout, '')
+    stderr = stderr.splitlines(True)
+    assert_equal(stderr[-1], 'scanhelper: error: no such button: __bacon__\n')
+    assert_equal(rc, 1)
+
 def test_help():
     (rc, stdout, stderr) = run_scanhelper('--help')
     assert_equal(stderr, '')
