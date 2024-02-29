@@ -139,7 +139,18 @@ def test_bad_device():
     assert_equal(rc, 1)
 
 def test_bad_button():
-    (rc, stdout, stderr) = run_scanhelper('-d', 'test:0', '--batch-button=__bacon__')
+    args = [
+        '-d', 'test:0',
+        '--batch-button=__bacon__',
+    ]
+    tmpdir = tempfile.mkdtemp(prefix='scanhelper.')
+    try:
+        args += [
+            '--target-directory-prefix', os.path.join(tmpdir, 'test'),
+        ]
+        (rc, stdout, stderr) = run_scanhelper(*args)
+    finally:
+        shutil.rmtree(tmpdir)
     assert_equal(stdout, '')
     stderr = stderr.splitlines(True)
     assert_equal(stderr[-1], 'scanhelper: error: no such button: __bacon__\n')
