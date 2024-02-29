@@ -130,6 +130,12 @@ def test_dont_scan():
 def test_test():
     _test_not_implemented('--test')
 
+def test_bad_device():
+    (rc, stdout, stderr) = run_scanhelper('-d', '__bacon__')
+    assert_equal(stdout, '')
+    assert_equal(stderr, 'scanhelper: error: no such device: __bacon__\n')
+    assert_equal(rc, 1)
+
 def test_help():
     (rc, stdout, stderr) = run_scanhelper('--help')
     assert_equal(stderr, '')
