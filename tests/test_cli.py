@@ -87,15 +87,17 @@ def test_list_buttons():
     assert_not_equal(stdout, '')
 
 def test_scanning(xmp=False):
-    tmpdir = tempfile.mkdtemp(prefix='scanhelper.')
     args = [
         '-d', 'test:0',
         '--page-count=1',
-        '--target-directory-prefix', os.path.join(tmpdir, 'test'),
     ]
     if xmp:
         args += ['--xmp']
+    tmpdir = tempfile.mkdtemp(prefix='scanhelper.')
     try:
+        args += [
+            '--target-directory-prefix', os.path.join(tmpdir, 'test'),
+        ]
         (rc, stdout, stderr) = run_scanhelper(*args, stdin='\n')
         paths = glob.glob(os.path.join(tmpdir, 'test-*', '*.png'))
         assert_not_equal(paths, [])
