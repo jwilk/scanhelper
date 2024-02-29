@@ -25,6 +25,7 @@ import xml.etree.ElementTree as etree
 import PIL.Image
 
 import lib.cli
+import lib.xdg
 
 from .tools import (
     assert_equal,
@@ -35,14 +36,15 @@ from .tools import (
 )
 
 @contextlib.contextmanager
-def sane_config():
+def scan_config():
     tmpdir = tempfile.mkdtemp(prefix='scanhelper.')
     try:
         path = os.path.join(tmpdir, 'dll.conf')
         with open(path, 'w') as fp:
             fp.write('test')
         with interim_environ(SANE_CONFIG_DIR=tmpdir):
-            yield
+            with interim(lib.xdg, xdg_config_dirs=()):
+                yield
     finally:
         shutil.rmtree(tmpdir)
 
@@ -60,7 +62,7 @@ def run_scanhelper(*args, **kwargs):
     argv = ['scanhelper']
     argv += args
     cwd = os.getcwd()
-    with sane_config():
+    with scan_config():
         with interim(sys, argv=argv, **stdio):
             try:
                 lib.cli.main()
