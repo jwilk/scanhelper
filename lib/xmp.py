@@ -173,14 +173,14 @@ def gen_uuid():
 def write(xmp_file, image_filename, device, override):
     image_timestamp = mtime(image_filename)
     metadata_timestamp = now()
-    image = PIL.Image.open(image_filename)
-    width, height = image.size
-    try:
-        x_dpi, y_dpi = image.info['dpi']
-        dpi = max(x_dpi, y_dpi)
-    except LookupError:
-        dpi = None
-    media_type = media_types[image.format]
+    with PIL.Image.open(image_filename) as image:
+        width, height = image.size
+        try:
+            x_dpi, y_dpi = image.info['dpi']
+            dpi = max(x_dpi, y_dpi)
+        except LookupError:
+            dpi = None
+        media_type = media_types[image.format]
     parameters = dict(
         version=__version__,
         device_vendor=device.vendor,
