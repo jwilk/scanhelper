@@ -103,11 +103,8 @@ def test_scanning(xmp=False):
         assert_not_equal(paths, [])
         assert_equal(len(paths), 1)
         [path] = paths
-        img = PIL.Image.open(path)
-        try:
+        with PIL.Image.open(path) as img:
             assert_equal(img.format, 'PNG')
-        finally:
-            img.close()
         if xmp:
             with open(path + '.xmp', 'rb') as file:
                 etree.parse(file)
