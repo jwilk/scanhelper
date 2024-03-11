@@ -117,6 +117,21 @@ def test_scanning(xmp=False):
 def test_scanning_xmp():
     test_scanning(xmp=True)
 
+def test_reconstruct_xpm():
+    tmpdir = tempfile.mkdtemp(prefix='scanhelper.')
+    try:
+        with PIL.Image.new('L', (1, 1)) as img:
+            path = os.path.join(tmpdir, 'test.png')
+            img.save(path)
+        (rc, stdout, stderr) = run_scanhelper('--reconstruct-xmp', path)
+        with open(path + '.xmp', 'rb') as file:
+            etree.parse(file)
+    finally:
+        shutil.rmtree(tmpdir)
+    assert_equal(stdout, '')
+    assert_equal(stderr, '')
+    assert_equal(rc, 0)
+
 def _test_not_implemented(arg):
     (rc, stdout, stderr) = run_scanhelper(arg)
     assert_equal(stdout, '')
