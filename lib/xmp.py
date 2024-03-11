@@ -27,7 +27,7 @@ import xml.dom.minidom as minidom
 from . import utils
 
 try:
-    import PIL.Image as pil
+    import PIL.Image
 except ImportError as ex:
     utils.enhance_import_error(ex, 'Pillow', 'python-pil', 'https://pypi.org/project/Pillow/')
     raise
@@ -173,7 +173,7 @@ def gen_uuid():
 def write(xmp_file, image_filename, device, override):
     image_timestamp = mtime(image_filename)
     metadata_timestamp = now()
-    image = pil.open(image_filename)
+    image = PIL.Image.open(image_filename)
     width, height = image.size
     try:
         x_dpi, y_dpi = image.info['dpi']

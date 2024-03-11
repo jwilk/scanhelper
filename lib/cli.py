@@ -98,13 +98,13 @@ class VersionAction(argparse.Action):
         print('+ Python {0}.{1}.{2}'.format(*sys.version_info))
         pil_name = 'Pillow'
         try:
-            pil_version = xmp.pil.PILLOW_VERSION
+            pil_version = xmp.PIL.PILLOW_VERSION
         except AttributeError:
             try:
-                pil_version = xmp.pil.__version__
+                pil_version = xmp.PIL.__version__
             except AttributeError:
                 pil_name = 'PIL'
-                pil_version = xmp.pil.VERSION  # pylint: disable=no-member
+                pil_version = xmp.PIL.VERSION  # pylint: disable=no-member
         print('+ {PIL} {0}'.format(pil_version, PIL=pil_name))
         print('+ Jinja2 {0}'.format(xmp.jinja2.__version__))
         parser.exit()
