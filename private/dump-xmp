@@ -19,7 +19,7 @@ import os
 import sys
 import tempfile
 
-import PIL.Image as pil
+import PIL.Image
 
 here = os.path.dirname(__file__)
 sys.path[:0] = [here + '/..']
@@ -38,7 +38,7 @@ ap.add_argument('path', metavar='IMAGE', nargs='?')
 options = ap.parse_args()
 if options.path is None:
     with tempfile.NamedTemporaryFile(prefix='scanhelper.', suffix='.png') as fp:
-        im = pil.new('RGB', (23, 42))
+        im = PIL.Image.new('RGB', (23, 42))
         im.save(fp)
         dump_xmp(fp.name)
 else:
