@@ -38,8 +38,8 @@ ap.add_argument('path', metavar='IMAGE', nargs='?')
 options = ap.parse_args()
 if options.path is None:
     with tempfile.NamedTemporaryFile(prefix='scanhelper.', suffix='.png') as fp:
-        im = PIL.Image.new('RGB', (23, 42))
-        im.save(fp)
+        with PIL.Image.new('RGB', (23, 42)) as im:
+            im.save(fp)
         dump_xmp(fp.name)
 else:
     dump_xmp(options.path)
