@@ -84,10 +84,8 @@ jobs:
     - name: install nose
       run: |
         python3 -m pip install nose-*.whl
-        case ${{matrix.python}} in 3.*)
-          # work-around for <https://github.com/nose-devs/nose/issues/1116>:
-          sed -i -e 's/ from unittest import _TextTestResult$/ from unittest import TextTestResult as _TextTestResult/' ${{env.pythonLocation || '/usr/local'}}/lib/python*/site-packages/nose/result.py
-        esac
+        # work-around for <https://github.com/nose-devs/nose/issues/1116>:
+        sed -i -e 's/ from unittest import _TextTestResult$/ from unittest import TextTestResult as _TextTestResult/' ${{env.pythonLocation}}/lib/python*/site-packages/nose/result.py
         if ! python3 -c 'import imp'; then
           python3 -m pip install zombie-imp
         fi
