@@ -20,7 +20,7 @@ scanhelper (0.7.1) unstable; urgency=low
 scanhelper (0.7) unstable; urgency=low
 
   * Don't do TIFF to PNG conversions.
-    Instead, required scanimage (sane-backends) >= 1.0.25, which can use the
+    Instead, require scanimage (sane-backends) >= 1.0.25, which can use the
     PNG output format directly.
     Thanks to Janusz S. Bień to the bug report.
     https://github.com/jwilk/scanhelper/issues/1
