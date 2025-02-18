@@ -191,4 +191,6 @@ def test_bad_option():
     assert_equal(rc, 1)
     assert_equal(stdout, '')
 
+# TODO: add test for --override-xmp
+
 # vim:ts=4 sts=4 sw=4 et
