@@ -19,6 +19,7 @@ import os
 import sys
 import traceback
 
+# TODO: migrate away from nose
 from nose import SkipTest
 from nose.tools import (
     assert_equal,
