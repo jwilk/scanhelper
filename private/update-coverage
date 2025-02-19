@@ -24,7 +24,9 @@ import sys
 import nose
 import nose.plugins.cover
 
+# pylint: disable=exec-used
 exec {b''}.pop()  # Python 2.7 is required
+# pylint: enable=exec-used
 
 class Coverage(nose.plugins.cover.Coverage):
 
