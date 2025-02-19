@@ -22,7 +22,7 @@ import sys
 import nose
 import nose.plugins.cover
 
-...  # Python 3 is required
+type(...)  # Python 3 is required
 
 class Coverage(nose.plugins.cover.Coverage):
 
