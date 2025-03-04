@@ -24,6 +24,6 @@ if sys.version_info < (2, 7):
 if sys.version_info >= (3, 0):
     raise RuntimeError('Python 2.X is required')
 
-__version__ = '0.7.2'
+__version__ = '0.8'
 
 # vim:ts=4 sts=4 sw=4 et
