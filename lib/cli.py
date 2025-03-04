@@ -159,7 +159,7 @@ class ArgumentParser(argparse.ArgumentParser):
             help='show available scanner devices')
         self.add_argument('--format', choices=file_formats, type=str.lower, dest='output_format', default='png',
             help='file format of output file (default: PNG)')
-        self.add_argument('-t', '--target-directory', metavar='DIRECTORY',
+        self.add_argument('--target-directory', metavar='DIRECTORY',
             help='output directory (default: a unique, time-based directory is created)')
         self.add_argument('--target-directory-prefix', metavar='PREFIX',
             help='prefix for directory name if --target-directory is not used')
