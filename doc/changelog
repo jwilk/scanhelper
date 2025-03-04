@@ -1,6 +1,20 @@
 scanhelper (0.8) UNRELEASED; urgency=low
 
-  * 
+  * Remove short option -t.
+    This conflicted with scanimage -t ("top-left y position").
+    Users should use long --target-directory instead.
+  * Don't create the config directory.
+    This is left to the user.
+  * Silence warnings about unset output format.
+  * Fix handling non-ASCII values in XMP output.
+  * Improve error handling:
+    + Don't print traceback for non-existent button.
+    + Don't print usage for known but unsupported option.
+    + Exit cleanly on ^D (EOF).
+  * Improve README:
+    + Document that Pillow ≥ 2.5 is needed.
+  * Fix grammar in the help message.
+  * Improve the test suite.
 
  -- Jakub Wilk <jwilk@jwilk.net>  Tue, 04 Mar 2025 15:34:51 +0100
 
