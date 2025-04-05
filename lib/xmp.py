@@ -136,24 +136,12 @@ media_types = dict(
 class rfc3339:
 
     def __init__(self, unixtime):
-        self._localtime = time.localtime(unixtime)
-        self._tzdelta = (
-            datetime.datetime.fromtimestamp(unixtime) -
-            datetime.datetime.utcfromtimestamp(unixtime)
-        )
-
-    def _str(self):
-        return time.strftime('%Y-%m-%dT%H:%M:%S', self._localtime)
-
-    def _str_tz(self):
-        offset = self._tzdelta.days * 3600 * 24 + self._tzdelta.seconds
-        hours, minutes = divmod(abs(offset) // 60, 60)
-        sign = '+' if offset >= 0 else '-'
-        return f'{sign}{hours:02}:{minutes:02}'
+        self._dt = datetime.datetime.fromtimestamp(unixtime)
+        self._dt = self._dt.astimezone()
 
     def __str__(self):
         '''Format the timestamp object in accordance with RFC 3339.'''
-        return self._str() + self._str_tz()
+        return self._dt.isoformat(timespec='seconds')
 
 def mtime(filename):
     return rfc3339(os.stat(filename).st_mtime)
