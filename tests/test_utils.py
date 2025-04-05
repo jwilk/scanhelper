@@ -37,14 +37,14 @@ class test_enhance_import:
                 except ImportError as ex:
                     utils.enhance_import_error(ex,
                         'PyNonexistent',
-                        'python-nonexistent',
+                        'python3-nonexistent',
                         'http://pynonexistent.example.net/'
                     )
                     raise
                 nonexistent.f()  # quieten pyflakes
             assert_equal(str(ecm.exception),
                 'import of nonexistent halted; None in sys.modules; '
-                'please install the python-nonexistent package'
+                'please install the python3-nonexistent package'
             )
 
     def test_nondebian(self):
@@ -55,7 +55,7 @@ class test_enhance_import:
                 except ImportError as ex:
                     utils.enhance_import_error(ex,
                         'PyNonexistent',
-                        'python-nonexistent',
+                        'python3-nonexistent',
                         'http://pynonexistent.example.net/'
                     )
                     raise

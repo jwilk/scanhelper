@@ -21,7 +21,7 @@ from . import utils
 try:
     import _sane as sane
 except ImportError as ex:
-    utils.enhance_import_error(ex, 'Python SANE', 'python-sane', 'https://pypi.org/project/python-sane/')
+    utils.enhance_import_error(ex, 'Python SANE', 'python3-sane', 'https://pypi.org/project/python-sane/')
     raise
 
 _version = None

@@ -27,13 +27,13 @@ from . import utils
 try:
     import PIL.Image
 except ImportError as ex:
-    utils.enhance_import_error(ex, 'Pillow', 'python-pil', 'https://pypi.org/project/Pillow/')
+    utils.enhance_import_error(ex, 'Pillow', 'python3-pil', 'https://pypi.org/project/Pillow/')
     raise
 
 try:
     import jinja2
 except ImportError as ex:
-    utils.enhance_import_error(ex, 'Jinja2 templating library', 'python-jinja2', 'https://pypi.org/project/Jinja2/')
+    utils.enhance_import_error(ex, 'Jinja2 templating library', 'python3-jinja2', 'https://pypi.org/project/Jinja2/')
     raise
 
 from . import __version__
