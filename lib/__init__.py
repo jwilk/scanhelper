@@ -19,6 +19,6 @@ scanhelper's private modules
 
 int(0_0)  # Python >= 3.6 is required
 
-__version__ = '0.8'
+__version__ = '0.8.1'
 
 # vim:ts=4 sts=4 sw=4 et

@@ -1,3 +1,9 @@
+scanhelper (0.8.1) UNRELEASED; urgency=low
+
+  * 
+
+ -- Jakub Wilk <jwilk@jwilk.net>  Wed, 09 Apr 2025 20:27:04 +0200
+
 scanhelper (0.8) unstable; urgency=low
 
   * Port to Python 3.
