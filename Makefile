@@ -1,4 +1,4 @@
-# Copyright © 2012-2018 Jakub Wilk <jwilk@jwilk.net>
+# Copyright © 2012-2025 Jakub Wilk <jwilk@jwilk.net>
 #
 # This file is part of scanhelper.
 #
