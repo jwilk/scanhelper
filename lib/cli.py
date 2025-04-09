@@ -97,16 +97,11 @@ class VersionAction(argparse.Action):
         if scanimage_version != sane_version:
             print(f'+ scanimage {scanimage_version}')
         print('+ Python {0}.{1}.{2}'.format(*sys.version_info))  # pylint: disable=consider-using-f-string
-        pil_name = 'Pillow'
         try:
-            pil_version = xmp.PIL.PILLOW_VERSION
+            pil_version = xmp.PIL.__version__
         except AttributeError:
-            try:
-                pil_version = xmp.PIL.__version__
-            except AttributeError:
-                pil_name = 'PIL'
-                pil_version = xmp.PIL.VERSION  # pylint: disable=no-member
-        print(f'+ {pil_name} {pil_version}')
+            pil_version = xmp.PIL.PILLOW_VERSION  #  pylint: disable=no-member
+        print(f'+ Pillow {pil_version}')
         print(f'+ Jinja2 {xmp.jinja2.__version__}')
         parser.exit()
 
