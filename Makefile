@@ -52,6 +52,7 @@ clean: pyc-clean
 .PHONY: pyc-clean
 pyc-clean:  # used by private/build-source-tarball
 	find . -name '*.py[co]' -delete
+	find . -type d -name '__pycache__' -delete
 
 .error = GNU make is required
 
