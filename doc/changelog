@@ -1,4 +1,4 @@
-scanhelper (0.8) UNRELEASED; urgency=low
+scanhelper (0.8) unstable; urgency=low
 
   * Port to Python 3.
     Python ≥ 3.6 is now required.
@@ -19,7 +19,7 @@ scanhelper (0.8) UNRELEASED; urgency=low
   * Fix grammar in the help message.
   * Improve the test suite.
 
- -- Jakub Wilk <jwilk@jwilk.net>  Wed, 09 Apr 2025 19:36:11 +0200
+ -- Jakub Wilk <jwilk@jwilk.net>  Wed, 09 Apr 2025 20:19:29 +0200
 
 scanhelper (0.7.1) unstable; urgency=low
 
