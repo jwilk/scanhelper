@@ -142,6 +142,13 @@ class Config:
                 raise KeyError(profile)
             return self._data[profile]
 
+def at_kv_pair(s):
+    (k, v) = s.split('=', 1)
+    if not k:
+        raise ValueError
+    return (k, v)
+at_kv_pair.__name__ = 'KEY=VALUE'
+
 class ArgumentParser(argparse.ArgumentParser):
 
     def __init__(self):
@@ -198,7 +205,8 @@ class ArgumentParser(argparse.ArgumentParser):
             help='create sidecar XMP metadata')
         group.add_argument('--reconstruct-xmp', nargs='+', metavar='IMAGE',
             help='reconstruct sidecar XMP metadata from existing files (only for advanced users)')
-        group.add_argument('--override-xmp', nargs='+', action='append', default=[], metavar='KEY=VALUE',
+        group.add_argument('--override-xmp', nargs='+', action='append', default=[],
+            type=at_kv_pair, metavar='KEY=VALUE',
             help='override an XMP metadata item (only for advanced users)')
         group = self.add_argument_group('auxiliary actions')
         group.add_argument('-h', '--help', action=HelpAction, nargs=0,
@@ -240,9 +248,7 @@ class ArgumentParser(argparse.ArgumentParser):
         if result.filename_template is None:
             result.filename_template = f'p%04d.{result.output_format[:3]}'
         result.override_xmp = dict(
-            item.split('=', 1)
-            for items in result.override_xmp
-            for item in items
+            itertools.chain(*result.override_xmp)
         )
         return result
 
