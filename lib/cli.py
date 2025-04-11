@@ -250,6 +250,7 @@ class ArgumentParser(argparse.ArgumentParser):
         result.override_xmp = dict(
             itertools.chain(*result.override_xmp)
         )
+        # TODO: reject unknown XML keys
         return result
 
 def list_devices(options):
