@@ -21,7 +21,7 @@ import traceback
 
 # TODO: migrate away from nose
 from nose import SkipTest
-from nose.tools import (
+from nose.tools import (  # pylint: disable=no-name-in-module
     assert_equal,
     assert_greater,
     assert_greater_equal,
