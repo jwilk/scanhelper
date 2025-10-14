@@ -61,7 +61,8 @@ def run_scanhelper(*args, stdin=None):
     argv += args
     cwd = os.getcwd()
     with scan_config():
-        with interim(sys, argv=argv, **stdio):
+        mod_main = sys.modules['__main__']
+        with interim(sys, argv=argv, **stdio), interim(mod_main, __spec__=None):
             try:
                 lib.cli.main()
             except SystemExit as exc:
