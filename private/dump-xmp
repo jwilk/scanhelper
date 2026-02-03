@@ -34,6 +34,7 @@ def dump_xmp(path):
     xmp.write(sys.stdout.buffer, path, device, {})
 
 ap = argparse.ArgumentParser()
+ap.color = False
 ap.add_argument('path', metavar='IMAGE', nargs='?')
 options = ap.parse_args()
 if options.path is None:

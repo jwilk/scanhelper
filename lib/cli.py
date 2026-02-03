@@ -153,6 +153,7 @@ class ArgumentParser(argparse.ArgumentParser):
 
     def __init__(self):
         argparse.ArgumentParser.__init__(self, add_help=False, formatter_class=argparse.RawDescriptionHelpFormatter)
+        self.color = False
         self.register('action', 'help', HelpAction)
         self.set_defaults(action='scan')
         sane_default_dev = os.getenv('SANE_DEFAULT_DEVICE') or None
