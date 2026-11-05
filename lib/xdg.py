@@ -22,6 +22,8 @@ import os
 xdg_config_home = os.environ.get('XDG_CONFIG_HOME') or ''
 if not os.path.isabs(xdg_config_home):
     xdg_config_home = os.path.join(os.path.expanduser('~'), '.config')
+if not os.path.isabs(xdg_config_home):
+    raise RuntimeError('home dir not found')
 
 xdg_config_dirs = os.environ.get('XDG_CONFIG_DIRS') or '/etc/xdg'
 xdg_config_dirs = (
